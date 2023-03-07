@@ -1,4 +1,46 @@
-<div>
-  <h1 class="font-bold text-4xl">Admin::Restaurants#index</h1>
-  <p>Find me in app/views/admin/restaurants/index.html.erb</p>
+<div class='grid grid-cols-4 gap-4 p-4'>
+
+  <section class='col-span-1'>
+    <div class='p-4 bg-white border-2 rounded '>
+      <div class='pb-2 mb-4 border-b-2'>
+        <% @restaurants.each do |restaurant| %>
+          <div class='mb-2'>
+            <%= link_to restaurant.name, admin_restaurant_path(restaurant), class: 'text-xl break-words hover:text-major mr-4' %>
+            <%= link_to edit_admin_restaurant_path(restaurant) do %>
+              <i class="text-lg fa-solid fa-pen hover:text-major"></i>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <% @users.each do |user| %>
+          <div class='text-l'>
+            <% if user.manager? %>
+              <i class="fa-solid fa-m"></i>
+            <% elsif user.staff? %>
+              <i class="fa-solid fa-s"></i>
+            <% end %>
+            <%= link_to user.email, admin_user_path(user), class: 'hover:text-major' %>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </section>
+  
+  <section class='col-span-3 '>
+    <div class='p-4 bg-white border-2 rounded'>
+      <div class='grid grid-cols-2 gap-4'>
+        <% @restaurants.each do |restaurant| %>
+          <div class='flex flex-col p-4 border rounded'>
+            <%= link_to restaurant.name, admin_restaurant_path(restaurant), class: 'text-xl break-words hover:text-major mr-4' %>
+            <p><%= restaurant.branch %></p>
+            <p><%= restaurant.address %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </section>
+
 </div>

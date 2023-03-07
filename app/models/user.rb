@@ -5,13 +5,13 @@ class User < ApplicationRecord
 
   enum :role, [:owner, :manager, :staff], default: :owner
 
-  # has_many :user_restaurants
-  # has_many :restaurants, -> { distinct }, through: :user_restaurants
+  has_many :user_restaurants
+  has_many :restaurants, -> { distinct }, through: :user_restaurants
 
-  # has_many :subordinates, class_name: "User", foreign_key: "owner_id"
-  # belongs_to :owner, class_name: "User", optional: true
+  has_many :subordinates, class_name: "User", foreign_key: "owner_id"
+  belongs_to :owner, class_name: "User", optional: true
 
-  # validates :role, presence: true
+  validates :role, presence: true
   
   def owner?
     role == 'owner'
