@@ -12,10 +12,10 @@ class Restaurant < ApplicationRecord
 
   has_rich_text :content
 
-  def off_day_list=(days)
-    self.off_days = days.map do |item|
-      OffDay.where(day: item).first_or_create! if !item.empty?
-    end.compact!
+  OFFDAYOFWEEK = {Monday: 1, Tuesday: 2, Wednesday: 3, Thursday:4 ,Friday: 5,Saturday: 6, Sunday: 0}
+
+  def off_day_list=(day)
+    self.off_days << OffDay.find_or_create_by!(day: day)
   end
 
   def off_day_list

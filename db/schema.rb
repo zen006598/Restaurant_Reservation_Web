@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_085536) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_143436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,9 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_085536) do
   end
 
   create_table "off_days", force: :cascade do |t|
-    t.string "day"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "day"
   end
 
   create_table "restaurant_off_days", force: :cascade do |t|
@@ -83,6 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_085536) do
     t.string "branch"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "off_day_of_week", array: true
   end
 
   create_table "time_modules", force: :cascade do |t|

@@ -22,6 +22,12 @@
       <%= f.label :branch %>
       <%= f.text_field :branch %>
     </div>
+     <%= f.collection_check_boxes :off_day_of_week, Restaurant::OFFDAYOFWEEK, :last, :first do |i| %>
+        <div class='mb-2 mr-2'>
+          <%= i.check_box class: 'hidden peer'%>
+          <%= i.label class: 'inline-block cursor-pointer select-none bg-slate-200 px-2 py-1 rounded text-white peer-checked:bg-major'%>
+        </div>
+      <% end %>
     <%= f.submit %>
   <% end %>
 </div>

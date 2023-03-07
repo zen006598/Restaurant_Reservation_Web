@@ -47,7 +47,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     @time_module.business_times.build
     @time_modules = @restaurant.time_modules
 
-    @off_days = @restaurant.off_day_list
+    @off_days = @restaurant.off_days
   end
 
   def off_day_setting
@@ -61,7 +61,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   private
 
   def restaurant_params
-    params.require(:restaurant).permit(:name, :tel, :address, :branch, :content, off_day_list: [])
+    params.require(:restaurant).permit(:name, :tel, :address, :branch, :content, :off_day_list, off_day_of_week: [])
   end
 
   def find_restaurant
