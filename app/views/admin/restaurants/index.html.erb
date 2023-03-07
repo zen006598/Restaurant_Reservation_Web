@@ -2,14 +2,22 @@
 
   <section class='col-span-1'>
     <div class='p-4 bg-white border-2 rounded '>
-      <div class='pb-2 mb-4 border-b-2'>
-        <% @restaurants.each do |restaurant| %>
-          <div class='mb-2'>
-            <%= link_to restaurant.name, admin_restaurant_path(restaurant), class: 'text-xl break-words hover:text-major mr-4' %>
-            <%= link_to edit_admin_restaurant_path(restaurant) do %>
-              <i class="text-lg fa-solid fa-pen hover:text-major"></i>
-            <% end %>
+      <div class='pb-2'>
+        <% if @restaurants.blank? %>
+          <div class='flex flex-col p-4'>
+            <p class='text-slate-200'>You do not have any restaurant.</p>
+            <p class='text-slate-200'>Please click 'create' to create a new restaurant.</p>
+            <%= link_to 'Create Restaurant', new_admin_restaurant_path, class: 'text-lg my-1 major-button m-auto' %>
           </div>
+          <% else %>
+            <% @restaurants.each do |restaurant| %>
+              <div class='mb-2'>
+                <%= link_to restaurant.name, admin_restaurant_path(restaurant), class: 'text-xl break-words hover:text-major mr-4' %>
+                <%= link_to edit_admin_restaurant_path(restaurant) do %>
+                  <i class="text-lg fa-solid fa-pen hover:text-major"></i>
+                <% end %>
+              </div>
+            <% end %>
         <% end %>
       </div>
       <div>
@@ -24,21 +32,28 @@
           </div>
         <% end %>
       </div>
-
     </div>
   </section>
   
   <section class='col-span-3 '>
     <div class='p-4 bg-white border-2 rounded'>
-      <div class='grid grid-cols-2 gap-4'>
-        <% @restaurants.each do |restaurant| %>
-          <div class='flex flex-col p-4 border rounded'>
-            <%= link_to restaurant.name, admin_restaurant_path(restaurant), class: 'text-xl break-words hover:text-major mr-4' %>
-            <p><%= restaurant.branch %></p>
-            <p><%= restaurant.address %></p>
-          </div>
-        <% end %>
-      </div>
+      <% if @restaurants.blank? %>
+        <div class='text-center'>
+          <p class='text-slate-200'>You do not have any restaurant.</p>
+          <p class='text-slate-200'>Please click 'create' to create a new restaurant.</p>
+        </div>
+      <% else %>
+        <div class='grid grid-cols-2 gap-4'>
+          <% @restaurants.each do |restaurant| %>
+            <div class='flex flex-col p-4 border rounded'>
+              <%= link_to restaurant.name, admin_restaurant_path(restaurant), class: 'text-xl break-words hover:text-major mr-4' %>
+              <p><%= restaurant.branch %></p>
+              <p><%= restaurant.address %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      
     </div>
 
   </section>

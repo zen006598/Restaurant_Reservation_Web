@@ -102,7 +102,31 @@
       </div>
 
     </section>
-
+    <section class='p-4 bg-white rounded'>
+      <h2 class='mb-3 text-3xl font-bold'>Off Day</h2>
+      
+      <div data-controller="date-picker">
+        <%= form_with model: @restaurant, url: off_day_setting_admin_restaurant_path(@restaurant) do |f| %>
+          <div class='flex flex-wrap mb-2'>
+            <%= f.collection_check_boxes :off_day_list, OffDay::WEEKDAY, :to_s, :to_s, multiple: true do |i| %>
+              <div class='mb-2 mr-2'>
+                <%= i.check_box class: 'hidden peer', data: {action: 'click->date-picker#setSubmit'}%>
+                <%= i.label class: 'inline-block cursor-pointer select-none bg-slate-200 px-2 py-1 rounded text-white peer-checked:bg-major'%>
+              </div>
+            <% end %>
+          </div>
+          <div>
+            <%= f.date_field :off_day %>
+          </div>
+          <div class='flex hidden gap-2' data-date-picker-target= 'submit'>
+            <%= link_to setting_admin_restaurant_path(@restaurant), class: 'cancel-button' do %>
+              <i class="fa-solid fa-xmark"></i>
+            <% end %>
+            <%= f.submit class: 'major-button w-full'%>
+          </div>
+        <% end %>
+      </div>
+    </section>
     
     
   </div>
