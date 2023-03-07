@@ -47,7 +47,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     @time_module.business_times.build
     @time_modules = @restaurant.time_modules
 
-    @off_days = @restaurant.off_day_list
+    # @off_days = @restaurant.off_day_list
   end
 
   def off_day_setting

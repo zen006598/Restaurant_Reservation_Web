@@ -6,7 +6,7 @@ class Restaurant < ApplicationRecord
 
   has_many :user_restaurants
   has_many :users, through: :user_restaurants
-  # has_many :time_modules
+  has_many :time_modules
   # has_many :restaurant_off_days
   # has_many :off_days, through: :restaurant_off_days
 

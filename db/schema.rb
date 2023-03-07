@@ -1,17 +1,5 @@
-# This file is auto-generated from the current state of the database. Instead
-# of editing this file, please use the migrations feature of Active Record to
-# incrementally modify your database, and then regenerate this schema definition.
-#
-# This file is the source Rails uses to define your schema when running `bin/rails
-# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
-# be faster and is potentially less error prone than running all of your
-# migrations from scratch. Old migrations may fail to apply correctly if those
-# migrations use external dependencies or application code.
-#
-# It's strongly recommended that you check this file into your version control system.
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_081135) do
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_075157) do
-  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -52,6 +40,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_075157) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "business_times", force: :cascade do |t|
+    t.time "start"
+    t.time "_end"
+    t.bigint "time_module_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["time_module_id"], name: "index_business_times_on_time_module_id"
+  end
+
   create_table "restaurants", force: :cascade do |t|
     t.string "name"
     t.string "address"
@@ -59,6 +56,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_075157) do
     t.string "branch"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "time_modules", force: :cascade do |t|
+    t.string "title"
+    t.bigint "restaurant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["restaurant_id"], name: "index_time_modules_on_restaurant_id"
   end
 
   create_table "user_restaurants", force: :cascade do |t|
@@ -96,6 +101,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_075157) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "business_times", "time_modules"
+  add_foreign_key "time_modules", "restaurants"
   add_foreign_key "user_restaurants", "restaurants"
   add_foreign_key "user_restaurants", "users"
   add_foreign_key "users", "users", column: "owner_id"
