@@ -4,7 +4,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   before_action :find_restaurant, only: %i[show destroy edit destroy update setting off_day_setting]
   before_action :find_user, only: %i[index]
 
-  layout 'application_restaurant', only: %i[show setting]
+  layout 'application_backstage', only: %i[show setting]
   
   def index
     @restaurants = current_user.restaurants.all
@@ -18,7 +18,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   end
 
   def create
-    @restaurant = current_user.restaurants.build(params_restaurant)
+    @restaurant = current_user.restaurants.build(restaurant_params)
     if current_user.save
       redirect_to admin_restaurants_path(@restaurant), notice: "#{@restaurant.name} is successfully created"
     else

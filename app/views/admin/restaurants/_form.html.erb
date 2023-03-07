@@ -1,0 +1,27 @@
+<div>
+  <%= form_with(model: @restaurant, url: url, data: {turbo: false}) do |f| %>
+    <% if @restaurant.errors.any? %>
+      <% @restaurant.errors.full_messages.each do |message| %>
+        <%= message %>
+      <% end %>
+    <% end %>
+
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+    <div>
+      <%= f.label :tel %>
+      <%= f.text_field :tel %>
+    </div>
+    <div>
+      <%= f.label :address %>
+      <%= f.text_field :address %>
+    </div>
+    <div>
+      <%= f.label :branch %>
+      <%= f.text_field :branch %>
+    </div>
+    <%= f.submit %>
+  <% end %>
+</div>
