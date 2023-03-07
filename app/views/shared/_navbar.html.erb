@@ -1,0 +1,54 @@
+<nav class="fixed top-0 left-0 z-50 w-full h-10 px-3 py-2 bg-white shadow md:flex md-items-center md:justify-between">
+  <div class="flex items-center justify-between w-full">
+    <span class="text-2xl cursor-pointer">
+      <%= link_to image_tag("logo.svg", width: 110), root_path %>
+    </span>
+  <ul class="flex">
+    <div class="flex">
+      <div class="flex items-center">
+        <% if current_user %>
+       
+          <div data-controller="dropdown" data-dropdown-open-value="false" >
+            <button data-dropdown-target="activated" data-action="click->dropdown#toggleDropdown" class='flex items-center content-center'>
+              <i class="text-xl fa-solid fa-gear hover:text-major"></i>
+            </button>
+
+            <div data-dropdown-target="dropdownContent" class="fixed right-0 p-4 bg-white border-2 rounded-bl-lg top-11">
+              <h2 class= 'pb-2 text-lg border-b'>
+                <%= current_user.name %>
+              </h2>
+                
+              <div class='flex flex-col'>
+                <% if current_user.owner? %>
+
+                  <div class='hover:text-major'> 
+                    <i class="fa-solid fa-list"></i>
+                    <%= link_to 'Management', admin_restaurants_path, class: 'text-lg my-1' %>
+                  </div>
+                  <div class='hover:text-major'>
+                    <i class="fa-solid fa-store"></i>
+                    <%= link_to 'Create Restaurant', new_admin_restaurant_path, class: 'text-lg my-1' %>
+                  </div>
+                  <div class='hover:text-major'>
+                    <i class="fa-solid fa-person-circle-plus"></i>
+                    <%= link_to 'Create staff', new_user_registration_path, class: 'text-lg my-1' %>
+                  </div>
+                <% end %>
+
+                <div class='text-red-600 hover:text-red-700'>
+                  <i class=" fa-solid fa-right-from-bracket"></i>
+                  <%= link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete }, class: 'text-lg my-1' %>
+                </div>
+              </div>
+ 
+            </div>
+            
+          </div>
+        <% else %>
+          <li class= "mr-2 text-lg hover:text-major"><%= link_to 'sign up', new_user_registration_path %></li>
+          <li class= "text-lg hover:text-major"><%= link_to 'log in', new_user_session_path %></li>  
+        <% end %>
+      </div>
+    </div>
+  </ul>
+</nav>

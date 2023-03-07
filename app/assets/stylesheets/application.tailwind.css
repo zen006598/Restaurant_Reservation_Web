@@ -2,12 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-
 @layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
+  /* button */
+  .major-button {
+    @apply py-1 px-2 text-white rounded bg-major hover:bg-orange-600 hover:text-slate-100
+  }
+  .disabled-button {
+    @apply bg-slate-200	text-white px-2 py-1 rounded
+  }
+  .cancel-button {
+    @apply bg-red-600 text-white rounded text-lg px-2 py-1 
+  }
+  .unselected-button {
+    @apply bg-slate-200 text-white rounded text-lg px-2 py-1 hover:bg-major
+  }
+  /* navbar */
+  .backstage-nav-button {
+    @apply text-gray-300 py-3 hover:bg-bgGray hover:text-darkBlue rounded-l
+  }
+  .backstage-nav{
+    @apply fixed top-0 left-0 flex flex-col justify-between w-20 h-full bg-darkBlue
   }
 }
 
-*/
+@layer base {
+  h1, h2, h3, h4, h5, h6, p, span{
+    @apply text-lg text-stone-700;
+  }
+}

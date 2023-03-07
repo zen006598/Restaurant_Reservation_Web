@@ -14,12 +14,21 @@ gem "jbuilder"
 gem "redis", "~> 4.0"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
+
 gem 'devise'
+gem 'rails-i18n'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
+gem 'cancancan'
+gem "font-awesome-sass", "~> 6.3.0"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails', '~> 6.0.0'
   gem 'factory_bot_rails'
+  gem 'dotenv-rails'
+  gem 'faker'
 end
 
 group :development do

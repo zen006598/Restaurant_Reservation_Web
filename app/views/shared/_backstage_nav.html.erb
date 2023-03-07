@@ -1,0 +1,44 @@
+<nav class='backstage-nav'>
+  <div class="flex flex-col mt-10 text-center ">
+
+    <%= link_to root_path, class: 'backstage-nav-button' do %>
+      <i class="fa-solid fa-list"></i>
+      <div>reservation</div>
+    <% end %>
+
+    <%= link_to root_path, class:'backstage-nav-button' do %>
+      <i class="fa-solid fa-circle-info"></i>
+      <div>info</div>
+    <% end %>
+
+    <%= link_to root_path, class:'backstage-nav-button' do %>
+      <i class="fa-solid fa-chair"></i>
+      <div>seat</div>
+    <% end %>
+
+    <%= link_to root_path, class:'backstage-nav-button' do %>
+      <i class="fa-solid fa-inbox"></i>
+      <div>history</div>
+    <% end %>
+
+    <%= link_to setting_admin_restaurant_path(params[:id]), class:'backstage-nav-button' do %>
+      <i class="text-lg fa-solid fa-gear"></i>
+      <div>setting</div>
+    <% end %>
+    
+  </div>
+
+  <div class='text-center'>
+    <%= link_to root_path, class: 'text-gray-300 text-gray-300 py-3 flex justify-center' do %>
+      <i class="mr-1 fa-solid fa-arrow-left place-self-center"></i>
+      <div>back</div>
+    <% end %>
+    
+    <h1 class='text-sm text-center text-gray-300 break-words '>
+      <%= @restaurant.name %>
+    </h1>
+    <p class='text-sm text-center text-gray-300 break-words'>
+      <%= @restaurant.branch %>
+    </p>
+  </div>
+</nav>

@@ -9,9 +9,14 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      },
+      colors: {
+        'major': "#fb8500",
+        'minor': "#ffb703", 
+        'darkBlue': '#14213d',
+        'hoverGray': '#f8f9fa',
+        'chosenOrange': '#ffc300',
+        'bgGray': '#f8f9fa'
+      }
     },
   },
   plugins: [
