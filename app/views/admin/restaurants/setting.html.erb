@@ -2,7 +2,7 @@
   <h1 class='text-4xl font-bold'>Setting</h1>
   
   <div class='grid grid-cols-3 gap-4 mt-4 ' data-controller="business-time-new">
-    <section class='p-4 bg-white rounded'>
+    <section class='h-auto p-4 bg-white rounded'>
       <h2 class='text-3xl font-bold'>Business Time</h2>
       <button class='my-2 major-button' data-action="click->business-time-new#unfold">
         <i class="fa-solid fa-square-plus"></i>
@@ -88,10 +88,8 @@
                         </div>
                       <% end %>
                   </div>
-
                 </span>
               </span>
-
             </div>
           <% end %>
         <% else %>
@@ -102,30 +100,33 @@
       </div>
 
     </section>
-    <section class='p-4 bg-white rounded'>
+    <section class='h-auto p-4 bg-white rounded'>
       <h2 class='mb-3 text-3xl font-bold'>Off Day</h2>
-      
-      <div data-controller="date-picker">
+      <div>
         <%= form_with model: @restaurant, url: off_day_setting_admin_restaurant_path(@restaurant) do |f| %>
-          <div class='mb-4'>
-            <%= f.text_field :off_day_list,
-            data: {controller: 'flatpickr'
-            },
-            class: 'rounded w-full'%>
-          </div>
-          <div class='flex gap-2' data-date-picker-target= 'submit'>
-            <%= link_to setting_admin_restaurant_path(@restaurant), class: 'cancel-button' do %>
-              <i class="fa-solid fa-xmark"></i>
+          <div class='flex'>
+            <input type="text" id="datepicker" class='w-full border-r-0 rounded-l border-slate-300' name='restaurant[off_day_list]' data-controller='flatpickr' data-restaurant=<%= @restaurant.id %>>
+            <%= link_to setting_admin_restaurant_path(@restaurant), class: 'cancel-button rounded-none flex' do %>
+              <i class="self-center fa-solid fa-xmark"></i>
             <% end %>
-            <%= f.submit class: 'major-button w-full'%>
+            <%= f.button nil, class: 'major-button rounded-l-none' do %>
+              <i class="fa-solid fa-pen-to-square"></i>
+            <% end %>
           </div>
         <% end %>
       </div>
+      
       <div>
-        <% @off_days.each do |d| %>
-          <div>
-            <%= d.day %>
+        <%= month_calendar events: @off_days, attribute: :day do |date, off_days| %>
+          <div class='inline text-sm'>
+            <%= date.day.to_s.rjust(2, '0') %>
           </div>
+          <% off_days.each do |d| %>
+            <%= link_to admin_off_day_path(d), data: { turbo_method: :delete }, class: 'flex border border-red-600 rounded-full px-1' do %>
+              <p class='mr-1 text-sm text-red-600'>OFF</p>
+              <i class="self-center text-red-600 fa-solid fa-xmark"></i>
+            <% end %>
+          <% end %>
         <% end %>
       </div>
     </section>

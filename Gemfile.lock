@@ -68,11 +68,16 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    ast (2.4.2)
     bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
+    brakeman (5.4.1)
     builder (3.2.4)
+    bundler-audit (0.9.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     cancancan (3.5.0)
     capybara (3.38.0)
       addressable
@@ -133,6 +138,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    json (2.6.3)
     jwt (2.7.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
@@ -184,6 +190,9 @@ GEM
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     orm_adapter (0.5.0)
+    parallel (1.22.1)
+    parser (3.2.1.1)
+      ast (~> 2.4.1)
     pg (1.4.6)
     public_suffix (5.0.1)
     puma (5.6.5)
@@ -223,6 +232,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
       zeitwerk (~> 2.5)
+    rainbow (3.1.1)
     rake (13.0.6)
     redis (4.8.1)
     regexp_parser (2.7.0)
@@ -249,6 +259,19 @@ GEM
       rspec-mocks (~> 3.11)
       rspec-support (~> 3.11)
     rspec-support (3.12.0)
+    rubocop (1.48.0)
+      json (~> 2.3)
+      parallel (~> 1.10)
+      parser (>= 3.2.0.0)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.26.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.27.0)
+      parser (>= 3.2.1.0)
+    ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     sassc (2.4.0)
@@ -259,6 +282,8 @@ GEM
       websocket (~> 1.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
+    simple_calendar (2.4.3)
+      rails (>= 3.0)
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
@@ -282,6 +307,7 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unicode-display_width (2.4.2)
     version_gem (1.1.1)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -307,6 +333,8 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  brakeman
+  bundler-audit (~> 0.9.1)
   cancancan
   capybara
   database_cleaner-active_record
@@ -327,8 +355,10 @@ DEPENDENCIES
   rails-i18n
   redis (~> 4.0)
   rspec-rails (~> 6.0.0)
+  rubocop (~> 1.48)
   selenium-webdriver
   shoulda-matchers (~> 5.0)
+  simple_calendar (~> 2.4)
   spring
   sprockets-rails
   stimulus-rails

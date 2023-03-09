@@ -9,10 +9,8 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
       render 'admin/restaurants/setting'
     end
   end
-  
-  def update
 
-  end
+  def update; end
 
   def destroy
     @time_module.destroy
@@ -22,7 +20,7 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   private
 
   def time_module_params
-    params.require(:time_module).permit(:title, business_times_attributes: [:id, :start, :_end])
+    params.require(:time_module).permit(:title, business_times_attributes: %i[id start _end])
   end
 
   def find_restaurant

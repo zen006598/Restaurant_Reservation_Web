@@ -1,17 +1,18 @@
 class Admin::RestaurantsController < Admin::ApplicationBackstageController
   load_and_authorize_resource except: :create
-  
-  before_action :find_restaurant, only: %i[show destroy edit destroy update setting off_day_setting]
+
+  before_action :find_restaurant, only: %i[show destroy edit
+                                           destroy update setting
+                                           off_day_setting disabled_days]
   before_action :find_user, only: %i[index]
 
   layout 'application_backstage', only: %i[show setting]
-  
+
   def index
     @restaurants = current_user.restaurants.all
   end
-  
-  def show
-  end
+
+  def show; end
 
   def new
     @restaurant = Restaurant.new
@@ -26,8 +27,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @restaurant.update(restaurant_params)
@@ -37,22 +37,25 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     end
   end
 
-  def destroy
-    @destroy.destroy
-    redirect_to admin_restaurants_path
-  end
+  def destroy; end
 
   def setting
-    @time_module =  TimeModule.new
+    @time_module = TimeModule.new
     @time_module.business_times.build
     @time_modules = @restaurant.time_modules
 
     @off_days = @restaurant.off_days
+
+    @off_days_of_week = @restaurant.off_day_of_week.compact!
+    respond_to do |format|
+      format.json { render json: { off_days: @off_days, off_days_of_week: @off_days_of_week } }
+      format.html { render :setting }
+    end
   end
 
   def off_day_setting
     if @restaurant.update(restaurant_params)
-      redirect_to setting_admin_restaurant_path(@restaurant), notice: "Off day is successfully edited"
+      redirect_to setting_admin_restaurant_path(@restaurant), notice: 'Off day is successfully edited'
     else
       render :setting, alert: 'error'
     end
@@ -61,7 +64,9 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   private
 
   def restaurant_params
-    params.require(:restaurant).permit(:name, :tel, :address, :branch, :content, :off_day_list, off_day_of_week: [])
+    params.require(:restaurant).permit(:name, :tel, :address,
+                                       :branch, :content, :off_day_list,
+                                       off_day_of_week: [])
   end
 
   def find_restaurant

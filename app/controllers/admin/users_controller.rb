@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::ApplicationBackstageController
   load_and_authorize_resource
-  
+
   before_action :find_restaurant, only: %i[assign_restaurants]
   before_action :find_staff, only: %i[assign_restaurants show]
 
@@ -14,6 +14,7 @@ class Admin::UsersController < Admin::ApplicationBackstageController
   end
 
   private
+
   def find_restaurant
     @restaurant = Restaurant.find(params[:restaurants])
   end

@@ -1,0 +1,99 @@
+AllCops:
+  Excludes:
+    - config/unicorn.rb
+    - db/**
+    - db/**/*
+    - bin/*
+    - config/**/*
+    - spec/**/*
+    - test/**/*
+
+Style/SymbolArray:
+  Exclude:
+    - Gemfile
+    - db/**
+    - db/**/*
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - db/**
+    - db/**/*
+    - config/unicorn.rb
+
+Bundler/OrderedGems:
+  Exclude:
+    - Gemfile
+
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - bin/bundle
+
+Layout/EmptyLines:
+  Exclude:
+    - Gemfile
+
+
+Layout/EmptyLinesAroundAccessModifier:
+  Exclude:
+    - db/**
+    - db/**/*
+
+Layout/MultilineOperationIndentation:
+  Exclude:
+    - bin/bundle
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - test/**/*
+    - test/**
+
+Style/BlockComments:
+  Exclude:
+    - spec/spec_helper.rb
+
+Style/Documentation:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Exclude:
+    - bin/bundle
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - app/controllers/application_controller.rb
+
+Metrics/AbcSize:
+  Max: 30
+
+Style/PerlBackrefs:
+  Exclude:
+    - bin/bundle
+
+Style/GlobalStdStream:
+  Exclude:
+    - config/environments/production.rb
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - app/controllers/admin/**
+    - app/helpers/admin/**
+    - app/controllers/users/**
+
+Style/RedundantFetchBlock:
+  Exclude:
+    - config/puma.rb
+
+Style/SpecialGlobalVars:
+  EnforcedStyle: use_perl_names
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 50
+
+Metrics/MethodLength:
+  Max: 20
+
+Layout/LineLength:
+  Max: 110
