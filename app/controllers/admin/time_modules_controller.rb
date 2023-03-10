@@ -6,7 +6,7 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
     if @time_module.save
       redirect_to setting_admin_restaurant_path(@time_module.restaurant_id)
     else
-      render 'admin/restaurants/setting'
+      redirect_to setting_admin_restaurant_path(@restaurant), notice: 'error'
     end
   end
 
@@ -20,7 +20,7 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   private
 
   def time_module_params
-    params.require(:time_module).permit(:title, business_times_attributes: %i[id start _end])
+    params.require(:time_module).permit(:title, day_of_week_list: [], business_times_attributes: %i[id start _end])
   end
 
   def find_restaurant

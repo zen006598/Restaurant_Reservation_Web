@@ -31,7 +31,7 @@ export default class extends Controller {
             return offDays.includes(date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'));
           },
           function(date) {
-            return off_days_of_week.includes(date.getDay());
+            return off_days_of_week?.includes(date.getDay());
           }
         ]
       })  

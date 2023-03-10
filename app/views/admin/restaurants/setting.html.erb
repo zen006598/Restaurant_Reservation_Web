@@ -1,7 +1,6 @@
 <div>
   <h1 class='text-4xl font-bold'>Setting</h1>
-  
-  <div class='grid grid-cols-3 gap-4 mt-4 ' data-controller="business-time-new">
+  <div class='grid grid-cols-2 gap-4 mt-4 ' data-controller="business-time-new">
     <section class='h-auto p-4 bg-white rounded'>
       <h2 class='text-3xl font-bold'>Business Time</h2>
       <button class='my-2 major-button' data-action="click->business-time-new#unfold">
@@ -17,6 +16,7 @@
                   action: 'input->business-time-new#getTitle'
                   }%>
           </div>
+          
           <div>
             <template data-business-time-new-target='timeField'>
               <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
@@ -25,10 +25,19 @@
                 </div>
               <% end %>
             </template>
+            
             <%= f.fields_for :business_times do |business_time_f| %>
               <%= render 'nest_column', business_time_f: business_time_f %>
             <% end %>
- 
+          </div>
+
+          <div>
+            <%= f.collection_check_boxes :day_of_week_list, TimeModule::DAYOFWEEK, :last, :first do |i| %>
+              <div class='mb-2 mr-2'>
+                <%= i.check_box class: 'hidden peer'%>
+                <%= i.label class: 'block p-2 cursor-pointer select-none rounded  peer-checked:border-major border'%>
+              </div>
+            <% end %>
           </div>
 
           <div class='flex justify-center'>
@@ -69,6 +78,11 @@
                   <% end %>
                 </span>
                 
+                  <% time.day_of_week_list.each do |t| %>
+                    <span class= 'px-2 bg-red-200 rounded'>
+                      <%= t %>
+                    </span>
+                  <% end %>
                 <span class='relative inline-block my-auto'>
                   <span class='peer'>
                     <i class="px-4 py-2 fa-solid fa-ellipsis-vertical text-slate-200"></i>

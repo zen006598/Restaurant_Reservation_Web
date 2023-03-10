@@ -46,7 +46,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
 
     @off_days = @restaurant.off_days
 
-    @off_days_of_week = @restaurant.off_day_of_week.compact!
+    @off_days_of_week = @restaurant.off_day_of_week&.compact!
     respond_to do |format|
       format.json { render json: { off_days: @off_days, off_days_of_week: @off_days_of_week } }
       format.html { render :setting }

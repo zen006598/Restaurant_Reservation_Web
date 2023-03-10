@@ -1,5 +1,7 @@
 AllCops:
+  DisabledByDefault: true
   Excludes:
+    - vendor/**/*
     - config/unicorn.rb
     - db/**
     - db/**/*
