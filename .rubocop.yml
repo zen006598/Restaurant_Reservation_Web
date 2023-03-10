@@ -1,7 +1,7 @@
 AllCops:
   DisabledByDefault: true
   Excludes:
-    - gemfiles/vendor/bundle/**/*
+    - vendor/**/*
     - config/unicorn.rb
     - db/**
     - db/**/*
