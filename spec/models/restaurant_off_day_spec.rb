@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe RestaurantOffDay, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'Association' do
+    it { should belong_to(:restaurant) }
+    it { should belong_to(:off_day) }
+  end
 end

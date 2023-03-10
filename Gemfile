@@ -23,6 +23,8 @@ gem 'omniauth-rails_csrf_protection'
 gem 'cancancan'
 gem 'font-awesome-sass', '~> 6.3.0'
 gem 'simple_calendar', '~> 2.4'
+gem "chronic", "~> 0.10.2"
+gem 'validates_timeliness', '~> 7.0.0.beta1'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
@@ -47,3 +49,4 @@ group :test do
   gem 'shoulda-matchers', '~> 5.0'
   gem 'database_cleaner-active_record'
 end
+

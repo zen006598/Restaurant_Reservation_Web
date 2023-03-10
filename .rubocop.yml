@@ -1,4 +1,5 @@
 AllCops:
+  DisabledByDefault: true
   Excludes:
     - config/unicorn.rb
     - db/**
