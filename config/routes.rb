@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       end
     end
     resources :restaurants do
-      resources :time_modules, shallow: true, only: %i[create update destroy]
+      resources :time_modules, shallow: true, only: %i[create update destroy edit]
       resources :off_days, shallow: true, only: %i[destroy]
       member do
         patch :off_day_setting

@@ -1,0 +1,51 @@
+<%= form_with model: @time_module, url: admin_time_module_path(@time_module), data: {turbo: false} do |f| %>
+    <% frame_id = dom_id(@time_module, 'title') %>
+    <%= turbo_frame_tag frame_id do %>
+
+      <div class='relative p-2 mb-4 rounded bg-bgGray'>
+
+        <div class='absolute top-1 right-2 '>
+          <%= f.button do %>
+            <i class="text-ml fa-solid fa-pen text-major hover:text-orange-700"></i>
+          <% end %>
+          <%= link_to setting_admin_restaurant_path(@restaurant) do %>
+            <i class="text-lg text-red-500 fa-solid fa-xmark hover:text-text-red-700"></i>
+          <% end %>
+        </div>
+        <%= f.text_field :title , class: 'rounded border-slate-300 mb-2'%>
+        <span>
+            <div>
+              <%= f.fields_for :business_times do |business_time_f| %>
+                <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
+              <% end %>
+            </div>
+            <span class='flex justify-center '>
+              <%= link_to '#', data: {action: 'click->business-time-new#addColumn'} do %>
+                <i class="text-xl fa-solid fa-plus text-major hover:text-orange-600"></i>
+              <% end %>
+            </span>
+
+          </span>
+
+          <template data-business-time-new-target='timeField'>
+            <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
+              <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
+            <% end %>
+          </template>
+
+          
+          <div class='grid grid-cols-7 gap-1 mb-4 text-sm'>
+            <%= f.collection_check_boxes :day_of_week_list, TimeModule::DAYOFWEEK, :last, :first do |i| %>
+              <div class='flex', data-business-time-new-target= 'dayOfWeek'>
+                <%= i.check_box class: 'hidden peer'%>
+                <%= i.label class: 'blockp py-4 px-0 cursor-pointer select-none rounded peer-checked:border-major border m-auto text-center w-full'%>
+              </div>
+            <% end %>
+          </div>
+        </span>
+      </div>
+    <% end %>
+
+   </div>
+<% end %>
+

@@ -1,15 +1,11 @@
-<div class='grid grid-cols-2 mb-4'>
-  <div class='text-lg'>
-      <%= business_time_f.label :start %>
-    <div class='flex'>
-      <%= business_time_f.time_select :start, {minute_step: 15}, class: 'rounded-lg h-10 m-auto' %>
-    </div>
+<div class='grid grid-cols-11 mb-2'>
+  <div class='flex col-span-5 pl-4 text-lg rounded-lg'>
+    <%= business_time_f.label :start, class: 'm-auto mr-1 after:content-[""] after:pl-4 after:border-r-2 after:border-major' %>
+    <%= business_time_f.time_select :start, {minute_step: 15}, class: 'border-none  w-full text-center' %>
   </div>
-
-  <div class='text-lg'>
-      <%= business_time_f.label :_end %>
-    <div class='flex'>
-      <%= business_time_f.time_select :_end, {minute_step: 15}, class: 'rounded-lg h-10 m-auto' %>
-    </div>
+  <div class='flex col-span-1'><i class="m-auto fa-solid fa-arrow-right-long text-slate-300"></i></i></div>
+  <div class='flex col-span-5 pl-4 text-lg rounded-lg'>
+    <%= business_time_f.label :_end, class: 'm-auto mr-1 after:content-[""] after:pl-4 after:border-r-2 after:border-major' %>
+    <%= business_time_f.time_select :_end, {minute_step: 15}, class: 'border-none  w-full text-center' %>
   </div>
 </div>

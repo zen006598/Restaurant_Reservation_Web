@@ -1,13 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  initialize(){    flatpickr("#datepicker", {
-    mode: 'multiple',
-    dateFormat: "Y-m-d",
-    minDate: 'today',
-    showMonths: 2,
-    disable: []
-  }) }
+  initialize(){   
+     flatpickr("#datepicker", {
+      mode: 'multiple',
+      dateFormat: "Y-m-d",
+      minDate: 'today',
+      showMonths: 2,
+      disable: []
+    }) 
+  }
   connect(){
     const id = this.element.dataset.restaurant
     const token = document.querySelector("meta[name='csrf-token']").content
@@ -16,7 +18,6 @@ export default class extends Controller {
       method: 'GET',
       headers: {
         "X-CSRF-Token": token,
-
       }
     }).then((resp) => resp.json())
     .then(({off_days, off_days_of_week}) => { 

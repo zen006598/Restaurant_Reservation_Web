@@ -1,6 +1,6 @@
 class Admin::TimeModulesController < Admin::ApplicationBackstageController
   before_action :find_restaurant, only: %i[create]
-  before_action :find_time_module, only: %i[destroy]
+  before_action :find_time_module, only: %i[destroy edit update]
   def create
     @time_module = @restaurant.time_modules.new(time_module_params)
     if @time_module.save
@@ -10,7 +10,19 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
     end
   end
 
-  def update; end
+  def edit
+    @restaurant = @time_module.restaurant
+  end 
+
+  def update
+    debugger
+    if @time_module.update(time_module_params)
+      redirect_to setting_admin_restaurant_path(@time_module.restaurant_id)
+    else
+      redirect_to setting_admin_restaurant_path(@time_module.restaurant_id),
+      notice: "#{@time_module.errors.full_messages}"
+    end
+  end
 
   def destroy
     @time_module.destroy
@@ -20,7 +32,8 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   private
 
   def time_module_params
-    params.require(:time_module).permit(:title, day_of_week_list: [], business_times_attributes: %i[id start _end])
+    params.require(:time_module).permit(:title, day_of_week_list: [], 
+                                        business_times_attributes: %i[id start _end])
   end
 
   def find_restaurant

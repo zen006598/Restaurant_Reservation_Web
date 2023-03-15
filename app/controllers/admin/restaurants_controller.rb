@@ -43,12 +43,14 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     @time_module = TimeModule.new
     @time_module.business_times.build
     @time_modules = @restaurant.time_modules
-
+    assigned_day_of_week = @time_modules.map{|d| d.day_of_week_list}.flatten
     @off_days = @restaurant.off_days
 
     @off_days_of_week = @restaurant.off_day_of_week&.compact!
     respond_to do |format|
-      format.json { render json: { off_days: @off_days, off_days_of_week: @off_days_of_week } }
+      format.json { render json: { off_days: @off_days, 
+                                  off_days_of_week: @off_days_of_week, 
+                                  assigned_day_of_week: assigned_day_of_week} }
       format.html { render :setting }
     end
   end
