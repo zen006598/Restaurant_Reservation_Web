@@ -4,9 +4,11 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   def create
     @time_module = @restaurant.time_modules.new(time_module_params)
     if @time_module.save
-      redirect_to setting_admin_restaurant_path(@time_module.restaurant_id)
+      redirect_to setting_admin_restaurant_path(@time_module.restaurant_id),
+      notice: "#{@time_module.title} successfully created."
     else
-      redirect_to setting_admin_restaurant_path(@restaurant), notice: 'error'
+      redirect_to setting_admin_restaurant_path(@restaurant), 
+      notice: "#{@time_module.errors.full_messages}"
     end
   end
 
@@ -15,9 +17,9 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   end 
 
   def update
-    debugger
     if @time_module.update(time_module_params)
-      redirect_to setting_admin_restaurant_path(@time_module.restaurant_id)
+      redirect_to setting_admin_restaurant_path(@time_module.restaurant_id),
+      notice: "#{@time_module.title} successfully updated."
     else
       redirect_to setting_admin_restaurant_path(@time_module.restaurant_id),
       notice: "#{@time_module.errors.full_messages}"

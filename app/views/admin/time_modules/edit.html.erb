@@ -1,8 +1,8 @@
-<%= form_with model: @time_module, url: admin_time_module_path(@time_module), data: {turbo: false} do |f| %>
+<%= form_with model: @time_module, url: admin_time_module_path(@time_module), data: {turbo: false, } do |f| %>
     <% frame_id = dom_id(@time_module, 'title') %>
     <%= turbo_frame_tag frame_id do %>
 
-      <div class='relative p-2 mb-4 rounded bg-bgGray'>
+      <div class='relative p-2 mb-4 rounded bg-bgGray' data-controller="business-time-new">
 
         <div class='absolute top-1 right-2 '>
           <%= f.button do %>
@@ -19,13 +19,12 @@
                 <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
               <% end %>
             </div>
+            
             <span class='flex justify-center '>
               <%= link_to '#', data: {action: 'click->business-time-new#addColumn'} do %>
                 <i class="text-xl fa-solid fa-plus text-major hover:text-orange-600"></i>
               <% end %>
             </span>
-
-          </span>
 
           <template data-business-time-new-target='timeField'>
             <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
@@ -33,12 +32,11 @@
             <% end %>
           </template>
 
-          
           <div class='grid grid-cols-7 gap-1 mb-4 text-sm'>
             <%= f.collection_check_boxes :day_of_week_list, TimeModule::DAYOFWEEK, :last, :first do |i| %>
               <div class='flex', data-business-time-new-target= 'dayOfWeek'>
-                <%= i.check_box class: 'hidden peer'%>
-                <%= i.label class: 'blockp py-4 px-0 cursor-pointer select-none rounded peer-checked:border-major border m-auto text-center w-full'%>
+                <%= i.check_box class: 'peer', id: "edit_#{i.value}"%>
+                <%= i.label class: 'block py-4 px-0 cursor-pointer select-none rounded peer-checked:border-major border m-auto text-center w-full', for: "edit_#{i.value}"%>
               </div>
             <% end %>
           </div>
