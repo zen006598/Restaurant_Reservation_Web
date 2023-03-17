@@ -9,6 +9,7 @@ RSpec.describe Restaurant, type: :model do
   end
 
   describe 'Validation' do
+    let(:restaurant) { create(:restaurant) }
     context 'Presence' do
       it {should validate_presence_of(:name)}
       it {should validate_presence_of(:address)}
@@ -16,9 +17,8 @@ RSpec.describe Restaurant, type: :model do
     end
 
     context 'Uniqueness' do
-      let(:restaurant) { create(:restaurant) }
+
       it 'tel uniqueness' do
-        p restaurant
         expect(restaurant).to validate_uniqueness_of(:tel).ignoring_case_sensitivity
       end
     end
@@ -26,6 +26,19 @@ RSpec.describe Restaurant, type: :model do
     context 'Format' do
       it { should allow_values("123-456-7890", "1234567890", "0266001234", "0977111222", '02-6600-1234').for(:tel) }
       it { should_not allow_values("123", "123456789012", "123-abc-4567").for(:tel) }
+    end
+
+    context '#off_day_of_week_inclusion_validation' do
+      it 'valied' do
+        restaurant.update(off_day_of_week: [1,3,6,0])
+        expect(restaurant.off_day_of_week).to include(0..6)
+      end
+
+      it 'invalied' do
+        restaurant.update(off_day_of_week: [1, 3, 6, 0, 7, 8, 9])
+        expect(restaurant.valid?).to eq false
+      end
+   
     end
   end
 

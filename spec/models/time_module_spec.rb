@@ -44,12 +44,12 @@ RSpec.describe TimeModule, type: :model do
       let!(:time_module_1) { create(:time_module, restaurant: restaurant, day_of_week_list: [0, 1, 2, 3]) }
       let!(:time_module_2) { build(:time_module, restaurant: restaurant) }
     
-      it 'should be valid when there is no overlapping day of week' do
+      it 'valied' do
         time_module_2.update(day_of_week_list: [ 4, 5])
         expect(time_module_2.valid?).to eq true
       end
     
-      it 'should be invalid when there is overlapping day of week' do
+      it 'invalied' do
         time_module_2.update(day_of_week_list: [2, 4, 5])
         expect(time_module_2.valid?).to eq false
       end

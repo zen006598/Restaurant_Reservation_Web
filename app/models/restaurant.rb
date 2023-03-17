@@ -26,11 +26,12 @@ class Restaurant < ApplicationRecord
   private
 
   def off_day_of_week_inclusion_validation
-    return if off_day_of_week.nil?
-
-    off_day_of_week.compact.each do |day|
-      return errors.add(:off_day_of_week, :invalid) if DayOfWeek::DAYOFWEEK.values.exclude?(day)
+    if off_day_of_week.present?
+      off_day_of_week&.compact.each do |day|
+          return errors.add(:off_day_of_week, :invalid) if DayOfWeek::DAYOFWEEK.values.exclude?(day)
+        end
     end
+ 
   end
 
 end
