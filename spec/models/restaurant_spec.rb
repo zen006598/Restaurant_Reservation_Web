@@ -18,6 +18,7 @@ RSpec.describe Restaurant, type: :model do
     context 'Uniqueness' do
       let(:restaurant) { create(:restaurant) }
       it 'tel uniqueness' do
+        p restaurant
         expect(restaurant).to validate_uniqueness_of(:tel).ignoring_case_sensitivity
       end
     end

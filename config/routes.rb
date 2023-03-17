@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       end
     end
     resources :restaurants do
+      resources :seat, shallow: true, only: %i[create update destroy edit index]
       resources :time_modules, shallow: true, only: %i[create update destroy edit]
       resources :off_days, shallow: true, only: %i[destroy]
       member do

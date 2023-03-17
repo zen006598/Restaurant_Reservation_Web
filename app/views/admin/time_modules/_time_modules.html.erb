@@ -1,0 +1,56 @@
+<% frame_id = dom_id(time_module, 'title') %>
+<%= form_with model: @time_module, url: admin_time_module_path(time_module), method: 'patch' do |f| %>
+  <%= turbo_frame_tag frame_id do %>
+    <div class='grid grid-cols-4 gap-4 p-2 mb-4 rounded bg-bgGray'>
+      <span class='flex justify-between'>
+        <span class='m-auto'>
+          <%= time_module.title %>
+        </span>
+        <span class='border-r-2 border-major'></span>
+      </span>
+    
+      <span class='flex items-center justify-between col-span-3'>
+      
+        <span class='flex gap-4'>
+          <span>
+            <% time_module.business_times.each do |t| %>
+              <div>
+                <%= t.start.strftime('%R') %> -
+                <%= t._end.strftime('%R') %>
+              </div>
+            <% end %>
+          </span>
+
+          <span class='flex-wrap m-auto'>
+            <% time_module.day_of_week_list.compact.each do |t| %>
+              <span class= 'px-2 mr-2 border rounded'>
+                <%= DayOfWeek::DAYOFWEEK.key(t)[0..2] %>
+              </span>
+            <% end %>
+          </span>
+        </span>
+      
+        <span class='relative inline-block my-auto'>
+          <span class='peer'>
+            <i class="px-4 py-2 fa-solid fa-ellipsis-vertical text-slate-200"></i>
+          </span>
+          <div class='absolute right-0 z-10 hidden p-4 rounded bg-bgGray peer-hover:block hover:block'>
+            <%= link_to edit_admin_time_module_path(time_module) do %>
+              <div class='flex items-center justify-between hover:text-major'>
+                edit
+                <i class="fa-solid fa-pen-to-square"></i>
+              </div>
+            <% end %>
+            
+            <%= link_to admin_time_module_path(time_module), data: { turbo_method: :delete , turbo_frame: '_top'} do %>
+              <div class='flex items-center justify-between text-red-600 hover:text-red-700'>
+                Delete
+                <i class="ml-2 text-sm fa-solid fa-trash"></i>
+              </div>
+            <% end %>
+          </div>
+        </span>
+      </span>
+    </div>
+  <% end %>
+<% end %>

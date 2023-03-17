@@ -3,10 +3,14 @@
   <div class='grid grid-cols-2 gap-4 mt-4 ' data-controller="business-time-new">
     <section class='h-auto p-4 bg-white rounded'>
       <h2 class='text-3xl font-bold'>Business Time</h2>
-      <button class='my-2 major-button' data-action="click->business-time-new#unfold">
-        <i class="fa-solid fa-square-plus"></i>
-        Create Time
-      </button>
+      
+      <% if @time_modules.exists? %>
+        <button class='my-2 major-button' data-action="click->business-time-new#unfold">
+          <i class="fa-solid fa-square-plus"></i>
+          Create Time
+        </button>
+      <% end %>
+      
       <div>
         <div class='fixed top-0 bottom-0 left-0 right-0 z-50 hidden bg-black bg-opacity-50 ' data-business-time-new-target='new'>
           <div class='absolute top-0 bottom-0 left-0 right-0 w-6/12 m-auto'>
@@ -45,15 +49,8 @@
                   <% end %>
                 </div>
 
-                <div class='grid grid-cols-7 gap-2 mb-4'>
-                  <%= f.collection_check_boxes :day_of_week_list, TimeModule::DAYOFWEEK, :last, :first do |i| %>
-                    <div class='flex', data-business-time-new-target= 'dayOfWeek'>
-                      <%= i.check_box class: 'hidden peer'%>
-                      <%= i.label class: 'blockp py-4 px-0 cursor-pointer select-none rounded peer-checked:border-major border m-auto text-center w-full'%>
-                    </div>
-                  <% end %>
-                </div>
-                
+                <%= render partial: 'day_of_week_collection', locals: {f: f} %>
+
                 <div class='flex gap-2'>
                   <%= f.submit class: 'disabled-button w-full', data: {business_time_new_target: 'submit'}, disabled: true %>
                 </div>
@@ -66,73 +63,22 @@
       </div>
       
       <div>
-        <% if @time_modules %>
-          <% @time_modules.each do |time| %>
-            <% frame_id = dom_id(time, 'title') %>
-            <%= form_with model: @time_module, url: admin_time_module_path(time), method: 'patch' do |f| %>
-              <%= turbo_frame_tag frame_id do %>
-                <div class='grid grid-cols-4 gap-4 p-2 mb-4 rounded bg-bgGray'>
-                  <span class='flex justify-between'>
-                    <span class='m-auto'>
-                      <%= time.title %>
-                    </span>
-                    <span class='border-r-2 border-major'></span>
-                  </span>
-                
-                  <span class='flex items-center justify-between col-span-3'>
-                  
-                    <span class='flex gap-4'>
-                      <span>
-                        <% time.business_times.each do |t| %>
-                          <div>
-                            <%= t.start.strftime('%R') %> -
-                            <%= t._end.strftime('%R') %>
-                          </div>
-                        <% end %>
-                      </span>
-
-                      <span class='flex-wrap m-auto'>
-                        <% time.day_of_week_list.compact.each do |t| %>
-                          <span class= 'px-2 mr-2 border rounded'>
-                            <%= DayOfWeek::DAYOFWEEK.key(t)[0..2] %>
-                          </span>
-                        <% end %>
-                      </span>
-                    </span>
-                  
-                    <span class='relative inline-block my-auto'>
-                      <span class='peer'>
-                        <i class="px-4 py-2 fa-solid fa-ellipsis-vertical text-slate-200"></i>
-                      </span>
-                      <div class='absolute right-0 z-10 hidden p-4 rounded bg-bgGray peer-hover:block hover:block'>
-                        <%= link_to edit_admin_time_module_path(time) do %>
-                          <div class='flex items-center justify-between hover:text-major'>
-                            edit
-                            <i class="fa-solid fa-pen-to-square"></i>
-                          </div>
-                        <% end %>
-                        
-                        <%= link_to admin_time_module_path(time), data: { "turbo-method": :delete } do %>
-                          <div class='flex items-center justify-between text-red-600 hover:text-red-700'>
-                            Delete
-                            <i class="ml-2 text-sm fa-solid fa-trash"></i>
-                          </div>
-                        <% end %>
-                      </div>
-                    </span>
-                  </span>
-                </div>
-              <% end %>
-            <% end %>
-          <% end %>
+        <% if @time_modules.exists? %>
+         <%= render partial: 'admin/time_modules/time_modules', collection: @time_modules, as: :time_module %>
         <% else %>
-          <div class='p-4 text-center border rounded'>
-            <p class='text-lg text-gray-300'>Click create to add a new business time</p>
+          <div class='p-4 mt-4 text-center border rounded'>
+            <p class='text-lg text-gray-300 -4'>Click create to add a new business time</p>
+
+            <button class='my-2 major-button' data-action="click->business-time-new#unfold">
+              <i class="fa-solid fa-square-plus"></i>
+              Create Time
+            </button>
           </div>
         <% end %>
       </div>
 
     </section>
+    
     <section class='h-auto p-4 bg-white rounded'>
       <h2 class='mb-3 text-3xl font-bold'>Off Day</h2>
       <div>
@@ -149,15 +95,15 @@
         <% end %>
       </div>
       
-      <div>
+      <div >
         <%= month_calendar events: @off_days, attribute: :day do |date, off_days| %>
-          <div class='inline text-sm'>
+          <div class=''>
             <%= date.day.to_s.rjust(2, '0') %>
           </div>
           <% off_days.each do |d| %>
-            <%= link_to admin_off_day_path(d), data: { turbo_method: :delete }, class: 'flex border border-red-600 rounded-full px-1' do %>
-              <p class='mr-1 text-sm text-red-600'>OFF</p>
-              <i class="self-center text-red-600 fa-solid fa-xmark"></i>
+            <%= link_to admin_off_day_path(d), data: { turbo_method: :delete }, class: 'flex border border-red-600 rounded-full px-1 justify-evenly items-center ' do %>
+              <p class='mr-1 text-sm text-red-600 '>OFF</p>
+              <i class="self-center px-1 text-white bg-red-500 rounded-full fa-solid fa-xmark"></i>
             <% end %>
           <% end %>
         <% end %>

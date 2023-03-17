@@ -53,7 +53,6 @@ export default class extends Controller {
   }
 
   disable_off_day(disable_day_of_week){
-
     this.dayOfWeekTargets.filter(day => {
       if(disable_day_of_week.includes(+day.firstElementChild.value)){
         day.firstElementChild.disabled = true

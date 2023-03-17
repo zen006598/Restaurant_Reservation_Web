@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.1.1'
-gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
+gem 'rails', '~> 7.0.4', '>= 7.0.4.3'
 gem 'sprockets-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
@@ -23,7 +23,6 @@ gem 'omniauth-rails_csrf_protection'
 gem 'cancancan'
 gem 'font-awesome-sass', '~> 6.3.0'
 gem 'simple_calendar', '~> 2.4'
-gem "chronic", "~> 0.10.2"
 gem 'validates_timeliness', '~> 7.0.0.beta1'
 
 group :development, :test do
