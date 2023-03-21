@@ -16,6 +16,7 @@
   .unselected-button {
     @apply bg-slate-200 text-white rounded text-lg px-2 py-1 hover:bg-major
   }
+  
   /* navbar */
   .backstage-nav-button {
     @apply text-gray-300 py-3 hover:bg-bgGray hover:text-darkBlue rounded-l
@@ -23,14 +24,27 @@
   .backstage-nav{
     @apply fixed top-0 left-0 flex flex-col justify-between w-20 h-full bg-darkBlue
   }
+
   /* link */
   .edit-link{
     @apply text-major decoration-1 underline
   }
+  
+  /* decoration */
+  .major-under-line{
+    @apply relative inline-block after:content-[""] after:block after:absolute after:border-t-2  after:border-major after:w-full after:my-1
+  }
 }
 
 @layer base {
+  /* font */
   h1, h2, h3, h4, h5, h6, p, span{
     @apply text-lg text-stone-700;
+  }
+  h1{
+    @apply text-4xl font-bold;
+  }
+  h2{
+    @apply text-3xl font-bold
   }
 }

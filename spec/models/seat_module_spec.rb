@@ -1,5 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe SeatModule, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'Associations' do
+    it {should belong_to(:restaurant)}
+    it {should have_many(:seats)}
+  end
+
+  describe 'Validation' do
+    it {should validate_presence_of(:title)}
+  end
 end

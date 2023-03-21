@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+
   initialize(){   
      flatpickr("#datepicker", {
       mode: 'multiple',
@@ -10,6 +11,7 @@ export default class extends Controller {
       disable: []
     }) 
   }
+
   connect(){
     const id = this.element.dataset.restaurant
     const token = document.querySelector("meta[name='csrf-token']").content
@@ -37,9 +39,12 @@ export default class extends Controller {
         ]
       })  
     })
-    .catch(() => {
-      console.log("error!!");
+    .catch((e) => {
+      console.log(e, 'error');
     })
+  }
 
+  dispatchInput(e){
+    this.dispatch('input', {detail: e.target.value ? 'valid' : 'invalid'})
   }
 }

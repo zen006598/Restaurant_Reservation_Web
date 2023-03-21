@@ -57,7 +57,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
 
   def off_day_setting
     if @restaurant.update(restaurant_params)
-      redirect_to setting_admin_restaurant_path(@restaurant), notice: 'Off day is successfully edited'
+      redirect_to setting_admin_restaurant_path(@restaurant), notice: 'Off day is successfully created'
     else
       render :setting, alert: 'error'
     end

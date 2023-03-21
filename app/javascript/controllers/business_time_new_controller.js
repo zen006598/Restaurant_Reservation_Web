@@ -47,7 +47,6 @@ export default class extends Controller {
   }
 
   cancel(e){
-    console.log(e);
     e.preventDefault()
     window.location.replace(`/admin/restaurants/${this.id}/setting`)
   }
@@ -78,9 +77,7 @@ export default class extends Controller {
       this.disable_off_day(disable_day_of_week)
     })
     .catch((e) => {
-      console.log(e);
+      console.log(e, 'error');
     })
   }
-
-  
 }

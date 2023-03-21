@@ -1,8 +1,8 @@
 <div>
-  <h1 class='text-4xl font-bold'>Setting</h1>
+  <h1>Setting</h1>
   <div class='grid grid-cols-2 gap-4 mt-4 ' data-controller="business-time-new">
     <section class='h-auto p-4 bg-white rounded'>
-      <h2 class='text-3xl font-bold'>Business Time</h2>
+      <h2>Business Time</h2>
       
       <% if @time_modules.exists? %>
         <button class='my-2 major-button' data-action="click->business-time-new#unfold">
@@ -20,44 +20,8 @@
                   <i class="text-2xl text-red-500 fa-solid fa-xmark hover:text-red-700"></i>
                 <% end %>
               </div>
-              <%= form_with model: @time_module, url: admin_restaurant_time_modules_path(@restaurant), data: {turbo: false} do |f| %>
-                <div class='flex mb-4 text-lg'>
-                  <%= f.label :title, class: 'border-y border-l rounded-l h-10 px-6 bg-major text-white py-1 border-major' %>
-                  <%= f.text_field :title, class: 'w-10/12 rounded-r h-10 border-slate-300 mr-auto',
-                    data: {
-                      business_time_new_target: 'titleInput', 
-                      action: 'input->business-time-new#getTitle'
-                    }
-                  %>
-                </div>
-
-                <template data-business-time-new-target='timeField'>
-                  <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
-                    <%= render 'nest_column', business_time_f: business_time_f %>
-                  <% end %>
-                </template>
-                
-                <div>
-                  <%= f.fields_for :business_times do |business_time_f| %>
-                    <%= render 'nest_column', business_time_f: business_time_f %>
-                  <% end %>
-                </div>
-
-                <div class='flex justify-center'>
-                  <%= link_to '#', data: {action: 'click->business-time-new#addColumn'} do %>
-                    <i class="text-xl fa-solid fa-plus text-major hover:text-orange-600"></i>
-                  <% end %>
-                </div>
-
-                <%= render partial: 'day_of_week_collection', locals: {f: f} %>
-
-                <div class='flex gap-2'>
-                  <%= f.submit class: 'disabled-button w-full', data: {business_time_new_target: 'submit'}, disabled: true %>
-                </div>
-
-              <% end %> 
+            <%= render 'admin/time_modules/new', time_module: @time_module, url: admin_restaurant_time_modules_path(@restaurant) %>
             </div>
-
           </div>
         </div>
       </div>
@@ -80,24 +44,14 @@
     </section>
     
     <section class='h-auto p-4 bg-white rounded'>
-      <h2 class='mb-3 text-3xl font-bold'>Off Day</h2>
+      <h2 class='mb-3'>Off Day</h2>
       <div>
-        <%= form_with model: @restaurant, url: off_day_setting_admin_restaurant_path(@restaurant) do |f| %>
-          <div class='flex'>
-            <input type="text" id="datepicker" class='w-full border-r-0 rounded-l border-slate-300' name='restaurant[off_day_list]' data-controller='flatpickr' data-restaurant=<%= @restaurant.id %>>
-            <%= link_to setting_admin_restaurant_path(@restaurant), class: 'cancel-button rounded-none flex' do %>
-              <i class="self-center fa-solid fa-xmark"></i>
-            <% end %>
-            <%= f.button nil, class: 'major-button rounded-l-none' do %>
-              <i class="fa-solid fa-pen-to-square"></i>
-            <% end %>
-          </div>
-        <% end %>
+        <%= render 'admin/restaurants/off_day_form', restaurant: @restaurant, url: off_day_setting_admin_restaurant_path(@restaurant) %>
       </div>
       
       <div >
         <%= month_calendar events: @off_days, attribute: :day do |date, off_days| %>
-          <div class=''>
+          <div>
             <%= date.day.to_s.rjust(2, '0') %>
           </div>
           <% off_days.each do |d| %>

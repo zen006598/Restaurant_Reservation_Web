@@ -1,5 +1,5 @@
 <%= form_with model: @time_module, url: admin_time_module_path(@time_module), data: {turbo: false, } do |f| %>
-    <% frame_id = dom_id(@time_module, 'title') %>
+    <% frame_id = dom_id(@time_module, 'time_module') %>
     <%= turbo_frame_tag frame_id do %>
 
       <div class='relative p-2 mb-4 rounded bg-bgGray' data-controller="business-time-new">

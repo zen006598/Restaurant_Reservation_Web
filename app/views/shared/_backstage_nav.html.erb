@@ -29,14 +29,14 @@
   </div>
 
   <div class='text-center'>
-    <%= link_to root_path, class: 'text-gray-300 text-gray-300 py-3 flex justify-center' do %>
+    <%= link_to root_path, class: 'text-gray-300 py-3 flex justify-center hover:text-gray-500' do %>
       <i class="mr-1 fa-solid fa-arrow-left place-self-center"></i>
       <div>back</div>
     <% end %>
     
-    <h1 class='text-sm text-center text-gray-300 break-words '>
+    <p class='text-sm text-center text-gray-300 break-words'>
       <%= @restaurant.name %>
-    </h1>
+    </p>
     <p class='text-sm text-center text-gray-300 break-words'>
       <%= @restaurant.branch %>
     </p>

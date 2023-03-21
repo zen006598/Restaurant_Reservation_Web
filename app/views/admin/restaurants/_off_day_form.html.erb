@@ -1,0 +1,22 @@
+<%= form_with model: restaurant, url: url do |f| %>
+  <div class='flex'>
+    <input type="text" id="datepicker" 
+          class='w-full border-r-0 rounded-l border-slate-300' 
+          name='restaurant[off_day_list]' 
+          data-controller='flatpickr' 
+          data-restaurant=<%= @restaurant.id %> 
+          data-action='input->flatpickr#dispatchInput'>
+    <%= link_to setting_admin_restaurant_path(@restaurant), class: 'cancel-button rounded-none hover:bg-red-700 flex' do %>
+      <i class="self-center fa-solid fa-xmark"></i>
+    <% end %>
+    <%= f.button nil, 
+        class: 'disabled-button rounded-l-none', 
+        disabled: 'true',
+        data: {controller: 'flatpickr-submit',
+                action: 'flatpickr:input@window->flatpickr-submit#setSubmit',
+                flatpickr_submit_target: 'submit'
+              } do %>
+      <i class="fa-solid fa-pen-to-square"></i>
+    <% end %>
+  </div>
+<% end %>

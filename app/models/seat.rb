@@ -5,7 +5,6 @@ class Seat < ApplicationRecord
   validates :title, presence: true
   validates :state, presence: true
   validates :capacity, presence: true
-  validates :is_open, presence: true
 
   enum :state, {empty: 0, occupy: 1}, default: :empty
 end
