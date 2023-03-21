@@ -1,0 +1,40 @@
+<h1 class='text-4xl font-bold'>Seat</h1>
+<div class='grid grid-cols-3 gap-4 mt-4'>
+  <div class='h-auto p-4 bg-white rounded'>
+    <div data-controller='seat-module'>
+      <div class='flex items-start justify-between'>
+        <h2 class='relative text-xl inline-block mb-4 font-bold after:content-[""] after:block after:absolute after:border-t-2  after:border-major after:w-full after:my-1'>Seat Modules</h2>
+        <div class='relative'>
+          <input type="radio" id='setting' class='hidden peer/setting' name='#'/>
+          <label for="setting" 
+                  class='absolute border-none text-slate-300 hover:text-major peer-checked/setting:invisible fa-solid fa-gear'
+                  data-action='click->seat-module#setSetting'></label>  
+          <input type="radio" id='close' class='hidden peer/close' name='#'/>
+          <label for="close" 
+                  class='invisible ml-1 text-lg text-red-500 peer-checked/setting:visible fa-solid fa-xmark hover:text-red-700'
+                  data-action='click->seat-module#setClose'> </label>
+        </div>
+      </div>
+
+      <% @seat_modules.each do |seat_module| %>
+        <div class='flex justify-between px-4 py-2 text-xl border-b'> 
+          <%= button_to seat_module.title, edit_admin_seat_module_path(seat_module), method: :get, disabled: true, data: {seat_module_target: 'edit'} %>  
+          <p class='text-slate-300'>
+            <%= seat_module.seats.count %>
+            <i class="fa-solid fa-angle-up fa-rotate-90"></i>
+          </p>
+        </div>
+      <% end %>
+      <%= form_with model: @seat_module, url: admin_restaurant_seat_modules_path(@restaurant) do |f| %>
+        <div class='flex justify-between px-4 py-2'>
+          <%= f.text_field :title, placeholder: 'Create Seat Module', required: true, class: 'border-none p-0 peer' %>
+          <%= f.button class: 'peer-invalid:visible peer-placeholder-shown:!invisible text-major fa-solid fa-plus' do%>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class='col-span-2 '>
+  </div>
+</div>
+

@@ -5,10 +5,11 @@ RSpec.describe Restaurant, type: :model do
     it { should have_many(:users).through(:user_restaurants) }
     it { should have_many(:off_days).through(:restaurant_off_days) }
     it { should have_many(:time_modules)}
+    it { should have_many(:seats)}
     it { should have_rich_text(:content) }
   end
 
-  describe 'Validation' do
+  describe 'Validations' do
     let(:restaurant) { create(:restaurant) }
     context 'Presence' do
       it {should validate_presence_of(:name)}
@@ -38,7 +39,6 @@ RSpec.describe Restaurant, type: :model do
         restaurant.update(off_day_of_week: [1, 3, 6, 0, 7, 8, 9])
         expect(restaurant.valid?).to eq false
       end
-   
     end
   end
 

@@ -23,6 +23,10 @@
   .backstage-nav{
     @apply fixed top-0 left-0 flex flex-col justify-between w-20 h-full bg-darkBlue
   }
+  /* link */
+  .edit-link{
+    @apply text-major decoration-1 underline
+  }
 }
 
 @layer base {

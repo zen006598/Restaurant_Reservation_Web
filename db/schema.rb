@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_17_070622) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_103525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -86,6 +86,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_070622) do
     t.integer "off_day_of_week", array: true
   end
 
+  create_table "seat_modules", force: :cascade do |t|
+    t.string "title"
+    t.bigint "restaurant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["restaurant_id"], name: "index_seat_modules_on_restaurant_id"
+  end
+
+  create_table "seats", force: :cascade do |t|
+    t.string "title"
+    t.integer "state", default: 0
+    t.integer "capacity", default: 0
+    t.bigint "seat_module_id", null: false
+    t.bigint "restaurant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["restaurant_id"], name: "index_seats_on_restaurant_id"
+    t.index ["seat_module_id"], name: "index_seats_on_seat_module_id"
+  end
+
   create_table "time_modules", force: :cascade do |t|
     t.string "title"
     t.bigint "restaurant_id", null: false
@@ -133,6 +153,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_070622) do
   add_foreign_key "business_times", "time_modules"
   add_foreign_key "restaurant_off_days", "off_days"
   add_foreign_key "restaurant_off_days", "restaurants"
+  add_foreign_key "seat_modules", "restaurants"
+  add_foreign_key "seats", "restaurants"
+  add_foreign_key "seats", "seat_modules"
   add_foreign_key "time_modules", "restaurants"
   add_foreign_key "user_restaurants", "restaurants"
   add_foreign_key "user_restaurants", "users"

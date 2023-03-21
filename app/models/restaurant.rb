@@ -15,6 +15,8 @@ class Restaurant < ApplicationRecord
   has_many :time_modules, -> { includes :business_times }
   has_many :restaurant_off_days
   has_many :off_days, through: :restaurant_off_days
+  has_many :seat_modules
+  has_many :seats
   has_rich_text :content
 
   def off_day_list=(days)
