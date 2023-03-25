@@ -1,6 +1,5 @@
 <%= form_with model: @seat_module, url: admin_time_module_path(@seat_module) do |f| %>
-  <% frame_id = dom_id(@seat_module, 'seat_module') %>
-  <%= turbo_frame_tag frame_id do %>
+  <%= turbo_frame_tag dom_id(@seat_module) do %>
     <div class='flex justify-between px-4 py-2'>
       <%= f.text_field :title, placeholder: 'Edit title', required: true, class: 'border-none p-0 peer' %>
       <%= f.button class: 'peer-invalid:visible peer-placeholder-shown:!invisible text-major' do%>

@@ -1,0 +1,24 @@
+<div class='col-span-2 p-4 bg-white rounded' id='seat_list'>
+  <%= turbo_frame_tag dom_id(@seat_module, 'seats') do %>
+    <h2 class='mb-4 major-under-line'>
+      <%= @seat_module.title %>
+    </h2>
+    <div class='mb-4'>
+      <%= link_to new_admin_seat_module_seat_path(@seat_module), 
+                  data: :get, 
+                  class: 'major-button' do %>
+        <i class="fa-solid fa-plus"></i>
+        Create Seat
+      <% end %>
+    </div>
+
+    <div class='grid grid-cols-4 gap-4' id='seat_field'>
+      <%= render partial: 'admin/seats/seat', collection: @seats %>
+    </div>
+  <% end %>
+</div>
+
+<div id='seat_new_form'>
+  <%= turbo_frame_tag dom_id(@seat_module, 'new_seat') do %>
+  <% end %>
+</div>

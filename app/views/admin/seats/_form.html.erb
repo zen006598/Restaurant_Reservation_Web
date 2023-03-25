@@ -1,0 +1,27 @@
+<%= turbo_frame_tag dom_id(@seat_module, 'new_seat') do %>
+  <div id='seat_new_form' 
+        class='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50'
+        data-controller='seat-form'
+        data-action='click->seat-form#cancel'
+        data-seat-form-target='form'>
+    <div class='justify-center w-3/12'>
+      <div class='relative p-4 text-center bg-white rounded' data-seat-form-target='box'>
+        <button class='absolute top-0 text-xl text-red-500 right-2 hover:text-red-700'
+                data-action='click->seat-form#cancel'>
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h3 class='mb-4 major-under-line'>Create Seat</h3>
+
+        <%= form_with model: seat, url: url do |f| %>
+          <div>
+            <%= f.text_field :title, class: 'w-full mb-4 border-none rounded bg-bgGray', placeholder: 'Title' %>
+          </div>
+          <div>
+            <%= f.number_field :title, class: 'w-full mb-4 border-none rounded bg-bgGray', placeholder: 'Capacity', min: 1 %>
+          </div>
+          <%= f.submit class: 'w-full major-button' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

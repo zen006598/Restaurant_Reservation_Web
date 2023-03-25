@@ -1,22 +1,21 @@
-<% frame_id = dom_id(seat_module, 'seat_module') %>
-<%= form_with model: @seat_module, url: admin_seat_module_path(seat_module), method: 'patch' do |f| %>
-  <%= turbo_frame_tag frame_id do %>
-    <div class='flex justify-between px-4 py-2 text-xl border-b'> 
-      <p>
-        <%= link_to edit_admin_seat_module_path(seat_module), data: {seat_module_target: 'edit'}, class: 'hidden' do %>
-          <i class="fa-solid fa-pen text-slate-200 hover:text-major"></i>
-        <% end %>
-        <%= seat_module.title %>
-      </p>
+<div id=<%= dom_id(seat_module) %>>
+  <div class='flex justify-between px-4 py-2 text-xl border-b'> 
 
-      <p class='text-slate-300'>
+    <%= seat_module.title %>
+    <div>
+      <%= button_to admin_seat_module_path(seat_module), method: :get, data: {seat_module_target: 'show'}, class: 'text-slate-300 hover:text-slate-500' do%>
         <%= seat_module.seats.count %>
-        <button data-controller='show-seat' 
-                data-seat-module = <%= seat_module.id %>
-                data-action='click->show-seat#show'>
-          <i class="fa-solid fa-angle-up fa-rotate-90"></i>
-        </button>
-      </p>
+        <i class="fa-solid fa-angle-up fa-rotate-90"></i>
+      <% end %>
+      
+      <div class='flex gap-2'>
+        <%= button_to edit_admin_seat_module_path(seat_module), data: :post, class: 'hidden', data: {seat_module_target: 'edit'} do%>
+          <i class="fa-solid fa-pen-to-square text-slate-300 hover:text-major"></i>
+        <% end %>
+        <%= link_to admin_seat_module_path(seat_module), data: {turbo_method: 'delete', turbo_confirm: 'Are you sure??', seat_module_target: 'delete'}, class: 'text-red-500 hover:text-red-700 hidden' do %>
+          <i class="fa-solid fa-trash"></i>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>

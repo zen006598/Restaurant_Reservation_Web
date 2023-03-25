@@ -15,74 +15,17 @@
                   data-action='click->seat-module#setClose'> </label>
         </div>
       </div>
-
-      <%= render @seat_modules %>
       
-      <%= form_with model: @seat_module, url: admin_restaurant_seat_modules_path(@restaurant) do |f| %>
-        <div class='flex justify-between px-4 py-2'>
-          <%= f.text_field :title, placeholder: 'Create Seat Module', required: true, class: 'border-none p-0 peer' %>
-          <%= f.button class: 'peer-invalid:visible peer-placeholder-shown:!invisible text-major fa-solid fa-plus' do%>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <div class='col-span-2 p-4 bg-white rounded' data-controller='seat-new' data-seat-new-target='show' data-action='show-seat:showSeats@window->seat-new#setList'>
-    <h2 class='mb-4 major-under-line' data-seat-new-target='title'></h2>
-    <button class='hidden block major-button'
-      data-action='click->seat-new#unfold'
-      data-seat-new-target='button'>
-      <i class="fa-solid fa-plus "></i>
-      Create Seat
-    </button>
-
-    <div class='grid grid-cols-4 gap-4 px-4 py-2 text-xl' data-seat-new-target='list'>
-      <%= form_with model: @seat, url: admin_seat_path(2), method: 'patch' do |f| %>
-        <%= turbo_frame_tag "#", data: {seat_new_target: 'frameList'} do %> 
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
-
- <div class='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50'
-      id='seat-new'
-      data-controller='seats-list'
-      data-seats-list-target='new'
-      data-action='seat-new:unfold@window->seats-list#unfold'>
-  <div class='justify-center w-3/12' data-seats-list-target='inner'>
-    <div class='relative p-4 bg-white rounded'>
-      <div class='text-center'>
-        <h2 class='relative text-xl inline-block mb-4 font-bold after:content-[""] after:block after:absolute after:border-t-2  after:border-major after:w-full after:my-1 '>Create Seat</h2>
+      <div id='seat_modules'>
+        <%= render @seat_modules %>
       </div>
-      <form action="#" method='post'
-        data-action='show-seat:showSeats@window->seats-list#show'
-        data-seats-list-target='form'
-        id='seat'>
-
-        <%= link_to '#', class: 'absolute rounded-full top-1 right-2', data: {action: 'click->seats-list#cancel'} do %>
-          <i class="text-2xl text-red-500 fa-solid fa-xmark hover:text-red-700"></i>
-        <% end %>
-        
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        
-        <div class='grid grid-cols-2 mb-4'>
-          <label for="seat[title]">
-            Title:
-          </label>
-          <input type="text" name='seat[title]' id='seat[title]' class='border-none rounded bg-bgGray' placeholder= 'Title'>
-        </div>
-
-        <div class='grid grid-cols-2 mb-4'>
-          <label for="seat[capacity]">
-            Capacity:
-          </label>
-          <input type="number" name='seat[capacity]' min='1' id='seat[capacity]' class='border-none rounded bg-bgGray', placeholder='Capacity'>
-        </div>
-
-        <input type="submit" value="Create Seat" class='w-full major-button '>
-
-      </form>
+      <div id='seat_module_form'>
+        <%= render 'admin/seat_modules/form', seat_module: @seat_module, url: admin_restaurant_seat_modules_path(@restaurant) %>
+      </div>
     </div>
+  </div>
+
+  <div class='col-span-2 p-4 bg-white rounded' id='seat_list'>
+    <%= turbo_frame_tag dom_id(@seat_module, 'seats') do %><% end %>
   </div>
 </div>

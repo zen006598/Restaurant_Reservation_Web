@@ -1,14 +1,38 @@
 class Admin::SeatsController < Admin::ApplicationBackstageController
-  before_action :find_seat_module, only: %i[create find_restaurant]
+  before_action :find_seat_module, only: %i[create find_restaurant new]
   before_action :find_restaurant, only: %i[create]
   before_action :find_seat, only: %i[destroy edit update]
-  layout 'application_backstage'
+
+  def new
+    @seat = Seat.new
+    render turbo_stream: turbo_stream.replace(
+      "seat_new_form",
+      partial: "admin/seats/form",
+      locals: {
+                seat: @seat,
+                url: admin_seat_module_seats_path(@seat_module)
+              }
+    )
+  end
 
   def create
     @seat = @seat_module.seats.new(seat_params)
     if @seat.save
-      redirect_to admin_restaurant_seat_modules_path(@seat.restaurant),
-      notice: "#{@seat.title} was successfully created"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append('seat_field',
+                                partial: 'admin/seats/seat',
+                                locals: {seat: @seat}
+                                ),
+            turbo_stream.update('seat_new_form',
+                                partial: 'admin/seats/form',
+                                locals: {seat: @seat_module.seats.new,
+                                        url: admin_seat_module_seats_path(@seat_module)}
+                                )
+            ]
+        end
+      end
     else
       redirect_back admin_restaurant_seat_modules_path(@seat.restaurant)
     end

@@ -1,0 +1,6 @@
+<%= form_with model: seat_module, url: url do |f| %>
+  <div class='flex justify-between px-4 py-2'>
+    <%= f.text_field :title, placeholder: 'Create Seat Module', required: true, class: 'border-none p-0 peer' %>
+    <%= f.button class: 'peer-invalid:visible peer-placeholder-shown:!invisible text-major fa-solid fa-plus' do%> <% end %>
+  </div>
+<% end %>

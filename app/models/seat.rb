@@ -4,7 +4,7 @@ class Seat < ApplicationRecord
 
   validates :title, presence: true
   validates :state, presence: true
-  validates :capacity, presence: true
+  validates :capacity, presence: true, numericality: { only_integer: true }
 
   enum :state, {empty: 0, occupy: 1}, default: :empty
 end
