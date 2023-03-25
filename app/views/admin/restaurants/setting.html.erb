@@ -1,67 +1,55 @@
-<div>
-  <h1>Setting</h1>
-  <div class='grid grid-cols-2 gap-4 mt-4 ' data-controller="business-time-new">
-    <section class='h-auto p-4 bg-white rounded'>
-      <h2>Business Time</h2>
-      
+<h1>Setting</h1>
+<div class='grid grid-cols-2 gap-4 mt-4 ' data-controller="business-time-new">
+  <section class='p-4 bg-white rounded h-fit'>
+    <h2>Business Time</h2>
+  
       <% if @time_modules.exists? %>
         <button class='my-2 major-button' data-action="click->business-time-new#unfold">
           <i class="fa-solid fa-square-plus"></i>
           Create Time
         </button>
+        <%= render partial: 'admin/time_modules/time_modules', collection: @time_modules, as: :time_module %>
+      <% else %>
+        <div class='p-4 mt-4 text-center border rounded'>
+          <p class='text-lg text-gray-300 -4'>Click create to add a new business time</p>
+
+          <button class='my-2 major-button' data-action="click->business-time-new#unfold">
+            <i class="fa-solid fa-square-plus"></i>
+            Create Time
+          </button>
+        </div>
       <% end %>
-      
-      <div>
-        <div class='fixed top-0 bottom-0 left-0 right-0 z-50 hidden bg-black bg-opacity-50 ' data-business-time-new-target='new'>
-          <div class='absolute top-0 bottom-0 left-0 right-0 w-6/12 m-auto'>
-            <div class='p-4 bg-white rounded '>
-              <div class='relative'>
-                <%= link_to '#', class: 'absolute rounded-full top-[-10px] right-[-8px]', data: {action: 'click->business-time-new#cancel'} do %>
-                  <i class="text-2xl text-red-500 fa-solid fa-xmark hover:text-red-700"></i>
-                <% end %>
-              </div>
-            <%= render 'admin/time_modules/new', time_module: @time_module, url: admin_restaurant_time_modules_path(@restaurant) %>
-            </div>
-          </div>
+
+    <div class='fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50' data-business-time-new-target='new'>
+      <div class='justify-centerw-6/12'>
+        <div class='relative p-4 text-center bg-white rounded'>
+          <button class='absolute rounded-full top-1 right-2' data-action='click->business-time-new#cancel'>
+            <i class="text-2xl text-red-500 fa-solid fa-xmark hover:text-red-700"></i>
+          </button>
+          <%= render 'admin/time_modules/form', time_module: @time_module, url: admin_restaurant_time_modules_path(@restaurant) %>
         </div>
       </div>
-      
-      <div>
-        <% if @time_modules.exists? %>
-         <%= render partial: 'admin/time_modules/time_modules', collection: @time_modules, as: :time_module %>
-        <% else %>
-          <div class='p-4 mt-4 text-center border rounded'>
-            <p class='text-lg text-gray-300 -4'>Click create to add a new business time</p>
+    </div>
 
-            <button class='my-2 major-button' data-action="click->business-time-new#unfold">
-              <i class="fa-solid fa-square-plus"></i>
-              Create Time
-            </button>
-          </div>
-        <% end %>
-      </div>
+  </section>
+  
+  <section class='p-4 bg-white rounded h-fit'>
+    <h2 class='mb-3'>Off Day</h2>
 
-    </section>
+    <%= render 'admin/restaurants/off_day_form', restaurant: @restaurant, url: off_day_setting_admin_restaurant_path(@restaurant) %>
     
-    <section class='h-auto p-4 bg-white rounded'>
-      <h2 class='mb-3'>Off Day</h2>
-      <div>
-        <%= render 'admin/restaurants/off_day_form', restaurant: @restaurant, url: off_day_setting_admin_restaurant_path(@restaurant) %>
-      </div>
-      
-      <div >
-        <%= month_calendar events: @off_days, attribute: :day do |date, off_days| %>
-          <div>
-            <%= date.day.to_s.rjust(2, '0') %>
-          </div>
-          <% off_days.each do |d| %>
-            <%= link_to admin_off_day_path(d), data: { turbo_method: :delete }, class: 'flex border border-red-600 rounded-full px-1 justify-evenly items-center ' do %>
-              <p class='mr-1 text-sm text-red-600 '>OFF</p>
-              <i class="self-center px-1 text-white bg-red-500 rounded-full fa-solid fa-xmark"></i>
-            <% end %>
+    <div >
+      <%= month_calendar events: @off_days, attribute: :day do |date, off_days| %>
+        <div>
+          <%= date.day.to_s.rjust(2, '0') %>
+        </div>
+        <% off_days.each do |d| %>
+          <%= link_to admin_off_day_path(d), data: { turbo_method: :delete }, class: 'flex border border-red-600 rounded-full px-1 justify-evenly items-center ' do %>
+            <p class='mr-1 text-sm text-red-600 '>OFF</p>
+            <i class="self-center px-1 text-white bg-red-500 rounded-full fa-solid fa-xmark"></i>
           <% end %>
         <% end %>
-      </div>
-    </section>
-  </div>
+      <% end %>
+    </div>
+  </section>
 </div>

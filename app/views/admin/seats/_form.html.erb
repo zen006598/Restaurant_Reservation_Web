@@ -14,14 +14,13 @@
 
         <%= form_with model: seat, url: url do |f| %>
           <div>
-            <%= f.text_field :title, class: 'w-full mb-4 border-none rounded bg-bgGray', placeholder: 'Title' %>
+            <%= f.text_field :title, class: 'w-full mb-4 border-none rounded bg-bgGray peer', placeholder: 'Title', required: true %>
+            <%= f.number_field :capacity, class: 'w-full mb-4 border-none rounded bg-bgGray peer', placeholder: 'Capacity', min: 1, required: true %>
+            <%= f.submit class: 'w-full major-button peer-invalid:visible peer-placeholder-shown:!invisible' %>
           </div>
-          <div>
-            <%= f.number_field :title, class: 'w-full mb-4 border-none rounded bg-bgGray', placeholder: 'Capacity', min: 1 %>
-          </div>
-          <%= f.submit class: 'w-full major-button' %>
         <% end %>
       </div>
     </div>
   </div>
 <% end %>
+

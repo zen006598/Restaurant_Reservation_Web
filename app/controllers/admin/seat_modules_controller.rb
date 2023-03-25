@@ -39,15 +39,7 @@ class Admin::SeatModulesController < ApplicationController
 
   def show
     @seats = @seat_module.seats
-
-    render turbo_stream: turbo_stream.replace(
-      "seat_list",
-      partial: "admin/seats/seats",
-      locals: {
-                seat: Seat.new,
-                url: admin_seat_module_seats_path(@seat_module)
-              }
-    )
+    render turbo_stream: turbo_stream.replace("seat_list", partial: "admin/seats/seats")
   end
 
   def update

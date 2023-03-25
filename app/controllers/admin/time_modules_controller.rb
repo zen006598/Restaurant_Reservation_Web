@@ -28,8 +28,13 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
 
   def destroy
     @time_module.destroy
-    redirect_to setting_admin_restaurant_path(@time_module.restaurant_id),
-    notice: "You're susseccfully remove #{@time_module.title}"
+    respond_to do |format|
+      format.turbo_stream do 
+        render turbo_stream: [
+          turbo_stream.remove(@time_module)
+        ]
+      end
+    end
   end
 
   private

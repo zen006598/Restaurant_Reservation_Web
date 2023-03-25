@@ -1,6 +1,5 @@
-<% frame_id = dom_id(time_module, 'time_module') %>
 <%= form_with model: @time_module, url: admin_time_module_path(time_module), method: 'patch' do |f| %>
-  <%= turbo_frame_tag frame_id do %>
+  <%= turbo_frame_tag dom_id(time_module)do %>
     <div class='grid grid-cols-4 gap-4 p-2 mb-4 rounded bg-bgGray'>
       <span class='flex justify-between'>
         <span class='m-auto'>
@@ -34,14 +33,14 @@
             <i class="px-4 py-2 fa-solid fa-ellipsis-vertical text-slate-200"></i>
           </span>
           <div class='absolute right-0 z-10 hidden p-4 rounded bg-bgGray peer-hover:block hover:block'>
-            <%= link_to edit_admin_time_module_path(time_module) do %>
+            <%= link_to edit_admin_time_module_path(time_module), data: {turbo_method: 'post'} do %>
               <div class='flex items-center justify-between hover:text-major'>
                 edit
                 <i class="fa-solid fa-pen-to-square"></i>
               </div>
             <% end %>
           
-            <%= link_to admin_time_module_path(time_module), data: { turbo_method: :delete , turbo_frame: '_top', turbo_message: 'Are you sure?'} do %>
+            <%= link_to admin_time_module_path(time_module), data: { turbo_method: :delete, turbo_message: 'Are you sure?'} do %>
               <div class='flex items-center justify-between text-red-600 hover:text-red-700'>
                 Delete
                 <i class="ml-2 text-sm fa-solid fa-trash"></i>

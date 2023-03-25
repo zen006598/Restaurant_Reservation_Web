@@ -21,12 +21,9 @@
     <% end %>
   </div>
 
-  <div class='flex justify-center'>
-    <%= link_to '#', data: {action: 'click->business-time-new#addColumn'} do %>
-      <i class="text-xl fa-solid fa-plus text-major hover:text-orange-600"></i>
-    <% end %>
-  </div>
-
+  <button data-action='click->business-time-new#addColumn' class='text-major hover:text-orange-600'>
+    <i class="text-xl fa-solid fa-plus "></i>
+  </button>
   <%= render partial: 'day_of_week_collection', locals: {f: f} %>
 
   <div class='flex gap-2'>

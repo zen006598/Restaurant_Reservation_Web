@@ -12,9 +12,18 @@ Rails.application.routes.draw do
         member do
           post :edit
         end
-        resources :seats, shallow: true, only: %i[create update destroy edit new]
+        resources :seats, shallow: true, only: %i[create update destroy edit new] do
+          member do
+            post :edit
+            post :close
+          end
+        end
       end
-      resources :time_modules, shallow: true, only: %i[create update destroy edit]
+      resources :time_modules, shallow: true, only: %i[create update destroy edit] do
+        member do
+          post :edit
+        end
+      end
       resources :off_days, shallow: true, only: %i[destroy]
       member do
         patch :off_day_setting

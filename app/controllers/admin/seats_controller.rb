@@ -1,7 +1,7 @@
 class Admin::SeatsController < Admin::ApplicationBackstageController
   before_action :find_seat_module, only: %i[create find_restaurant new]
   before_action :find_restaurant, only: %i[create]
-  before_action :find_seat, only: %i[destroy edit update]
+  before_action :find_seat, only: %i[destroy edit update close]
 
   def new
     @seat = Seat.new
@@ -29,42 +29,66 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
                                 partial: 'admin/seats/form',
                                 locals: {seat: @seat_module.seats.new,
                                         url: admin_seat_module_seats_path(@seat_module)}
-                                )
+                                ),
+            turbo_stream.update(@seat_module,
+                                partial: 'admin/seat_modules/seat_module',
+                                locals: {seat_module: @seat_module}
+                              )
             ]
         end
       end
     else
-      redirect_back admin_restaurant_seat_modules_path(@seat.restaurant)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('seat_new_form',
+                                partial: 'admin/seats/form',
+                                locals: {seat: @seat_module.seats.new,
+                                        url: admin_seat_module_seats_path(@seat_module)}
+                                )
+            ]
+        end
+      end
     end
   end
 
   def edit
-    @restaurant = @seat.restaurant
+    render turbo_stream: turbo_stream.update(@seat, partial: "admin/seats/edit", locals: {seat: @seat, url: admin_seat_path(@seat)})
   end
 
   def update
     if @seat.update(seat_params)
-      redirect_to admin_restaurant_seat_modules_path(@seat.restaurant),
-      notice: "#{@seat.title} was successfully edited"
+      respond_to do |format|
+        format.turbo_stream {render turbo_stream: turbo_stream.update(@seat, partial: "admin/seats/seat", locals: {seat: @seat})}
+      end
     else
-      redirect_back admin_restaurant_seat_modules_path(@seat.restaurant),
-      notice: "#{@seat.errors.full_messages}"
+      respond_to do |format|
+        format.turbo_stream {render turbo_stream: turbo_stream.update('seat_new_form', 
+                                    partial: "admin/seats/form", 
+                                    locals: {seat: @seat, url: admin_seat_path(@seat)})}
+      end
     end
   end
 
   def destroy
+    @seats = @seat.seat_module.seats
     if @seat.destroy
-      redirect_to admin_restaurant_seat_modules_path(@seat.restaurant),
-      notice: "#{@seat.title} was removed"
-    else
-      redirect_back admin_restaurant_seat_modules_path(@seat.restaurant),
-      notice: "#{@seat.errors.full_messages}"
+      respond_to do |format|
+        format.turbo_stream {render turbo_stream: turbo_stream.update('seat_field', partial: "admin/seats/seat", collection: @seats)}
+      end
     end
+  end
+
+  def close
+    render turbo_stream: turbo_stream.replace(@seat, partial: "admin/seats/seat", locals: {seat: @seat})
   end
 
   private
 
   def seat_params
+    if params[:action] == 'update'
+      return params.require(:seat).permit(:title, :state, :capacity)
+    end
     params.require(:seat).permit(:title, :state, :capacity).merge(restaurant: @restaurant)
   end
 

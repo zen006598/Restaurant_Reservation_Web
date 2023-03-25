@@ -1,6 +1,6 @@
 <h1>Seat</h1>
 <div class='grid grid-cols-3 gap-4 mt-4'>
-  <div class='h-auto p-4 bg-white rounded'>
+  <div class='p-4 bg-white rounded h-fit'>
     <div data-controller='seat-module'>
       <div class='flex items-start justify-between'>
         <h2 class='mb-4 major-under-line'>Seat Modules</h2>
@@ -19,13 +19,16 @@
       <div id='seat_modules'>
         <%= render @seat_modules %>
       </div>
+      
       <div id='seat_module_form'>
         <%= render 'admin/seat_modules/form', seat_module: @seat_module, url: admin_restaurant_seat_modules_path(@restaurant) %>
       </div>
     </div>
   </div>
 
-  <div class='col-span-2 p-4 bg-white rounded' id='seat_list'>
-    <%= turbo_frame_tag dom_id(@seat_module, 'seats') do %><% end %>
+  <div class='col-span-2 p-4 bg-white rounded h-fit' id='seat_list'>
+    <%= turbo_frame_tag dom_id(@seat_module, 'seats') do %>
+      <%= image_tag 'background.png', class: 'object-contain w-3/5 h-3/5 m-auto block bottom-0 top-0 opacity-70'%>
+    <% end %>
   </div>
 </div>

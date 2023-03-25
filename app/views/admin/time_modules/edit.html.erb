@@ -1,44 +1,43 @@
 <%= form_with model: @time_module, url: admin_time_module_path(@time_module), data: {turbo: false, } do |f| %>
-    <% frame_id = dom_id(@time_module, 'time_module') %>
-    <%= turbo_frame_tag frame_id do %>
+  <%= turbo_frame_tag dom_id(@time_module) do %>
 
-      <div class='relative p-2 mb-4 rounded bg-bgGray' data-controller="business-time-new">
+    <div class='relative p-2 mb-4 rounded bg-bgGray' data-controller="business-time-new">
 
-        <div class='absolute top-1 right-2'>
-          <%= link_to setting_admin_restaurant_path(@restaurant) do %>
-            <i class="text-xl text-red-500 fa-solid fa-xmark hover:text-text-red-700"></i>
+      <div class='absolute top-1 right-2'>
+        <%= link_to setting_admin_restaurant_path(@restaurant) do %>
+          <i class="text-xl text-red-500 fa-solid fa-xmark hover:text-text-red-700"></i>
+        <% end %>
+      </div>
+      
+      <%= f.text_field :title , class: 'rounded border-slate-300 mb-2'%>
+      <span>
+        <div>
+          <%= f.fields_for :business_times do |business_time_f| %>
+            <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
           <% end %>
         </div>
-        
-        <%= f.text_field :title , class: 'rounded border-slate-300 mb-2'%>
-        <span>
-          <div>
-            <%= f.fields_for :business_times do |business_time_f| %>
-              <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
-            <% end %>
-          </div>
 
-          <template data-business-time-new-target='timeField'>
-            <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
-              <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
-            <% end %>
-          </template>
+        <template data-business-time-new-target='timeField'>
+          <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
+            <%= render 'admin/restaurants/nest_column', business_time_f: business_time_f %>
+          <% end %>
+        </template>
 
-          <span class='flex justify-center '>
-            <%= link_to '#', data: {action: 'click->business-time-new#addColumn'} do %>
-              <i class="text-xl fa-solid fa-plus text-major hover:text-orange-600"></i>
-            <% end %>
-          </span>
-
-          <%= render partial: 'admin/restaurants/day_of_week_collection', locals: {form: f, f: nil} %>
-
-          <%= f.button class: 'major-button w-full' do %>
-            <span class='mr-2 text-white'>Update the time module</span>
-            <i class="mr-2 text-lg fa-solid fa-pen"></i>
+        <span class='flex justify-center '>
+          <%= link_to '#', data: {action: 'click->business-time-new#addColumn'} do %>
+            <i class="text-xl fa-solid fa-plus text-major hover:text-orange-600"></i>
           <% end %>
         </span>
-      </div>
-    <% end %>
+
+        <%= render partial: 'admin/restaurants/day_of_week_collection', locals: {form: f, f: nil} %>
+
+        <%= f.button class: 'major-button w-full' do %>
+          <span class='mr-2 text-white'>Update the time module</span>
+          <i class="mr-2 text-lg fa-solid fa-pen"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
 
    </div>
 <% end %>

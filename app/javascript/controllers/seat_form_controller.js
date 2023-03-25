@@ -8,8 +8,7 @@ export default class extends Controller {
     this.boxTarget.addEventListener("click", e => e.stopPropagation())
   }
 
-  cancel(e){
-    e.preventDefault()
+  cancel(){
     this.formTarget.classList.add('hidden')
   }
 }
