@@ -23,50 +23,36 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
           render turbo_stream: [
             turbo_stream.append('seat_field',
                                 partial: 'admin/seats/seat',
-                                locals: {seat: @seat}
-                                ),
-            turbo_stream.update('seat_new_form',
-                                partial: 'admin/seats/form',
-                                locals: {seat: @seat_module.seats.new,
-                                        url: admin_seat_module_seats_path(@seat_module)}
-                                ),
+                                locals: {seat: @seat}),
             turbo_stream.update(@seat_module,
                                 partial: 'admin/seat_modules/seat_module',
-                                locals: {seat_module: @seat_module}
-                              )
-            ]
-        end
-      end
-    else
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update('seat_new_form',
-                                partial: 'admin/seats/form',
-                                locals: {seat: @seat_module.seats.new,
-                                        url: admin_seat_module_seats_path(@seat_module)}
-                                )
-            ]
+                                locals: {seat_module: @seat_module})]
         end
       end
     end
+
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.update('seat_new_form', partial: 'admin/seats/form',
+                                                  locals: {seat: @seat_module.seats.new, 
+                                                          url: admin_seat_module_seats_path(@seat_module)})}
+    end
+
   end
 
   def edit
-    render turbo_stream: turbo_stream.update(@seat, partial: "admin/seats/edit", locals: {seat: @seat, url: admin_seat_path(@seat)})
+    render_edit
   end
 
   def update
     if @seat.update(seat_params)
       respond_to do |format|
-        format.turbo_stream {render turbo_stream: turbo_stream.update(@seat, partial: "admin/seats/seat", locals: {seat: @seat})}
+        format.turbo_stream {render turbo_stream: turbo_stream.update(@seat, 
+                                                                      partial: "admin/seats/seat", 
+                                                                      locals: {seat: @seat})}
       end
     else
-      respond_to do |format|
-        format.turbo_stream {render turbo_stream: turbo_stream.update('seat_new_form', 
-                                    partial: "admin/seats/form", 
-                                    locals: {seat: @seat, url: admin_seat_path(@seat)})}
-      end
+      render_edit
     end
   end
 
@@ -74,7 +60,9 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
     @seats = @seat.seat_module.seats
     if @seat.destroy
       respond_to do |format|
-        format.turbo_stream {render turbo_stream: turbo_stream.update('seat_field', partial: "admin/seats/seat", collection: @seats)}
+        format.turbo_stream {render turbo_stream: turbo_stream.update('seat_field',
+                                                                      partial: "admin/seats/seat", 
+                                                                      collection: @seats)}
       end
     end
   end
@@ -86,10 +74,9 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
   private
 
   def seat_params
-    if params[:action] == 'update'
-      return params.require(:seat).permit(:title, :state, :capacity)
+    params.require(:seat).permit(:title, :state, :capacity, :restaurant_id).tap do |params|
+      params.delete(:restaurant_id) if action_name == 'create'
     end
-    params.require(:seat).permit(:title, :state, :capacity).merge(restaurant: @restaurant)
   end
 
   def find_seat_module
@@ -102,5 +89,11 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
 
   def find_seat
     @seat = Seat.find(params[:id])
+  end
+
+  def render_edit
+    render turbo_stream: turbo_stream.update(@seat, 
+                                              partial: "admin/seats/edit", 
+                                              locals: {seat: @seat, url: admin_seat_path(@seat)})
   end
 end

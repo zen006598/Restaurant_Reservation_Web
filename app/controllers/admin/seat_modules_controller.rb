@@ -32,7 +32,10 @@ class Admin::SeatModulesController < ApplicationController
   def edit
     respond_to do |format|
       format.turbo_stream do 
-        render turbo_stream: turbo_stream.update(@seat_module, partial: "admin/seat_modules/form", locals: {seat_module: @seat_module, url: admin_seat_module_path(@seat_module)})
+        render turbo_stream: turbo_stream.update(@seat_module, 
+                                                  partial: "admin/seat_modules/form", 
+                                                  locals: {seat_module: @seat_module, 
+                                                  url: admin_seat_module_path(@seat_module)})
       end
     end
   end
@@ -66,7 +69,9 @@ class Admin::SeatModulesController < ApplicationController
       format.turbo_stream do 
         render turbo_stream: [
           turbo_stream.remove(@seat_module),
-          turbo_stream.after('seat_module_title', partial: "admin/seat_modules/delete", locals: {seat_module: @seat_module.title})
+          turbo_stream.after('seat_module_title', 
+                              partial: "admin/seat_modules/delete", 
+                              locals: {seat_module: @seat_module.title})
         ]
       end
     end

@@ -1,4 +1,4 @@
-<div class='w-8/12 pt-8 m-auto' data-controller='restaurant-form'>
+<div class='w-8/12 p-6 m-auto bg-white rounded' data-controller='restaurant-form'>
   <%= form_with(model: restaurant, url: url, data: {turbo: false}) do |f| %>
   
     <h2 class='mb-4 major-under-line'>Info</h2>
@@ -9,14 +9,14 @@
             <%= f.label :name, class: 'm-auto ml-0 ' %>
             <span class='pr-3 border-l-2 border-major'></span>
           </div>
-          <%= f.text_field :name, class: ' border-none bg-white rounded m-auto col-span-4 w-full', data: {restaurant_form_target: 'name', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Name' %>
+          <%= f.text_field :name, class: ' border-none bg-bgGray rounded m-auto col-span-4 w-full', data: {restaurant_form_target: 'name', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Name' %>
         </div>
         <div class='grid grid-cols-5 mb-4'>
           <div class='flex'>
             <%= f.label :tel, class: 'm-auto ml-0 ' %>
             <span class='pr-3 border-l-2 border-major'></span>
           </div>
-            <%= f.text_field :tel, class: ' border-none bg-white rounded m-auto col-span-4 w-full ', data: {restaurant_form_target: 'tel', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Telephone' %>
+            <%= f.text_field :tel, class: ' border-none bg-bgGray rounded m-auto col-span-4 w-full ', data: {restaurant_form_target: 'tel', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Telephone' %>
         </div>
       </div>
       <div>
@@ -26,15 +26,41 @@
             <span class='pr-3 border-l-2 border-major'></span>
           </div>
 
-          <%= f.text_field :address, class: ' border-none bg-white rounded m-auto col-span-4 w-full', data: {restaurant_form_target: 'address', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Address'  %>
+          <%= f.text_field :address, class: ' border-none bg-bgGray rounded m-auto col-span-4 w-full', data: {restaurant_form_target: 'address', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Address'  %>
         </div>
         <div class='grid grid-cols-5 mb-4'>
           <div class='flex'>
             <%= f.label :branch, class: 'm-auto ml-0 ' %>
             <span class='pr-3 border-l-2 border-major'></span>
           </div>
-          <%= f.text_field :branch, class: ' border-none bg-white rounded m-auto col-span-4 w-full', placeholder: 'Branch (Not a branch please do not fill in)' %>
+          <%= f.text_field :branch, class: ' border-none bg-bgGray rounded m-auto col-span-4 w-full', placeholder: 'Branch (Not a branch please do not fill in)' %>
         </div>
+      </div>
+    </div>
+
+    <div class='grid grid-cols-3 gap-2'>
+      <div class='grid grid-cols-2 mb-4'>
+        <div class='flex'>
+          <%= f.label :dining_time, class: 'm-auto ml-0 ' %> 
+            <span class='pr-5 border-l-2 border-major'></span>
+          </div>
+        <%= f.number_field :dining_time, class: ' border-none bg-bgGray rounded m-auto  w-full', required: true, min: 0 %>
+      </div>
+
+      <div class='grid grid-cols-2 mb-4'>
+        <div class='flex'>
+          <%= f.label :interval_time, class: 'm-auto ml-0 ' %>
+          <span class='pr-5 border-l-2 border-major'></span>
+        </div>
+        <%= f.number_field :interval_time, class: ' border-none bg-bgGray rounded m-auto  w-full', required: true, min: 0 %>
+      </div>
+
+      <div class='grid grid-cols-2 mb-4'>
+        <div class='flex'>
+          <%= f.label :period_of_reservation, class: 'm-auto ml-0 text-sm' %>
+          <span class='pr-3 border-l-2 border-major'></span>
+        </div>
+        <%= f.number_field :period_of_reservation, class: ' border-none bg-bgGray rounded m-auto w-full', required: true, min: 1, value: 1 %>
       </div>
     </div>
     
@@ -58,3 +84,4 @@
     </div>
   <% end %>
 </div>
+

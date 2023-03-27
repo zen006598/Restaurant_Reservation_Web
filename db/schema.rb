@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_21_103525) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_27_104647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_103525) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "off_day_of_week", array: true
+    t.integer "dining_time", default: 0
+    t.integer "interval_time", default: 0
+    t.integer "period_of_reservation", default: 0
   end
 
   create_table "seat_modules", force: :cascade do |t|
