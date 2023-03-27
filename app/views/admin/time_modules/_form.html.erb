@@ -1,32 +1,34 @@
-<%= form_with model: time_module, url: url, data: {turbo: false} do |f|  %>
+<%= form_with model: time_module, url: url, data: {turbo: false}, data: {controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper'} do |f|  %>
   <div class='flex mb-4 text-lg'>
     <%= f.label :title, class: 'border-y border-l rounded-l h-10 px-6 bg-major text-white py-1 border-major' %>
     <%= f.text_field :title, class: 'w-10/12 rounded-r h-10 border-slate-300 mr-auto',
       data: {
-        business_time_new_target: 'titleInput', 
-        action: 'input->business-time-new#getTitle'
+        nested_form_target: 'title', 
+        action: 'input->nested-form#setSubmit'
       }
     %>
   </div>
 
-  <template data-business-time-new-target='timeField'>
-    <%= f.fields_for :business_times, BusinessTime.new do |business_time_f| %>
+  <template data-nested-form-target='template'>
+    <%= f.fields_for :business_times, BusinessTime.new, child_index: 'NEW_RECORD' do |business_time_f| %>
       <%= render 'nest_column', business_time_f: business_time_f %>
     <% end %>
   </template>
   
-  <div>
-    <%= f.fields_for :business_times do |business_time_f| %>
-      <%= render 'nest_column', business_time_f: business_time_f %>
-    <% end %>
-  </div>
+  <%= f.fields_for :business_times do |business_time_f| %>
+    <%= render 'nest_column', business_time_f: business_time_f %>
+  <% end %>
 
-  <button data-action='click->business-time-new#addColumn' class='text-major hover:text-orange-600'>
+  <div data-nested-form-target="target"></div>
+
+  <button data-action="nested-form#add" class='text-major hover:text-orange-600'>
     <i class="text-xl fa-solid fa-plus "></i>
   </button>
+  
   <%= render partial: 'day_of_week_collection', locals: {f: f} %>
 
   <div class='flex gap-2'>
-    <%= f.submit class: 'disabled-button w-full', data: {business_time_new_target: 'submit'}, disabled: true %>
+    <%= f.submit class: 'disabled-button w-full', data: {nested_form_target: 'submit'}, disabled: true %>
   </div>
 <% end %> 
+

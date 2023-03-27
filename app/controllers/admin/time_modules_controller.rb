@@ -1,7 +1,9 @@
 class Admin::TimeModulesController < Admin::ApplicationBackstageController
   before_action :find_restaurant, only: %i[create]
   before_action :find_time_module, only: %i[destroy edit update]
+
   def create
+
     @time_module = @restaurant.time_modules.new(time_module_params)
     if @time_module.save
       redirect_to setting_admin_restaurant_path(@time_module.restaurant_id),
@@ -29,11 +31,7 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   def destroy
     @time_module.destroy
     respond_to do |format|
-      format.turbo_stream do 
-        render turbo_stream: [
-          turbo_stream.remove(@time_module)
-        ]
-      end
+      format.turbo_stream {render turbo_stream: turbo_stream.remove(@time_module)}
     end
   end
 

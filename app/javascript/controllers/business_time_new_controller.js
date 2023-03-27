@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['new', 'titleInput', 'submit', 'plus', 'timeField', 'dayOfWeek']
+  static targets = ['new', 'dayOfWeek']
 
   initialize(){
     this.state = false
@@ -24,26 +24,6 @@ export default class extends Controller {
     }else{
       this.newTarget.classList.add('hidden')
     }
-  }
-
-  getTitle(){
-    this.setSubmit()
-  }
-
-  setSubmit(){
-    if(this.titleInputTarget.value){
-      this.submitTarget.disabled = false
-      this.submitTarget.classList.replace('disabled-button', 'major-button')
-    }else{
-      this.submitTarget.disabled = true
-      this.submitTarget.classList.replace('major-button', 'disabled-button')
-    }
-  }
-
-  addColumn(e){
-    e.preventDefault()
-    const column = this.timeFieldTarget.innerHTML
-    this.timeFieldTarget.insertAdjacentHTML('beforebegin', column)
   }
 
   cancel(e){
