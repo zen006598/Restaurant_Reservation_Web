@@ -1,6 +1,3 @@
-<%= form_with model: @restaurant do |form| %>
-  <div class="field">
-    <%= form.label :content %>
-    <%= form.rich_text_area :content %>
-  </div>
+<%= form_with model: restaurant do |form| %>
+  <%= form.rich_text_area :content %>
 <% end %>

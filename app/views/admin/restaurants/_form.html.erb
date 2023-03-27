@@ -1,33 +1,60 @@
-<div>
-  <%= form_with(model: @restaurant, url: url, data: {turbo: false}) do |f| %>
-    <% if @restaurant.errors.any? %>
-      <% @restaurant.errors.full_messages.each do |message| %>
-        <%= message %>
-      <% end %>
-    <% end %>
-
-    <div>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-    </div>
-    <div>
-      <%= f.label :tel %>
-      <%= f.text_field :tel %>
-    </div>
-    <div>
-      <%= f.label :address %>
-      <%= f.text_field :address %>
-    </div>
-    <div>
-      <%= f.label :branch %>
-      <%= f.text_field :branch %>
-    </div>
-     <%= f.collection_check_boxes :off_day_of_week, Restaurant::DAYOFWEEK, :last, :first do |i| %>
-        <div class='mb-2 mr-2'>
-          <%= i.check_box class: 'hidden peer'%>
-          <%= i.label class: 'inline-block cursor-pointer select-none bg-slate-200 px-2 py-1 rounded text-white peer-checked:bg-major'%>
+<div class='w-8/12 pt-8 m-auto' data-controller='restaurant-form'>
+  <%= form_with(model: restaurant, url: url, data: {turbo: false}) do |f| %>
+  
+    <h2 class='mb-4 major-under-line'>Info</h2>
+    <div class='grid grid-cols-2 gap-4'>
+      <div>
+        <div class='grid grid-cols-5 mb-4'>
+          <div class='flex'>
+            <%= f.label :name, class: 'm-auto ml-0 ' %>
+            <span class='pr-3 border-l-2 border-major'></span>
+          </div>
+          <%= f.text_field :name, class: ' border-none bg-white rounded m-auto col-span-4 w-full', data: {restaurant_form_target: 'name', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Name' %>
         </div>
+        <div class='grid grid-cols-5 mb-4'>
+          <div class='flex'>
+            <%= f.label :tel, class: 'm-auto ml-0 ' %>
+            <span class='pr-3 border-l-2 border-major'></span>
+          </div>
+            <%= f.text_field :tel, class: ' border-none bg-white rounded m-auto col-span-4 w-full ', data: {restaurant_form_target: 'tel', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Telephone' %>
+        </div>
+      </div>
+      <div>
+        <div class='grid grid-cols-5 mb-4'>
+          <div class='flex'>
+            <%= f.label :address, class: 'm-auto ml-0 ' %>
+            <span class='pr-3 border-l-2 border-major'></span>
+          </div>
+
+          <%= f.text_field :address, class: ' border-none bg-white rounded m-auto col-span-4 w-full', data: {restaurant_form_target: 'address', action: 'input->restaurant-form#setSubmit'}, required: true, placeholder: 'Address'  %>
+        </div>
+        <div class='grid grid-cols-5 mb-4'>
+          <div class='flex'>
+            <%= f.label :branch, class: 'm-auto ml-0 ' %>
+            <span class='pr-3 border-l-2 border-major'></span>
+          </div>
+          <%= f.text_field :branch, class: ' border-none bg-white rounded m-auto col-span-4 w-full', placeholder: 'Branch (Not a branch please do not fill in)' %>
+        </div>
+      </div>
+    </div>
+    
+    <h2 class='mb-4 major-under-line'>Off Day</h2>
+    <div class='grid grid-cols-7 gap-4 mb-4'>
+      <%= f.collection_check_boxes :off_day_of_week, Restaurant::DAYOFWEEK, :last, :first do |i| %>
+        <%= i.check_box class: 'hidden peer'%>
+        <%= i.label class: 'inline-block cursor-pointer select-none bg-slate-200 px-2 py-1 rounded text-white peer-checked:bg-major text-center'%>
       <% end %>
-    <%= f.submit %>
+    </div>
+    
+    <h2 class='mb-4 major-under-line'>Description</h2>
+    <%= f.rich_text_area :content %>
+
+
+    <div class='fixed bottom-0 left-0 right-0 z-50 hidden py-2 text-center bg-white', data-restaurant-form-target= 'submit'>
+      <div class='flex justify-between w-4/12 gap-4 m-auto'>
+        <button class='w-4/12 rounded-full cancel-button hover:bg-red-700', data-action = 'click->restaurant-form#cancel'>Cancel</button>
+        <%= f.submit class: ' major-button rounded-full w-8/12' %>
+      </div>
+    </div>
   <% end %>
 </div>
