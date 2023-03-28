@@ -1,15 +1,33 @@
 <%= turbo_frame_tag dom_id(seat) do %>
   <div class='flex justify-between p-4 text-lg rounded bg-bgGray'>
     <div>
-      Table
-      <p class='text-xl major-under-line after:my-0'>
+      <span class='text-xl major-under-line after:my-0'>
         <%= seat.title %>
-      </p>
+      </span>
+      <span class='text-sm'><%= seat.table_type %></span>
+
       <div>
-        <i class="fa-solid fa-person"></i>
-        <span class='text-xl text-major'>
-          <%= seat.capacity %>
+        <span class='mr-4'>
+          <i class="fa-solid fa-person"></i>
+          <span class='text-xl text-major'>
+            <%= seat.capacity %>
+          </span>
         </span>
+
+        <% if seat.deposit != 0 %>
+          <span>
+            <i class="fa-solid fa-dollar-sign"></i>
+            <span class='text-xl text-major'>
+              <%= seat.deposit %>
+            </span>
+          </span>
+        <% else %>
+          <span class='text-xl text-slate-200'>
+            <i class="fa-solid fa-dollar-sign"></i>
+            <%= seat.deposit %>
+          </span>
+        <% end %>
+       
       </div>
     </div>
     <button class='relative'>

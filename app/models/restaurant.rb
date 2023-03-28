@@ -17,6 +17,7 @@ class Restaurant < ApplicationRecord
   has_many :off_days, through: :restaurant_off_days
   has_many :seat_modules
   has_many :seats
+  has_many :reservations
   has_rich_text :content
 
   def off_day_list=(days)
@@ -33,7 +34,5 @@ class Restaurant < ApplicationRecord
           return errors.add(:off_day_of_week, :invalid) if DayOfWeek::DAYOFWEEK.values.exclude?(day)
         end
     end
- 
   end
-
 end

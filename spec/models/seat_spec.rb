@@ -11,6 +11,7 @@ RSpec.describe Seat, type: :model do
     it {should validate_presence_of(:state)}
     it {should validate_presence_of(:capacity)}
     it {should validate_numericality_of(:capacity).is_greater_than(0)}
+    it {should validate_numericality_of(:deposit).is_greater_than(-1)}
 
   end
 

@@ -1,4 +1,65 @@
-<div>
-  <h1 class="font-bold text-4xl">Restaurants#show</h1>
-  <p>Find me in app/views/restaurants/show.html.erb</p>
+<div class='px-4 pt-4 md:px-0'>
+  <div class='p-4 bg-white rounded-lg'>
+    <div class='gap-4 pb-2 mb-4 border-b'>
+      <div class='mb-4 border h-26 md:h-48 md:w-50'>
+        <%= image_tag 'background', class: 'h-full w-full object-cover' %>
+      </div>
+      
+      <div>
+        <div class='flex items-center gap-4 mb-4'>
+          <h1 class='major-under-line'>
+            <%= @restaurant.name %>
+          </h1>
+          <h1>
+            -<%= @restaurant.branch %>
+          </h1>
+        </div>
+        
+        <h3 class='text-slate-400'>
+          <%= @restaurant.address %>
+        </h3>
+        <h4 class='text-major'>
+          <%= @restaurant.tel %>
+        </h4>
+      </div>
+    </div>
+
+    <div class='mb-4 border-b'>
+      <%= @restaurant.content %>
+    </div>
+
+    <div class='mb-4'>
+
+      <%= render partial: 'reservations/form', locals: {reservation: @reservation, url: restaurant_reservations_path(@restaurant)} %>
+
+
+      <%# 訂單 %>
+    </div>
+    
+    <div class='mb-4 border-b'>
+      <div class='grid-cols-2 pb-6 mx-2 mb-6 border-b md:grid lg:mx-0 md:gap-4'>
+        <div>
+          <%# map %>
+        </div>
+        <div class='px-4'>
+          <div class='pb-2 mb-2 border-b'>
+            <p class='mb-2'>location</p>
+            <p class='text-gray-600'>
+              <%= @restaurant.address%>
+            </p>
+          </div>
+          <div class='pb-2 mb-2 border-b'>
+            <p class='mb-2'>Telephone</p>
+            <p class='text-gray-600'>
+              <%= @restaurant.tel%>
+            </p>
+          </div>
+          <div class='pb-2 mb-2'>
+            <p class='mb-2'>Business Time</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

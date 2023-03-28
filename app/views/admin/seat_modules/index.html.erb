@@ -4,15 +4,17 @@
     <div data-controller='seat-module'>
       <div class='flex items-start justify-between'>
         <h2 class='mb-4 major-under-line'>Seat Modules</h2>
-        <div class='relative'>
-          <input type="radio" id='setting' class='hidden peer/setting' name='#'/>
-          <label for="setting" 
-                  class='absolute border-none text-slate-300 hover:text-major peer-checked/setting:invisible fa-solid fa-gear'
-                  data-action='click->seat-module#setSetting'></label>  
-          <input type="radio" id='close' class='hidden peer/close' name='#'/>
-          <label for="close" 
-                  class='invisible ml-1 text-lg text-red-500 peer-checked/setting:visible fa-solid fa-xmark hover:text-red-700'
-                  data-action='click->seat-module#setClose'> </label>
+        <div class=''>
+          <button class='border-none text-slate-300 hover:text-major'
+                  data-action='click->seat-module#setSetting'>
+            <i class="fa-solid fa-gear"></i>
+          </button>
+          <button class= 'hidden ml-1 text-lg text-red-500 hover:text-red-700'
+                  data-seat-module-target= 'close'
+                  data-action= 'click->seat-module#setClose'>
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+  
         </div>
       </div>
       

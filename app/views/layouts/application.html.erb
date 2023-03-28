@@ -9,13 +9,13 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <link rel="stylesheet" href="https://ga.jspm.io/npm:flatpickr@4.6.9/dist/flatpickr.min.css">
   </head>
 
   <body>
     <main class='h-screen bg-bgGray'>
       <%= render 'shared/navbar' %>
-      <div class='mt-10'>
-        <%= render 'shared/messages' %>
+      <div class='max-w-screen-lg mx-auto mt-10'>
         <%= yield %>
       </div>
     </main>

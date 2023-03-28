@@ -4,4 +4,6 @@ class OffDay < ApplicationRecord
 
   validates :day, presence: true, uniqueness: true
   validates_date :day, after: -> { Date.yesterday}
+
+  scope :after_today, -> { where("day >= ?", Date.today) }
 end

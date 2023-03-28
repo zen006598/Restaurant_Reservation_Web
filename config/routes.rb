@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         member do
           post :edit
         end
+
         resources :seats, shallow: true, only: %i[create update destroy edit new] do
           member do
             post :edit
@@ -31,5 +32,8 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :restaurants, only: %i[index show]
+  
+  resources :restaurants, only: %i[index show] do
+    resources :reservations, shallow: true
+  end
 end

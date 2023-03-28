@@ -68,7 +68,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   def restaurant_params
     params.require(:restaurant).permit(:name, :tel, :address,
                                        :branch, :content, :off_day_list,
-                                       :dingin_time, :interval_time, :period_of_reservation,  
+                                       :dining_time, :interval_time, :period_of_reservation,  
                                        off_day_of_week: [])
   end
 

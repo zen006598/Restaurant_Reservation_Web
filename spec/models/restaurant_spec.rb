@@ -6,6 +6,7 @@ RSpec.describe Restaurant, type: :model do
     it { should have_many(:off_days).through(:restaurant_off_days) }
     it { should have_many(:time_modules)}
     it { should have_many(:seats)}
+    it { should have_many(:reservations)}
     it { should have_rich_text(:content) }
   end
 

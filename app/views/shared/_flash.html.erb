@@ -1,0 +1,9 @@
+<div data-controller="flash">
+  <% flash.each do |key, value| %>
+    <% if key == 'notice'%>
+      <%= content_tag :div, value, class: 'text-xl bg-green-300 rounded-lg mb-4 py-3 px-4' %>
+    <% else %>
+      <%= content_tag :div, value, class: 'text-xl bg-red-600 rounded-lg mb-4 py-3 px-4 text-white' %>
+    <% end %> 
+  <% end %>
+</div>

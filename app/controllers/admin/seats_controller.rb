@@ -17,8 +17,9 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
 
   def create
     @seat = @seat_module.seats.new(seat_params)
-    if @seat.save
-      respond_to do |format|
+    respond_to do |format|
+      if @seat.save
+        flash[:notice] = "#{@seat_module.title} successfully created"
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.append('seat_field',
@@ -26,43 +27,46 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
                                 locals: {seat: @seat}),
             turbo_stream.update(@seat_module,
                                 partial: 'admin/seat_modules/seat_module',
-                                locals: {seat_module: @seat_module})]
+                                locals: {seat_module: @seat_module}),
+            render_flash]
         end
+      else
+        @seat.errors.full_messages.each {|message| flash[:alert] = "#{message}"}
+        format.turbo_stream { render turbo_stream: render_flash }
       end
-    end
 
-    respond_to do |format|
       format.turbo_stream {
         render turbo_stream: turbo_stream.update('seat_new_form', partial: 'admin/seats/form',
-                                                  locals: {seat: @seat_module.seats.new, 
-                                                          url: admin_seat_module_seats_path(@seat_module)})}
+                                                                  locals: {seat: @seat_module.seats.new, 
+                                                                          url: admin_seat_module_seats_path(@seat_module)})}
     end
-
   end
 
   def edit
-    render_edit
+    render turbo_stream: render_edit
   end
 
   def update
-    if @seat.update(seat_params)
-      respond_to do |format|
-        format.turbo_stream {render turbo_stream: turbo_stream.update(@seat, 
-                                                                      partial: "admin/seats/seat", 
-                                                                      locals: {seat: @seat})}
+    respond_to do |format|
+      if @seat.update(seat_params)
+          format.turbo_stream {render turbo_stream: turbo_stream.update(@seat, 
+                                                                        partial: "admin/seats/seat", 
+                                                                        locals: {seat: @seat})}
+      else
+        @seat.errors.full_messages.each {|message| flash[:alert] = "#{message}"}
+        format.turbo_stream{ render turbo_stream: [render_edit, render_flash] }
       end
-    else
-      render_edit
     end
   end
 
   def destroy
     @seats = @seat.seat_module.seats
     if @seat.destroy
+      flash[:alert] = "#{@seat.title} was removed."
       respond_to do |format|
-        format.turbo_stream {render turbo_stream: turbo_stream.update('seat_field',
-                                                                      partial: "admin/seats/seat", 
-                                                                      collection: @seats)}
+        format.turbo_stream {render turbo_stream: [
+          turbo_stream.update('seat_field',partial: "admin/seats/seat", collection: @seats), render_flash]
+        }
       end
     end
   end
@@ -74,9 +78,8 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
   private
 
   def seat_params
-    params.require(:seat).permit(:title, :state, :capacity, :restaurant_id).tap do |params|
-      params.delete(:restaurant_id) if action_name == 'create'
-    end
+    return params.require(:seat).permit(:title, :state, :capacity, :deposit, :table_type) if params[:action] == 'update'
+    params.require(:seat).permit(:title, :state, :capacity, :deposit, :table_type).merge(restaurant: @restaurant)
   end
 
   def find_seat_module
@@ -92,8 +95,6 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
   end
 
   def render_edit
-    render turbo_stream: turbo_stream.update(@seat, 
-                                              partial: "admin/seats/edit", 
-                                              locals: {seat: @seat, url: admin_seat_path(@seat)})
+    turbo_stream.update(@seat, partial: "admin/seats/edit", locals: {seat: @seat, url: admin_seat_path(@seat)})
   end
 end

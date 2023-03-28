@@ -1,0 +1,28 @@
+<%= form_with model: reservation, url: url do |f| %>
+  <div class='md:flex md:gap-4'>
+    <div class='w-full mb-4 '>
+      <h3 class='mb-2 font-bold'>Party Size</h3>
+      <div class='flex items-center'>
+        <%= f.number_field :adult_quantity, min: 1, required: true, class: 'border-none bg-bgGray rounded-lg w-2/5' %>Adult(s)
+        <%= f.number_field :child_quantity, min: 0, class: 'border-none bg-bgGray rounded-lg w-2/5' %>Kid(s)
+      </div>
+    </div>
+
+    <div class='w-full'>
+      <h3 class='mb-2 font-bold'>Dining date</h3>
+      <div>
+        <input type="text" 
+                data-controller="reservation-datepicker" 
+                id='reservation-datepicker'
+                data-restaurant = <%= @restaurant.id %>
+                class= 'border-none rounded-lg bg-bgGray'>
+      </div>
+    </div>
+  </div>
+
+  <div class='fixed bottom-0 left-0 z-50 flex w-full bg-white border-t h-14 rigth-0 '>
+    <div class='w-full max-w-screen-lg py-1 mx-4 text-lg font-bold text-center lg:m-auto major-button'>
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

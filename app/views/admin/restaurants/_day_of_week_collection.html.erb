@@ -10,7 +10,7 @@
     <%= f.collection_check_boxes :day_of_week_list, TimeModule::DAYOFWEEK, :last, :first do |i| %>
       <div class='flex', data-business-time-new-target= 'dayOfWeek'>
         <%= i.check_box class: 'hidden peer'%>
-        <%= i.label class: 'blockp py-4 px-0 cursor-pointer select-none rounded peer-checked:border-major border m-auto text-center w-full'%>
+        <%= i.label class: 'block py-4 px-0 cursor-pointer select-none rounded peer-checked:border-major border m-auto text-center w-full'%>
       </div>
     <% end %>
   <% end %>
