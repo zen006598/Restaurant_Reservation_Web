@@ -8,7 +8,9 @@
           <i class="fa-solid fa-square-plus"></i>
           Create Time
         </button>
-        <%= render partial: 'admin/time_modules/time_modules', collection: @time_modules, as: :time_module %>
+
+        <%= render partial: 'admin/time_modules/time_module', collection: @time_modules %>
+
       <% else %>
         <div class='p-4 mt-4 text-center border rounded'>
           <p class='text-lg text-gray-300 -4'>Click create to add a new business time</p>

@@ -1,6 +1,8 @@
 class Restaurant < ApplicationRecord
   include DayOfWeek
 
+  before_validation :compact_params
+
   validates :name, presence: true
   validates :address, presence: true
   validates :tel, presence: true,
@@ -26,11 +28,19 @@ class Restaurant < ApplicationRecord
     end
   end
 
+  def maximum_capacity
+    @maximum_capacity ||= seats.maximum(:capacity)
+  end
+
   private
+
+  def compact_params
+    off_day_of_week.compact!
+  end
 
   def off_day_of_week_inclusion_validation
     if off_day_of_week.present?
-      off_day_of_week&.compact.each do |day|
+      off_day_of_week.each do |day|
           return errors.add(:off_day_of_week, :invalid) if DayOfWeek::DAYOFWEEK.values.exclude?(day)
         end
     end

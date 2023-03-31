@@ -31,9 +31,9 @@ class RestaurantsController < ApplicationController
 
   def get_available_seat
     people_sum = params[:people_sum]
-    seats = @restaurant.seats.pluck(:capacity)
-    maximum_capacity = seats.max
-    render json:{alert: 'unavailable'} if people_sum > maximum_capacity
+    
+    #return when the people over the maximum capacity.
+    render json:{alert: 'unavailable'} if people_sum > @restaurant.maximum_capacity
   end
 
   private
