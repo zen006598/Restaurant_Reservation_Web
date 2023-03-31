@@ -8,7 +8,7 @@ class TimeModule < ApplicationRecord
   validate :day_of_week_inclusion_validation, :repeat_with_business_day, :repeat_with_off_days
 
   scope :except_self, -> (id) {where.not('time_modules.id = ?', id)}
-
+  scope :included_date, -> (date) {where('time_modules.day_of_week_list && array[?]', date)}
   private
 
   def include_in_list?(list, attribute)

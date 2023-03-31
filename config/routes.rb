@@ -34,6 +34,10 @@ Rails.application.routes.draw do
   end
   
   resources :restaurants, only: %i[index show] do
+    member do
+      post :get_business_times
+      post :get_available_seat
+    end
     resources :reservations, shallow: true
   end
 end

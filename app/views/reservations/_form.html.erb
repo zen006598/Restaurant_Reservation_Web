@@ -1,27 +1,61 @@
-<%= form_with model: reservation, url: url do |f| %>
-  <div class='md:flex md:gap-4'>
+<%= form_with model: reservation, url: url, data: {controller: 'reservation-form'} do |f| %>
+  <div class='gap-4 md:flex'>
     <div class='w-full mb-4 '>
       <h3 class='mb-2 font-bold'>Party Size</h3>
-      <div class='flex items-center'>
-        <%= f.number_field :adult_quantity, min: 1, required: true, class: 'border-none bg-bgGray rounded-lg w-2/5' %>Adult(s)
-        <%= f.number_field :child_quantity, min: 0, class: 'border-none bg-bgGray rounded-lg w-2/5' %>Kid(s)
+      <div class='flex items-center gap-2' data-controller='people-quantity' data-restaurant="<%= @restaurant.id %>">
+        <div class='flex items-center'>
+          <%= f.number_field :adult_quantity, min: 1, required: true, class: 'border-none bg-bgGray rounded-lg w-full', data: {action: 'change->people-quantity#fetchQuantity', people_quantity_target: 'adult'} %>
+          <p>Adult(s)</p>
+        </div>
+        <div class='flex items-center'>
+          <%= f.number_field :child_quantity, min: 0, class: 'border-none bg-bgGray rounded-lg w-full', data: {action: 'change->people-quantity#fetchQuantity', people_quantity_target: 'kid'} %>
+          <p>Kid(s)</p>
+        </div>
       </div>
     </div>
 
-    <div class='w-full'>
-      <h3 class='mb-2 font-bold'>Dining date</h3>
-      <div>
-        <input type="text" 
-                data-controller="reservation-datepicker" 
-                id='reservation-datepicker'
+    <div class='w-full gap-2 md:flex'>
+      <div class='w-full'>
+        <h3 class='mb-2 font-bold'>Dining date</h3>
+        <input type="text" id='reservation-datepicker'
+                data-controller="reservation-datepicker"
+                data-action = 'input->reservation-datepicker#getBusinessTime'
                 data-restaurant = <%= @restaurant.id %>
-                class= 'border-none rounded-lg bg-bgGray'>
+                class= 'w-full border-none rounded-lg bg-bgGray'>
       </div>
+      
+      <div class='w-full'>
+        <h3 class='mb-2 font-bold'>Type of table</h3>
+        <%= f.select "#",Seat.table_types.keys, {}, class: 'w-full border-none rounded-lg bg-bgGray' %>
+      </div>
+
     </div>
   </div>
 
+  <div data-action='reservation-datepicker:businessTime@window->reservation-form#setTime'>
+    <div data-action='people-quantity:alert@window->reservation-form#setAlert' class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert'>
+      All available times are fully booked.
+    </div>
+    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='midnightTitle'>Midnight - Early morning</h3>
+    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='midnight'>
+    </div>
+
+    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='morningTitle'>Morning</h3>
+    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='morning'>
+    </div>
+    
+
+    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='noonTitle'>noon</h3>
+    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='noon'>
+    </div>
+    
+    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='eveningTitle'>evening</h3>
+    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='evening'>
+    </div>
+  </div>
+  
   <div class='fixed bottom-0 left-0 z-50 flex w-full bg-white border-t h-14 rigth-0 '>
-    <div class='w-full max-w-screen-lg py-1 mx-4 text-lg font-bold text-center lg:m-auto major-button'>
+    <div class='w-full max-w-screen-lg py-1 mx-4 my-auto text-lg font-bold text-center major-button lg:m-auto'>
       <%= f.submit %>
     </div>
   </div>
