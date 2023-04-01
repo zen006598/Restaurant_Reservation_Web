@@ -20,6 +20,7 @@ class ReservationsController < ApplicationController
   def create
     @reservation = @restaurant.reservations.new(reservation_params)
     if @reservation.save
+      ReservationMailer.reservated_email(@reservation).deliver if @reservation.email.present?
       redirect_to @reservation
     else
       render :new

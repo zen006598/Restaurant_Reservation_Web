@@ -23,14 +23,14 @@ class Reservation < ApplicationRecord
 
     business_times = BusinessTimeCounting.new(day, time_module, interval_time).time_counting
 
-    return errors.add(:arrival_time, 'The arrival time most in the business time.') if business_times.exclude?(arrival_time.to_time.to_i)
+    return errors.add(:arrival_time, 'The arrival time must in the business time.') if business_times.exclude?(arrival_time.to_time.to_i)
   end
 
   def verify_reservation_date
     enable_day = ReservationDate.new(restaurant.period_of_reservation, restaurant.off_day_of_week, restaurant.off_days.after_today).business_days
     arrival_day = arrival_time.to_date
 
-    return errors.add(:arrival_time, 'The arrival time most in the business day.') if enable_day.exclude?(arrival_day)
+    return errors.add(:arrival_time, 'The arrival time must in the business day.') if enable_day.exclude?(arrival_day)
   end
 
 end
