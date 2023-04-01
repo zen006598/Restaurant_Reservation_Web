@@ -9,7 +9,6 @@ RSpec.describe Reservation, type: :model do
     let(:restaurant) { create(:restaurant) }
     context 'Presence' do
       it {should validate_presence_of(:name)}
-      it {should validate_presence_of(:serial)}
       it {should validate_presence_of(:phone)}
       it {should validate_presence_of(:gender)}
       it {should validate_presence_of(:state)}

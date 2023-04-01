@@ -1,4 +1,33 @@
-<div>
-  <h1 class="font-bold text-4xl">Reservations#new</h1>
-  <p>Find me in app/views/reservations/new.html.erb</p>
+<div class='h-screen bg-bgGray'>
+  <div class='grid gap-4 md:pt-4 md:px-0 md:grid-cols-3'>
+    <div class='p-4 bg-white rounded-lg md:col-span-1 h-fit'>
+      <div class='flex items-center justify-center p-2 mb-4 border-b'>
+        <h1>
+          <%= @restaurant.name %> -
+          <%= @restaurant.branch %>
+        </h1>
+      </div>
+      <div>
+        <div class='mb-2 text-lg'>
+          <i class="mr-4 fa-solid fa-calendar-days"></i>
+          <%= @arrival_time.to_time.strftime('%Y-%m-%d %H:%M') %>
+        </div>
+        <div class='mb-2 text-lg'>
+          <i class="text-xl fa-solid fa-person"></i>
+          <%= @adult_quantity %>
+
+          <i class="ml-4 fa-solid fa-child"></i>
+          <%= @child_quantity %>
+        </div>
+        <div class='mb-2 text-lg'>
+          <i class="mr-4 fa-solid fa-chair"></i>
+          <%= @table_type %>
+        </div>
+      </div>
+    </div>
+    <div class='p-4 bg-white rounded-lg md:col-span-2'>
+      <%= render partial: 'reservation_form', locals: {reservation: @reservation, url: restaurant_reservations_path(@restaurant)} %>
+    </div>
+  </div>
+
 </div>

@@ -67,15 +67,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_061259) do
     t.date "day"
   end
 
-  create_table "reservations", force: :cascade do |t|
-    t.string "serial"
+  create_table "reservations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "phone"
     t.string "email"
     t.integer "gender"
     t.text "comment"
     t.datetime "arrival_time"
-    t.integer "state"
+    t.string "state", default: "reservated"
     t.integer "adult_quantity", default: 1
     t.integer "child_quantity", default: 0
     t.bigint "restaurant_id", null: false

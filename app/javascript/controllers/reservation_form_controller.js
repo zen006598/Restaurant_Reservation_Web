@@ -8,34 +8,32 @@ export default class extends Controller {
     let business_times = e.detail.business_times
 
     business_times.forEach(e => {
-      e.forEach( e => {
-        const business_day = new Date(e * 1000).toDateString().replace(/\s/g, "_")
-        const business_time = new Date(e * 1000).toLocaleTimeString('en-US', { hour12: false }).substring(0, 5)
+      const business_day = new Date(e * 1000).toDateString().replace(/\s/g, "_")
+      const business_time = new Date(e * 1000).toLocaleTimeString('zh-TW', { hour12: false }).substring(0, 5)
 
-        const button = `
-          <span class='mb-8 md:mb-4'>
-            <input type="radio" class='hidden peer' name='#' value=${business_day}_${business_time} id=${business_time}>
-            <label for=${business_time} class='px-8 py-3 text-xl cursor-pointer peer-checked:bg-major peer-checked:text-white  border rounded hover:border-major '>${business_time}</label>
-          </span>
-        `
-        if ('00:00'<= business_time && business_time < '06:00'){
-          this.midnightTitleTarget.classList.remove('hidden')
-          this.midnightTarget.classList.remove('hidden')
-          this.midnightTarget.insertAdjacentHTML('beforeend', button)
-        }else if('06:00'<= business_time && business_time < '11:00'){
-          this.morningTitleTarget.classList.remove('hidden')
-          this.morningTarget.classList.remove('hidden')
-          this.morningTarget.insertAdjacentHTML('beforeend', button)
-        }else if ('11:00'<= business_time && business_time < '18:00'){
-          this.noonTitleTarget.classList.remove('hidden')
-          this.noonTarget.classList.remove('hidden')
-          this.noonTarget.insertAdjacentHTML('beforeend', button)
-        }else if ('18:00'<= business_time && business_time < '24:00'){
-          this.eveningTitleTarget.classList.remove('hidden')
-          this.eveningTarget.classList.remove('hidden')
-          this.eveningTarget.insertAdjacentHTML('beforeend', button)
-        }
-      })
+      const button = `
+        <span class='mb-8 md:mb-4'>
+          <input type="radio" class='hidden peer' name='arrival_time' value=${business_day}_${business_time} id=${business_time}>
+          <label for=${business_time} class='px-8 py-3 text-xl cursor-pointer peer-checked:bg-major peer-checked:text-white  border rounded hover:border-major '>${business_time}</label>
+        </span>
+      `
+      if ('00:00'<= business_time && business_time < '06:00'){
+        this.midnightTitleTarget.classList.remove('hidden')
+        this.midnightTarget.classList.remove('hidden')
+        this.midnightTarget.insertAdjacentHTML('beforeend', button)
+      }else if('06:00'<= business_time && business_time < '11:00'){
+        this.morningTitleTarget.classList.remove('hidden')
+        this.morningTarget.classList.remove('hidden')
+        this.morningTarget.insertAdjacentHTML('beforeend', button)
+      }else if ('11:00'<= business_time && business_time < '18:00'){
+        this.noonTitleTarget.classList.remove('hidden')
+        this.noonTarget.classList.remove('hidden')
+        this.noonTarget.insertAdjacentHTML('beforeend', button)
+      }else if ('18:00'<= business_time && business_time < '24:00'){
+        this.eveningTitleTarget.classList.remove('hidden')
+        this.eveningTarget.classList.remove('hidden')
+        this.eveningTarget.insertAdjacentHTML('beforeend', button)
+      }
     })
   }
 

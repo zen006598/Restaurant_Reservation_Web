@@ -1,6 +1,5 @@
 FactoryBot.define do
-  factory :reservation do
-    serial { "MyString" }
+  factory :reservation do 
     name { "MyString" }
     phone { "MyString" }
     email { "MyString" }

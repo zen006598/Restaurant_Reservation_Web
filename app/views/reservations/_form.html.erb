@@ -1,4 +1,4 @@
-<%= form_with model: reservation, url: url, data: {controller: 'reservation-form'} do |f| %>
+<%= form_with model: reservation, url: url, data: {controller: 'reservation-form'}, method: method do |f| %>
   <div class='gap-4 md:flex'>
     <div class='w-full mb-4 '>
       <h3 class='mb-2 font-bold'>Party Size</h3>
@@ -26,7 +26,7 @@
       
       <div class='w-full'>
         <h3 class='mb-2 font-bold'>Type of table</h3>
-        <%= f.select "#",Seat.table_types.keys, {}, class: 'w-full border-none rounded-lg bg-bgGray' %>
+        <%= f.select :table_type,Seat.table_types.keys, {}, class: 'w-full border-none rounded-lg bg-bgGray' %>
       </div>
 
     </div>
@@ -55,8 +55,6 @@
   </div>
   
   <div class='fixed bottom-0 left-0 z-50 flex w-full bg-white border-t h-14 rigth-0 '>
-    <div class='w-full max-w-screen-lg py-1 mx-4 my-auto text-lg font-bold text-center major-button lg:m-auto'>
-      <%= f.submit %>
-    </div>
+    <%= f.submit class: 'w-full max-w-screen-lg py-1 mx-4 my-auto text-lg font-bold text-center major-button lg:m-auto' %>
   </div>
 <% end %>

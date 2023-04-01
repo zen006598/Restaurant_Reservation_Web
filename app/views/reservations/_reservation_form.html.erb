@@ -1,0 +1,31 @@
+<%= form_with model: reservation, url: url do |f| %>
+  <div class='mb-4'>
+    <h3 class='after:content-["*"] after:ml-0.5 after:text-major'><%= f.label :name %></h3>
+    <div class='flex'>
+      <%= f.text_field :name, placeholder: 'Name', reqired: true, class: 'w-full border-slate-300 rounded-l-lg ' %>
+      <%= f.select :gender, Reservation.genders.keys, {}, class: 'border-slate-300 rounded-r-lg' %>
+    </div>
+  </div>
+
+  <div class='mb-4'>
+    <h3 class='after:content-["*"] after:ml-0.5 after:text-major'><%= f.label :phone %></h3>
+    <%= f.text_field :phone, placeholder: 'Phone', reqired: true, class: 'w-full border-slate-300 rounded-lg ' %>
+  </div>
+
+  <div class='mb-4'>
+    <h3><%= f.label :email %></h3>
+    <%= f.text_field :email, placeholder: 'Email', class: 'w-full border-slate-300 rounded-lg ' %>
+  </div>
+
+  <div class='mb-4'>
+    <h3><%= f.label :comment, 'Note' %></h3>
+    <%= f.text_area :comment, placeholder: 'Got any special requests? Leave it here! (e.g., allergies, wheelchair access, etc.)', class: 'w-full border-slate-300 rounded-lg ' %>
+  </div>
+  
+  <%= f.text_field :arrival_time, value: @arrival_time, class: 'hidden' %>
+  <%= f.number_field :adult_quantity, value: @adult_quantity, class: 'hidden' %>
+  <%= f.number_field :child_quantity, value: @child_quantity, class: 'hidden' %>
+
+  <%= f.submit class: 'w-full major-button py-2 mb-4' %>
+  <button class='w-full py-2 border rounded-md border-slate-400'>Back</button>
+<% end %>

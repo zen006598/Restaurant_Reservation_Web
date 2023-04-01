@@ -6,7 +6,7 @@ class RestaurantsController < ApplicationController
   end
 
   def show
-    enable_day = RestaurantsHelper::ReservationDate.new(@restaurant.period_of_reservation, @restaurant.off_day_of_week, @restaurant.off_days.after_today).business_days
+    enable_day = ReservationDate.new(@restaurant.period_of_reservation, @restaurant.off_day_of_week, @restaurant.off_days.after_today).business_days
     @reservation = Reservation.new
 
     respond_to do |format|
@@ -16,14 +16,11 @@ class RestaurantsController < ApplicationController
   end
 
   def get_business_times
-    date = params[:day].to_date.wday
+    day_of_week = params[:day].to_date.wday
     day = params[:day]
-    time_module = @restaurant.time_modules.included_date(date).first
-
-    business_times = time_module.business_times.map do |business_time|
-      ("#{day}-#{business_time.start.strftime('%R')}".to_time.to_i .. "#{day}-#{business_time._end.strftime('%R')}".to_time.to_i)
-      .step(@restaurant.interval_time.minutes)
-    end
+    time_module = @restaurant.time_modules.included_date(day_of_week).first
+    interval_time = @restaurant.interval_time.minutes
+    business_times = BusinessTimeCounting.new(day, time_module, interval_time).time_counting
 
     # return Selected dates and business hours to convert to numbers, format: [1680778800, 1680780600, 1680782400]
     render json:{business_times: business_times}

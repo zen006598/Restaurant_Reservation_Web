@@ -29,7 +29,7 @@
     </div>
 
     <div class='mb-4'>
-      <%= render partial: 'reservations/form', locals: {reservation: @reservation, url: restaurant_reservations_path(@restaurant)} %>
+      <%= render partial: 'reservations/form', locals: {reservation: @reservation, url: new_restaurant_reservation_path(@restaurant), method: :get} %>
     </div>
     
     <div class='mb-4 border-b'>

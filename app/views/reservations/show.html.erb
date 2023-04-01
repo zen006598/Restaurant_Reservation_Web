@@ -1,4 +1,44 @@
-<div>
-  <h1 class="font-bold text-4xl">Reservations#show</h1>
-  <p>Find me in app/views/reservations/show.html.erb</p>
+<div class='flex h-screen max-w-lg m-auto bg-bgGray'>
+  <div class='p-4 m-auto text-center bg-white rounded'>
+    <div class='py-4 border-b'>
+      <div>
+        <h1><%= @restaurant.name %></h1>
+        <h2><%= @restaurant.branch %></h2>
+      </div>
+      <h3 class='text-slate-400'><%= @restaurant.address %></h3>
+      <h3 class='text-major'><%= @restaurant.tel %></h3>
+    </div>
+    
+    <div class='p-4'>
+      <h2 class='text-xl font-normal'>
+        Heollo, <%= @reservation.name %>
+      </h2>
+      <p class='mb-4 text-md'>The following is your positioning information:</p>
+
+      <div class='p-4 mb-4 border rounded'>
+        <div class='text-2xl'>
+          <%= @reservation.arrival_time.strftime('%Y-%m-%d') %>
+        </div>
+        <div class='text-4xl text-major'>
+          <%= @reservation.arrival_time.strftime('%H:%M') %>
+        </div>
+        <div>
+          <%= @reservation.adult_quantity %>Adult(s)
+          <%= @reservation.child_quantity %>Kid(s)
+        </div>
+      </div>
+      
+      <% if @reservation.comment.present? %>
+        <div class='p-4 mb-4 border rounded'>
+          <%= @reservation.comment %>
+        </div>
+      <% end %>
+      
+      <div class='flex flex-col gap-4'>
+        <%= button_to 'Add On Canlendar', root_path, class: 'major-button w-full py-2' %>
+        <%= button_to 'Cancel Reservation', root_path, class: 'border border-slate-300 w-full py-2 rounded' %>
+      </div>
+    </div>
+  </div>
+
 </div>
