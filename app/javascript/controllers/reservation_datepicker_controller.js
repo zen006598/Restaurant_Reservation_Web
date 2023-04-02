@@ -5,21 +5,21 @@ export default class extends Controller {
     this.id = this.element.dataset.restaurant
     this.token = document.querySelector("meta[name='csrf-token']").content
 
-    this.fetchBusinessTimes(new Date().toDateString())
-
     fetch(`/restaurants/${this.id}`,{
       method: 'GET',
       headers: {
         "X-CSRF-Token": this.token,
       }
     }).then((resp) => resp.json())
-    .then(({enable_day}) => { 
+    .then(({maxDate, disable, defaultDate}) => { 
+      this.fetchBusinessTimes(defaultDate)
       flatpickr("#reservation-datepicker", {
         dateFormat: "Y-m-d",
         minDate: 'today',
         showMonths: 2,
-        enable: enable_day,
-        defaultDate: 'today'
+        maxDate: maxDate,
+        disable: disable,
+        defaultDate: defaultDate
       })
     })
     .catch((e) => console.log(e, 'error'))

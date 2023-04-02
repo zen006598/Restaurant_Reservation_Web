@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets=['form', 'box', 'title', 'capacity', 'submit']
+  static targets=['form', 'box', 'title', 'capacity', 'submit', 'type']
 
   connect(){
     this.formTarget.addEventListener("click", e => this.formTarget.classList.add('hidden'))
@@ -13,10 +13,7 @@ export default class extends Controller {
   }
 
   setSubmit(){
-    if (this.titleTarget.value != '' && this.capacityTarget.value != '') {
-      this.submitTarget.classList.remove('hidden')
-    } else{
-      this.submitTarget.classList.add('hidden')
-    }
+    const isAllFieldsValid = this.titleTarget.value && this.capacityTarget.value && this.typeTarget.value;
+    this.submitTarget.classList.toggle('hidden', !isAllFieldsValid);
   }
 }

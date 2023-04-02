@@ -6,6 +6,7 @@ class BusinessTimeCounting
   end
 
   def time_counting
+    return 'UNAVAILABLE' if @time_module.nil?
     business_times = @time_module.business_times.map do |business_time|
       ("#{@day}-#{business_time.start.strftime('%R')}".to_time.to_i .. "#{@day}-#{business_time._end.strftime('%R')}".to_time.to_i).step(@interval_time).to_a
     end

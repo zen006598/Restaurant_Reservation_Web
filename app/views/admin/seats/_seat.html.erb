@@ -13,21 +13,6 @@
             <%= seat.capacity %>
           </span>
         </span>
-
-        <% if seat.deposit != 0 %>
-          <span>
-            <i class="fa-solid fa-dollar-sign"></i>
-            <span class='text-xl text-major'>
-              <%= seat.deposit %>
-            </span>
-          </span>
-        <% else %>
-          <span class='text-xl text-slate-200'>
-            <i class="fa-solid fa-dollar-sign"></i>
-            <%= seat.deposit %>
-          </span>
-        <% end %>
-       
       </div>
     </div>
     <button class='relative'>

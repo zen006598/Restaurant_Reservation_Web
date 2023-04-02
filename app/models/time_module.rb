@@ -9,7 +9,8 @@ class TimeModule < ApplicationRecord
   validates :title, presence: true
   validate :day_of_week_inclusion_validation, :repeat_with_business_day, :repeat_with_off_days
 
-  scope :except_self, -> (id) {where.not('time_modules.id = ?', id)}
+  # scope :except_self, -> (id) {where.not('time_modules.id = ?', id)}
+  scope :except_self, -> (id) { where(time_modules: { id: TimeModule.arel_table[:id].not_eq(id) }) }
   scope :included_date, -> (date) {where('time_modules.day_of_week_list && array[?]', date)}
 
   private

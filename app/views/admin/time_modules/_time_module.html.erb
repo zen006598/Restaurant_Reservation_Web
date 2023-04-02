@@ -21,7 +21,7 @@
         <span class='flex-wrap m-auto'>
           <% time_module.day_of_week_list.compact.each do |t| %>
             <span class= 'px-2 mr-2 border rounded'>
-              <%= DayOfWeek::DAYOFWEEK.key(t)[0..2] %>
+              <%= TimeModule::DAYOFWEEK.key(t)[0..2] %>
             </span>
           <% end %>
         </span>

@@ -6,7 +6,6 @@ export default class extends Controller {
   connect() {
     this.id = this.element.dataset.restaurant
     this.token = document.querySelector("meta[name='csrf-token']").content
-
     this.fetch_date()
   }
 
@@ -32,9 +31,8 @@ export default class extends Controller {
         "X-CSRF-Token": this.token,
       }
     }).then(resp => resp.json())
-    .then(({off_days_of_week, assigned_day_of_week}) => {
-      const disable_day_of_week = off_days_of_week.concat(assigned_day_of_week)
-      this.disable_off_day(disable_day_of_week)
+    .then(({beChiocedDayOfWeek}) => {
+      this.disable_off_day(beChiocedDayOfWeek)
     })
     .catch((e) => {
       console.log(e, 'error');

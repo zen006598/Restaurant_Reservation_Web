@@ -1,14 +1,32 @@
 class ReservationDate
-  def initialize(period_of_reservation, off_day_of_week, off_days)
+  include DayOfWeek
+
+  def initialize(off_days, time_modules, period_of_reservation = 365)
     @period_of_reservation = period_of_reservation
-    @off_day_of_week = off_day_of_week.compact
     @off_days = off_days.map(&:day)
+    @time_modules = time_modules
+    @date_range = (Date.today...Date.today + @period_of_reservation)
+
   end
   
-  def business_days
-    dates = (Date.today...Date.today + @period_of_reservation).to_a
-    off_days = dates.select { |date| @off_day_of_week.include?(date.wday) }.concat(@off_days)
-    business_days = dates - off_days
+  def disable_dates
+    disable_day_of_week
+    disable_dates = @date_range.to_a.select do |date|
+      @disable_day_of_week.include?(date.wday)
+    end
+    @disable_dates = disable_dates.concat(@off_days)
   end
+
+  def disable_day_of_week
+    day_of_week = DAYOFWEEK.values
+    enable_day_of_week = @time_modules.pluck(:day_of_week_list).flatten
+    @disable_day_of_week = day_of_week - enable_day_of_week
+  end
+
+  def first_day
+    disable_dates
+    (@date_range.to_a - @disable_dates)[0]
+  end
+
 end
 

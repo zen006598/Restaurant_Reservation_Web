@@ -6,14 +6,12 @@
 
         <%= f.text_field :title, placeholder: 'Title', required: true, class: 'border-none p-0 peer' %>
         <%= f.number_field :capacity, placeholder: 'Capacity', required: true, class: 'border-none p-0 peer', min: 1 %>
-        <%= f.number_field :deposit,  class: 'w-full mb-4 border-none rounded bg-bgGray', placeholder: 'Deposit', min: 0 %>
         <%= f.select :table_type, Seat.table_types.keys, {}, class: 'w-full border-none rounded bg-bgGray' %>
 
         <%= f.button class: 'peer-invalid:visible peer-placeholder-shown:!invisible major-button mt-4 ' do%>
           <i class="fa-solid fa-pen-to-square"></i>
         <% end %>
       </div>
-
     <% end %>
   </div>
 <% end %>

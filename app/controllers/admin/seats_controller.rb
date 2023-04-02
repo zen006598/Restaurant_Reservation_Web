@@ -78,8 +78,8 @@ class Admin::SeatsController < Admin::ApplicationBackstageController
   private
 
   def seat_params
-    return params.require(:seat).permit(:title, :state, :capacity, :deposit, :table_type) if params[:action] == 'update'
-    params.require(:seat).permit(:title, :state, :capacity, :deposit, :table_type).merge(restaurant: @restaurant)
+    return params.require(:seat).permit(:title, :state, :capacity, :table_type) if params[:action] == 'update'
+    params.require(:seat).permit(:title, :state, :capacity, :table_type).merge(restaurant: @restaurant)
   end
 
   def find_seat_module

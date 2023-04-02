@@ -27,7 +27,8 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     if @restaurant.update(restaurant_params)
@@ -43,14 +44,18 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     @time_module = TimeModule.new
     @time_module.business_times.build
     @time_modules = @restaurant.time_modules
-    assigned_day_of_week = @time_modules.map{|d| d.day_of_week_list}.flatten
+
+    # return off_day flatpickr
     @off_days = @restaurant.off_days
-    @off_days_of_week = @restaurant.off_day_of_week&.compact
+    disable_day_of_week = ReservationDate.new(@off_days, @time_modules).disable_day_of_week
+
+    #  return time_modules new method be chioced day of week
+    be_chioced_day_of_week = @time_modules.pluck(:day_of_week_list).flatten
 
     respond_to do |format|
-      format.json { render json: { off_days: @off_days, 
-                                  off_days_of_week: @off_days_of_week, 
-                                  assigned_day_of_week: assigned_day_of_week} }
+      format.json { render json: { _offDays: @off_days,
+                                  disableDayOfWeek: disable_day_of_week,
+                                  beChiocedDayOfWeek: be_chioced_day_of_week} }
       format.html { render :setting }
     end
   end
@@ -68,8 +73,8 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   def restaurant_params
     params.require(:restaurant).permit(:name, :tel, :address,
                                        :branch, :content, :off_day_list,
-                                       :dining_time, :interval_time, :period_of_reservation,  
-                                       off_day_of_week: [])
+                                       :dining_time, :interval_time, :period_of_reservation,
+                                       :deposit, :headcount_requirement)
   end
 
   def find_restaurant

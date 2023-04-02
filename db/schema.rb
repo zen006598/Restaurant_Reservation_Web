@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_29_061259) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_02_043629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,10 +99,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_061259) do
     t.string "branch"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "off_day_of_week", array: true
     t.integer "dining_time", default: 0
     t.integer "interval_time", default: 0
     t.integer "period_of_reservation", default: 0
+    t.integer "deposit", default: 0
+    t.integer "headcount_requirement", default: 99
   end
 
   create_table "seat_modules", force: :cascade do |t|
@@ -121,7 +122,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_061259) do
     t.bigint "restaurant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "deposit", default: 0
     t.integer "table_type"
     t.index ["restaurant_id"], name: "index_seats_on_restaurant_id"
     t.index ["seat_module_id"], name: "index_seats_on_seat_module_id"

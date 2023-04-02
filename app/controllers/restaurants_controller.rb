@@ -6,11 +6,16 @@ class RestaurantsController < ApplicationController
   end
 
   def show
-    enable_day = ReservationDate.new(@restaurant.period_of_reservation, @restaurant.off_day_of_week, @restaurant.off_days.after_today).business_days
+    # return flatpickr setting
+    reservation_dates = ReservationDate.new(@restaurant.off_days.after_today, @restaurant.time_modules, @restaurant.period_of_reservation)
+    disable_dates = reservation_dates.disable_dates
+    default_day = reservation_dates.first_day
+    max_date = Date.today + @restaurant.period_of_reservation.days
+
     @reservation = Reservation.new
 
     respond_to do |format|
-      format.json { render json: { enable_day: enable_day} }
+      format.json { render json: { maxDate: max_date, disable: disable_dates, defaultDate: default_day} }
       format.html { render :show }
     end
   end
