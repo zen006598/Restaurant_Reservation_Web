@@ -1,9 +1,8 @@
 FactoryBot.define do
   factory :seat do
-    title { "MyString" }
-    state { 1 }
-    kind_of { 1 }
-    capacity { 1 }
-    restaurant { nil }
+    association :restaurant
+    association :seat_module
+    title { "seat001" } 
+    capacity { 10 }
   end
 end

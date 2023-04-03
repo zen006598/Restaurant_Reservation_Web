@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :time_module do
-    title { 'Time01' }
+    sequence(:title){|n| "Time00#{n}"}
+
     day_of_week_list {[]}
     association :restaurant
   end

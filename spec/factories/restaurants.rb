@@ -1,9 +1,8 @@
-FactoryBot.define do
+FactoryBot.define do  
   factory :restaurant do
-    name { Faker::Restaurant.name }
+    sequence(:name){ |n| "#{Faker::Restaurant.name}-#{n}"}
+    sequence(:tel){ |n| "02-5577-111#{n}"}
     address { "#{Faker::Address.street_name} #{Faker::Address.community}"}
-    tel { '02-5577-1111' }
     branch { Faker::Address.community }
-    off_day_of_week {DayOfWeek::DAYOFWEEK.to_a.sample[-1].digits}
   end
 end

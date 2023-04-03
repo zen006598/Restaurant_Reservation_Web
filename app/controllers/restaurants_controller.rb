@@ -23,7 +23,8 @@ class RestaurantsController < ApplicationController
   def get_business_times
     day_of_week = params[:day].to_date.wday
     day = params[:day]
-    time_module = @restaurant.time_modules.included_date(day_of_week).first
+    
+    time_module = @restaurant.time_modules.in_which_time_module(day_of_week).first
     interval_time = @restaurant.interval_time.minutes
     business_times = BusinessTimeCounting.new(day, time_module, interval_time).time_counting
 

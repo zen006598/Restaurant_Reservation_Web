@@ -3,6 +3,10 @@ class Restaurant < ApplicationRecord
   
   validates :name, presence: true
   validates :address, presence: true
+  validates :dining_time, numericality: { greater_than_or_equal_to: 0 }
+  validates :interval_time, numericality: { greater_than_or_equal_to: 0 }
+  validates :period_of_reservation, numericality: { greater_than_or_equal_to: 0 }
+  validates :deposit, numericality: { greater_than_or_equal_to: 0 }
   validates :tel, presence: true,
                   uniqueness: true,
                   format: { with: /\A(\d{2,3}-?|\d{2,3})\d{3,4}-?\d{4}\z/,

@@ -7,7 +7,7 @@ RSpec.describe Restaurant, type: :model do
     it { should have_many(:time_modules)}
     it { should have_many(:seats)}
     it { should have_many(:reservations)}
-    it { should have_rich_text(:content) }
+    it { should have_rich_text(:content)}
   end
 
   describe 'Validations' do
@@ -19,7 +19,6 @@ RSpec.describe Restaurant, type: :model do
     end
 
     context 'Uniqueness' do
-
       it 'tel uniqueness' do
         expect(restaurant).to validate_uniqueness_of(:tel).ignoring_case_sensitivity
       end
@@ -29,18 +28,6 @@ RSpec.describe Restaurant, type: :model do
       it { should allow_values("123-456-7890", "1234567890", "0266001234", "0977111222", '02-6600-1234').for(:tel) }
       it { should_not allow_values("123", "123456789012", "123-abc-4567").for(:tel) }
     end
-
-    context '#off_day_of_week_inclusion_validation' do
-      it 'valied' do
-        restaurant.update(off_day_of_week: [1,3,6,0])
-        expect(restaurant.off_day_of_week).to include(0..6)
-      end
-
-      it 'invalied' do
-        restaurant.update(off_day_of_week: [1, 3, 6, 0, 7, 8, 9])
-        expect(restaurant.valid?).to eq false
-      end
-    end
   end
 
   describe 'Instance methods' do
@@ -48,6 +35,17 @@ RSpec.describe Restaurant, type: :model do
     it "#off_day_list=" do
       off_day_list = "#{Faker::Date.between(from: Date.today, to: Date.today + 1.years)}"
       expect { restaurant.off_day_list=(off_day_list) }.to change { restaurant.off_days.count }.by(1)
+    end
+
+    context '#maximum_capacity' do
+      let!(:restaurant) { create(:restaurant) }
+      let!(:seat_module){create(:seat_module, restaurant: restaurant)}
+      let!(:seat1) { create(:seat, capacity: 20, restaurant: restaurant, seat_module: seat_module) }
+      let!(:seat2) { create(:seat, capacity: 10, restaurant: restaurant, seat_module: seat_module) }
+
+      it "returns the maximum capacity of the seats" do
+        expect(restaurant.maximum_capacity).to eq(20)
+      end
     end
   end
 

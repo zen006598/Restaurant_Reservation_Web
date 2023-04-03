@@ -8,7 +8,7 @@ class Reservation < ApplicationRecord
   validates :arrival_time, presence: true
   validates :state, presence: true
   validates :adult_quantity, presence: true, numericality: { greater_than: 0 }
-  validates :child_quantity, presence: true, numericality: { greater_than: -1 }
+  validates :child_quantity, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates_datetime :arrival_time
 
   enum :gender, {male: 1, female: 2, other: 3}, default: :male
@@ -18,7 +18,7 @@ class Reservation < ApplicationRecord
   def verify_arrival_time_inclusion
     day_of_week = arrival_time.to_date.wday
     day = arrival_time.to_date
-    time_module = restaurant.time_modules.included_date(day_of_week).first
+    time_module = restaurant.time_modules.in_which_time_module(day_of_week).first
     interval_time = restaurant.interval_time.minutes
 
     business_times = BusinessTimeCounting.new(day, time_module, interval_time).time_counting

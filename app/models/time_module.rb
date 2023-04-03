@@ -7,16 +7,19 @@ class TimeModule < ApplicationRecord
   before_validation :compact_params
 
   validates :title, presence: true
-  validate :day_of_week_inclusion_validation, :repeat_with_business_day, :repeat_with_off_days
+  validate :day_of_week_inclusion_validation, :repeat_with_other_business_day
 
-  # scope :except_self, -> (id) {where.not('time_modules.id = ?', id)}
-  scope :except_self, -> (id) { where(time_modules: { id: TimeModule.arel_table[:id].not_eq(id) }) }
-  scope :included_date, -> (date) {where('time_modules.day_of_week_list && array[?]', date)}
+  scope :except_time_module, -> (id) {where.not('time_modules.id = ?', id)}
+  scope :in_which_time_module, -> (day_of_week) {where('time_modules.day_of_week_list && array[?]', day_of_week)}
+
+  def self.except_self(id)
+    self.except_time_module(id).first
+  end
 
   private
 
   def compact_params
-    day_of_week_list.compact!
+    day_of_week_list&.compact!
   end
 
   def include_in_list?(list, attribute)
@@ -28,24 +31,17 @@ class TimeModule < ApplicationRecord
     false
   end
     
-  def repeat_with_business_day
+  def repeat_with_other_business_day
     if day_of_week_list.present?
-      business_times = restaurant.time_modules.except_self(self.id).pluck(:day_of_week_list).flatten
+      business_times = restaurant.time_modules.except_self(self.id)&.day_of_week_list
       return errors.add(:day_of_week_list, :invalid) if include_in_list?(business_times, day_of_week_list)
-    end
-  end
-
-  def repeat_with_off_days
-    if restaurant&.off_day_of_week&.present?
-      off_days = restaurant.off_day_of_week
-      return errors.add(:day_of_week_list, :invalid, message: 'Can not choice the off day') if include_in_list?(off_days, day_of_week_list)
     end
   end
 
   def day_of_week_inclusion_validation
     if day_of_week_list.present?
       day_of_week_list.each do |day|
-        return errors.add(:day_of_week_list, :invalid) if DayOfWeek::DAYOFWEEK.values.exclude?(day)
+        return errors.add(:day_of_week_list, :invalid) if DAYOFWEEK.values.exclude?(day)
       end
     end
   end
