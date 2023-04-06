@@ -23,6 +23,5 @@ RSpec.describe ReservationMailer, type: :mailer do
     it 'assigns @name' do
       expect(mail.body.encoded).to match(reservation.name)
     end
-
   end
 end
