@@ -21,9 +21,8 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
       if @time_module.update(time_module_params)
         flash[:notice] = "#{@time_module.title} successfully edited."
         format.turbo_stream do render turbo_stream: [
-          turbo_stream.update(@time_module, partial: "admin/time_modules/time_module", locals: {time_module: @time_module}), 
-          render_flash
-          ]
+          turbo_stream.update(@time_module, partial: "admin/time_modules/time_module", 
+                                            locals: {time_module: @time_module}), render_flash]
         end
       else
         @time_module.errors.full_messages.each {|message| flash[:alert] = "#{message}"}
@@ -32,14 +31,12 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
           render turbo_stream: [
             turbo_stream.update(@time_module, 
                                 partial: "admin/time_modules/form",
-                                locals: {time_module: @time_module, url: admin_time_module_path(@time_module)}), 
-            render_flash
-          ]
+                                locals: {time_module: @time_module, 
+                                        url: admin_time_module_path(@time_module)}), render_flash]
         end
       end
     end
   end
-
 
   def destroy
     @time_module.destroy

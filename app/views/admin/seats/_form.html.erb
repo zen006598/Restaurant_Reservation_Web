@@ -24,7 +24,7 @@
             
             <div class='flex items-center gap-1 mb-4 '>
               <i class="fa-solid fa-chair"></i>
-              <%= f.select :table_type, Seat.table_types.keys, {}, class: 'w-full border-none rounded bg-bgGray' %>
+              <%= f.select :table_type, Seat.table_types.keys, {}, class: 'w-full border-none rounded bg-bgGray', data: {seat_form_target: 'type', action: 'change->seat-form#setSubmit'} %>
             </div>
             <%= f.submit class: 'w-full major-button hidden', data: {seat_form_target: 'submit'} %>
           </div>

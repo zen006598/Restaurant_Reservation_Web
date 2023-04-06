@@ -47,7 +47,8 @@ class Admin::SeatModulesController < Admin::ApplicationBackstageController
         flash[:notice] = "#{@seat_module.title} successfully edited."
         format.turbo_stream do 
           render turbo_stream: [
-            turbo_stream.update(@seat_module, partial: "admin/seat_modules/seat_module", locals: {seat_module: @seat_module}),
+            turbo_stream.update(@seat_module, partial: "admin/seat_modules/seat_module", 
+locals: {seat_module: @seat_module}),
             render_flash
           ]
         end
@@ -64,7 +65,7 @@ class Admin::SeatModulesController < Admin::ApplicationBackstageController
     respond_to do |format|
       flash[:alert] = "#{@seat_module.title} was removed."
       format.turbo_stream do
-        render turbo_stream: [ turbo_stream.remove(@seat_module), render_flash ]
+        render turbo_stream: [turbo_stream.remove(@seat_module), render_flash]
       end
     end
   end
@@ -86,6 +87,7 @@ class Admin::SeatModulesController < Admin::ApplicationBackstageController
   def render_form
     render turbo_stream: turbo_stream.update(@seat_module, 
                                               partial: "admin/seat_modules/form",
-                                              locals: {seat_module: @seat_module, url: admin_seat_module_path(@seat_module)})
+                                              locals: {seat_module: @seat_module, 
+url: admin_seat_module_path(@seat_module)})
   end
 end

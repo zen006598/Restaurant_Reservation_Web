@@ -6,7 +6,6 @@ class ReservationDate
     @off_days = off_days.map(&:day)
     @time_modules = time_modules
     @date_range = (Date.today...Date.today + @period_of_reservation)
-
   end
   
   def disable_dates
@@ -28,5 +27,12 @@ class ReservationDate
     (@date_range.to_a - @disable_dates)[0]
   end
 
-end
+  def enable_dates
+    enable_day_of_week = @time_modules.pluck(:day_of_week_list).flatten
+    enable_day = @date_range.to_a.select do |date|
+      enable_day_of_week.include?(date.wday)
+    end
+    enable_day - @off_days
+  end
 
+end

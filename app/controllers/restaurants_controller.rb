@@ -7,7 +7,8 @@ class RestaurantsController < ApplicationController
 
   def show
     # return flatpickr setting
-    reservation_dates = ReservationDate.new(@restaurant.off_days.after_today, @restaurant.time_modules, @restaurant.period_of_reservation)
+    reservation_dates = ReservationDate.new(@restaurant.off_days.after_today, @restaurant.time_modules, 
+@restaurant.period_of_reservation)
     disable_dates = reservation_dates.disable_dates
     default_day = reservation_dates.first_day
     max_date = Date.today + @restaurant.period_of_reservation.days
@@ -25,10 +26,11 @@ class RestaurantsController < ApplicationController
     day = params[:day]
     
     time_module = @restaurant.time_modules.in_which_time_module(day_of_week).first
-    interval_time = @restaurant.interval_time.minutes
+    interval_time = @restaurant.interval_time
     business_times = BusinessTimeCounting.new(day, time_module, interval_time).time_counting
 
-    # return Selected dates and business hours to convert to numbers, format: [1680778800, 1680780600, 1680782400]
+    # return Selected dates and business hours to convert to numbers, 
+    # format: [1680778800, 1680780600, 1680782400]
     render json:{business_times: business_times}
   end
 

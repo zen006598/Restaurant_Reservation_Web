@@ -34,7 +34,8 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:name, :phone, :email, :gender, :comment, :arrival_time, :adult_quantity, :child_quantity)
+    params.require(:reservation).permit(:name, :phone, :email, :gender, :comment, :arrival_time, 
+:adult_quantity, :child_quantity)
   end
 
   def find_reservation_info

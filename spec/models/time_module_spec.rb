@@ -9,7 +9,7 @@ RSpec.describe TimeModule, type: :model do
   describe "Validations" do
     it { should validate_presence_of(:title) }
 
-    let(:restaurant){create(:restaurant)}
+    let(:restaurant){create(:restaurant, :skip_validate)}
     let(:time_module){create(:time_module, restaurant: restaurant)}
 
     context '#day_of_week_inclusion_validation' do
@@ -26,12 +26,12 @@ RSpec.describe TimeModule, type: :model do
     end
 
     context '#repeat_with_business_day' do
-      let!(:restaurant) { create(:restaurant) }
+      let!(:restaurant) { create(:restaurant, :skip_validate) }
       let!(:time_module_1) { create(:time_module, restaurant: restaurant, day_of_week_list: [0, 1, 2, 3]) }
       let!(:time_module_2) { build(:time_module, restaurant: restaurant) }
     
       it 'valied' do
-        time_module_2.update(day_of_week_list: [ 4, 5])
+        time_module_2.update(day_of_week_list: [4, 5])
         expect(time_module_2.valid?).to eq true
       end
     
@@ -48,7 +48,7 @@ RSpec.describe TimeModule, type: :model do
 
   describe 'instance methods' do
     context "#compact_params" do
-      let!(:restaurant){create(:restaurant)}
+      let!(:restaurant){create(:restaurant, :skip_validate)}
       let!(:time_module) { create(:time_module, restaurant: restaurant, day_of_week_list: [nil, 0, 1, 2, 3]) }
       
       it 'valided' do
@@ -62,7 +62,7 @@ RSpec.describe TimeModule, type: :model do
   end
 
   describe 'scope' do
-    let!(:restaurant) { create(:restaurant) }
+    let!(:restaurant) { create(:restaurant, :skip_validate) }
     let!(:time_module_1) { create(:time_module, day_of_week_list: [0, 1, 2, 3], restaurant: restaurant) }
     let!(:time_module_2) { create(:time_module, day_of_week_list: [4, 5, 6], restaurant: restaurant) }
     context 'except_time_module' do

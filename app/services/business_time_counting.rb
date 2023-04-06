@@ -2,14 +2,17 @@ class BusinessTimeCounting
   def initialize(day, time_module, interval_time)
     @day = day
     @time_module = time_module
-    @interval_time = interval_time
+    @interval_time = interval_time.minutes
   end
 
   def time_counting
-    return 'UNAVAILABLE' if @time_module.nil?
     business_times = @time_module.business_times.map do |business_time|
-      ("#{@day}-#{business_time.start.strftime('%R')}".to_time.to_i .. "#{@day}-#{business_time._end.strftime('%R')}".to_time.to_i).step(@interval_time).to_a
+      time_difference = ((business_time._end.to_time - business_time.start.to_time))
+      start = "#{@day}-#{business_time.start.strftime('%R')}".to_time.to_i
+      _end = start + time_difference
+      (start.._end).step(@interval_time).to_a
     end
+
     business_times.flatten
   end
 end

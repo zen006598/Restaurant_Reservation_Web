@@ -10,7 +10,8 @@ class TimeModule < ApplicationRecord
   validate :day_of_week_inclusion_validation, :repeat_with_other_business_day
 
   scope :except_time_module, -> (id) {where.not('time_modules.id = ?', id)}
-  scope :in_which_time_module, -> (day_of_week) {where('time_modules.day_of_week_list && array[?]', day_of_week)}
+  scope :in_which_time_module, -> (day_of_week) {
+where('time_modules.day_of_week_list && array[?]', day_of_week)}
 
   def self.except_self(id)
     self.except_time_module(id).first
