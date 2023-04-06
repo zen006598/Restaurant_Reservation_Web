@@ -23,6 +23,6 @@ class Reservation < ApplicationRecord
 
     business_times = BusinessTimeCounting.new(day, time_module, interval_time).time_counting
     return errors.add(:arrival_time, 
-'The arrival time must in the business time.') if business_times.exclude?(arrival_time.to_time.to_i)
+      'The arrival time must in the business time.') if business_times.exclude?(arrival_time.to_time.to_i)
   end
 end
