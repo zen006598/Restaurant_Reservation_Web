@@ -24,7 +24,7 @@ RSpec.describe Reservation, type: :model do
     end
 
     context 'Format' do
-      # it { should allow_value( Faker::Time.between(from: DateTime.now - 1, to: DateTime.now)).for(:arrival_time) }
+      it { should allow_value(Time.at((Time.current.to_i..(Time.current + 3.hours).to_i).step(15.minutes).to_a.sample)).for(:arrival_time) }
     end
 
     context '#verify_arrival_time_in_business_time' do
@@ -45,3 +45,5 @@ RSpec.describe Reservation, type: :model do
     it { should define_enum_for(:gender).with_values(male: 1, female: 2, other: 3) }
   end
 end
+
+

@@ -80,15 +80,15 @@ RSpec.describe TimeModule, type: :model do
       end
     end
 
-    context 'in_which_time_module' do
+    context 'in_which_time_modules' do
       it 'valided' do
-        expect(restaurant.time_modules.in_which_time_module(3).first).to eq(time_module_1) 
-        expect(restaurant.time_modules.in_which_time_module(6).first).to eq(time_module_2) 
+        expect(restaurant.time_modules.in_which_time_modules(3).first).to eq(time_module_1) 
+        expect(restaurant.time_modules.in_which_time_modules(6).first).to eq(time_module_2) 
       end
 
       it 'invalided' do
-        expect(restaurant.time_modules.in_which_time_module(3).first).not_to eq(time_module_2) 
-        expect(restaurant.time_modules.in_which_time_module(6).first).not_to eq(time_module_1) 
+        expect(restaurant.time_modules.in_which_time_modules(3).first).not_to eq(time_module_2) 
+        expect(restaurant.time_modules.in_which_time_modules(6).first).not_to eq(time_module_1) 
       end
     end
   end

@@ -19,6 +19,7 @@ class Admin::TimeModulesController < Admin::ApplicationBackstageController
   def update
     respond_to do |format|
       if @time_module.update(time_module_params)
+        p @time_module.business_times
         flash[:notice] = "#{@time_module.title} successfully edited."
         format.turbo_stream do render turbo_stream: [
           turbo_stream.update(@time_module, partial: "admin/time_modules/time_module", 

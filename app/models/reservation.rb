@@ -17,10 +17,10 @@ class Reservation < ApplicationRecord
 
   def verify_arrival_time_in_business_time
     day_of_week = arrival_time.wday
-    time_module = restaurant.time_modules.in_which_time_module(day_of_week).first
+    time_module = restaurant.time_modules.in_which_time_module(day_of_week)
     interval_time = restaurant.interval_time
-
-    business_times = BusinessTimeCounting.new(time_module, interval_time).time_counting
+    time_module.business_times
+    business_times = BusinessTimeCounting.new(time_module, interval_time, arrival_time).reservable_time
 
     if business_times.exclude?(arrival_time.strftime('%R').to_time.to_i)
       return errors.add(:arrival_time, 'The arrival time must in the business time.') 

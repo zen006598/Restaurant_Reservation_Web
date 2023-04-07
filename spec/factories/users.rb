@@ -3,7 +3,7 @@ FactoryBot.define do
     email {Faker::Internet.email}
     password {'foobar123'}
     password_confirmation {'foobar123'}
-    confirmed_at {Time.now}
+    confirmed_at {Time.current}
     role {'owner'}
   end
 
