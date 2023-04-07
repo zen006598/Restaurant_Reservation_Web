@@ -25,6 +25,7 @@
   <%= f.text_field :arrival_time, value: @arrival_time, class: 'hidden' %>
   <%= f.number_field :adult_quantity, value: @adult_quantity, class: 'hidden' %>
   <%= f.number_field :child_quantity, value: @child_quantity, class: 'hidden' %>
+  <%= f.select :table_type, Reservation.table_types.keys, {selected: @table_type}, class: 'hidden'  %>
 
   <%= f.submit class: 'w-full major-button py-2 mb-4' %>
   <button class='w-full py-2 border rounded-md border-slate-400'>Back</button>

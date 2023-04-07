@@ -1,4 +1,6 @@
 class Seat < ApplicationRecord
+  include TableType
+
   belongs_to :seat_module
   belongs_to :restaurant
 
@@ -7,6 +9,10 @@ class Seat < ApplicationRecord
   validates :capacity, presence: true, numericality: { greater_than: 0 }
 
   enum :state, { empty: 0, occupy: 1 }, default: :empty
-  enum :table_type, { regular_table: 0, private_room: 1, counter_seat: 2 }, default: :regular_table
 
+  scope :table_count, -> (table_type) { where(table_type: table_type).count }
+  
+  def self.table_type_sum(table_type)
+    table_count(table_type)
+  end
 end

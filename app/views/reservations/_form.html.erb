@@ -26,31 +26,37 @@
       
       <div class='w-full'>
         <h3 class='mb-2 font-bold'>Type of table</h3>
-        <%= f.select :table_type,Seat.table_types.keys, {}, class: 'w-full border-none rounded-lg bg-bgGray' %>
+        <%= f.select :table_type, Reservation.table_types.keys, {},
+                      class: 'w-full border-none rounded-lg bg-bgGray', 
+                      data: {controller: 'table-type-selecter', 
+                              action: 'change->table-type-selecter#setTable 
+                                      reservation-datepicker:choiceDate@window->table-type-selecter#getChoiceDate'} %>
       </div>
 
     </div>
   </div>
 
-  <div data-action='reservation-datepicker:businessTime@window->reservation-form#setTime'>
-    <div data-action='people-quantity:alert@window->reservation-form#setAlert' class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert'>
+  <div data-action='reservation-datepicker:businessTime@window->reservation-form#setTime 
+                    table-type-selecter:unavailableTime@window->reservation-form#disableTimeButton'>
+    <div data-action='people-quantity:notice@window->reservation-form#setAlert' class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert' data-state = <%= @alert %>>
       All available times are fully booked.
     </div>
-    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='midnightTitle'>Midnight - Early morning</h3>
-    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='midnight'>
-    </div>
+    <div data-reservation-form-target='timeField'>
+      <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 whitespace-nowrap' data-reservation-form-target='midnightTitle'>Midnight - Early morning</h3>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='midnight'>
+      </div>
 
-    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='morningTitle'>Morning</h3>
-    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='morning'>
-    </div>
-    
-
-    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='noonTitle'>noon</h3>
-    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='noon'>
-    </div>
-    
-    <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 hidden' data-reservation-form-target='eveningTitle'>evening</h3>
-    <div class='flex flex-wrap hidden gap-4 py-4 ' data-reservation-form-target='evening'>
+      <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300' data-reservation-form-target='morningTitle'>Morning</h3>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='morning'>
+      </div>
+      
+      <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300' data-reservation-form-target='noonTitle'>Noon</h3>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='noon'>
+      </div>
+      
+      <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300' data-reservation-form-target='eveningTitle'>Evening</h3>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='evening'>
+      </div>
     </div>
   </div>
   

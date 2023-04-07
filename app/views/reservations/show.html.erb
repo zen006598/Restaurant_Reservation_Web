@@ -26,6 +26,9 @@
           <%= @reservation.adult_quantity %>Adult(s)
           <%= @reservation.child_quantity %>Kid(s)
         </div>
+        <div>
+          <%= @reservation.table_type %>
+        </div>
       </div>
       
       <% if @reservation.comment.present? %>

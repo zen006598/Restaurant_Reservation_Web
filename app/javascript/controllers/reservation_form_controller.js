@@ -1,12 +1,60 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ 'noon', 'evening', 'midnight', 'morning', 'noonTitle', 'eveningTitle', 'midnightTitle', 'morningTitle', 'alert']
+  static targets = [ 'noon', 'evening', 'midnight', 'morning', 'noonTitle', 'eveningTitle', 'midnightTitle', 'morningTitle', 'alert', 'timeField']
+
+  connect(){
+    this.alert = !!this.alertTarget.dataset.state
+  }
 
   setTime(e){
     this.reset()
-    let business_times = e.detail.business_times
 
+    let business_times = e.detail.business_times
+    this.setTimeButton(business_times)
+   
+    this.toggleVisibility(this.midnightTarget, this.midnightTitleTarget) 
+    this.toggleVisibility(this.morningTarget, this.morningTitleTarget) 
+    this.toggleVisibility(this.noonTarget, this.noonTitleTarget) 
+    this.toggleVisibility(this.eveningTarget, this.eveningTitleTarget) 
+  }
+
+  toggleVisibility(target, titleTarget) {
+    titleTarget.classList.toggle('hidden', target.innerHTML.replace(/\s/g, '') == '')
+  }  
+
+  reset(){
+    this.midnightTarget.innerHTML = ''
+    this.morningTarget.innerHTML = ''
+    this.noonTarget.innerHTML = ''
+    this.eveningTarget.innerHTML = ''
+  }
+
+  setAlert(e){
+    const state = e.detail.state
+    this.alert = state
+    this.alertTarget.dataset.state = state
+
+    this.toggleTimeField(this.alert)
+    this.toggleAlert(this.alert)
+  }
+
+  toggleAlert(state){
+    this.alertTarget.classList.toggle('hidden', state)
+  }
+
+  toggleTimeField(state){
+    this.timeFieldTarget.classList.toggle('hidden', !state)
+  }
+
+  disableTimeButton(e){
+    let unavailableTimes = e.detail.unavailableTime
+
+    unavailableTimes = unavailableTimes.map(e => new Date(e * 1000).toString().replace(/\s/g, "_").substring(0, 21))
+    console.log(unavailableTimes);
+  }
+
+  setTimeButton(business_times){
     business_times.forEach(e => {
       const business_day = new Date(e * 1000).toDateString().replace(/\s/g, "_")
       const business_time = new Date(e * 1000).toLocaleTimeString('zh-TW', { hour12: false }).substring(0, 5)
@@ -17,49 +65,21 @@ export default class extends Controller {
           <label for=${business_time} class='px-8 py-3 text-xl cursor-pointer peer-checked:bg-major peer-checked:text-white  border rounded hover:border-major '>${business_time}</label>
         </span>
       `
-      if ('00:00'<= business_time && business_time < '06:00'){
-        this.midnightTitleTarget.classList.remove('hidden')
-        this.midnightTarget.classList.remove('hidden')
-        this.midnightTarget.insertAdjacentHTML('beforeend', button)
-      }else if('06:00'<= business_time && business_time < '11:00'){
-        this.morningTitleTarget.classList.remove('hidden')
-        this.morningTarget.classList.remove('hidden')
-        this.morningTarget.insertAdjacentHTML('beforeend', button)
-      }else if ('11:00'<= business_time && business_time < '18:00'){
-        this.noonTitleTarget.classList.remove('hidden')
-        this.noonTarget.classList.remove('hidden')
-        this.noonTarget.insertAdjacentHTML('beforeend', button)
-      }else if ('18:00'<= business_time && business_time < '24:00'){
-        this.eveningTitleTarget.classList.remove('hidden')
-        this.eveningTarget.classList.remove('hidden')
-        this.eveningTarget.insertAdjacentHTML('beforeend', button)
+      switch (true) {
+        case ('00:00' <= business_time && business_time < '06:00'):
+          this.midnightTarget.insertAdjacentHTML('beforeend', button);
+          break
+        case ('06:00' <= business_time && business_time < '11:00'):
+          this.morningTarget.insertAdjacentHTML('beforeend', button)
+          break
+        case ('11:00' <= business_time && business_time < '18:00'):
+          this.noonTarget.insertAdjacentHTML('beforeend', button)
+          break
+        case ('18:00' <= business_time && business_time < '24:00'):
+          this.eveningTarget.insertAdjacentHTML('beforeend', button)
+          break
       }
     })
-  }
-
-  reset(){
-    this.alertTarget.classList.add('hidden')
-
-    this.midnightTitleTarget.classList.add('hidden')
-    this.midnightTarget.classList.add('hidden')
-    this.midnightTarget.innerHTML = ''
-
-    this.morningTitleTarget.classList.add('hidden')
-    this.morningTarget.classList.add('hidden')
-    this.morningTarget.innerHTML = ''
-
-    this.noonTitleTarget.classList.add('hidden')
-    this.noonTarget.classList.add('hidden')
-    this.noonTarget.innerHTML = ''
-
-    this.eveningTitleTarget.classList.add('hidden')
-    this.eveningTarget.classList.add('hidden')
-    this.eveningTarget.innerHTML = ''
-  }
-
-  setAlert(){
-    this.reset()
-    this.alertTarget.classList.remove('hidden')
   }
 }
 

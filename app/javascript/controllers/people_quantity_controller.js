@@ -2,12 +2,13 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ['kid', 'adult']
+
   fetchQuantity() {
     this.id = this.element.dataset.restaurant
     this.token = document.querySelector("meta[name='csrf-token']").content
     const people_sum = +this.kidTarget.value + +this.adultTarget.value
 
-    fetch(`/restaurants/${this.id}/get_available_seat`,{
+    fetch(`/restaurants/${this.id}/get_available_seat`, {
       method: 'POST',
       headers: {
         "X-CSRF-Token": this.token,
@@ -17,10 +18,8 @@ export default class extends Controller {
         people_sum: people_sum
       })
     }).then((resp) => resp.json())
-    .then(({alert}) => {
-      if(alert === 'unavailable' ){
-        this.dispatch('alert')
-      }
+    .then(({notice}) => {
+      this.dispatch('notice', {detail: {state: notice}})
     })
     .catch((e) => console.log(e, 'error'))
   }

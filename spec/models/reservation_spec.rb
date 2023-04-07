@@ -6,16 +6,11 @@ RSpec.describe Reservation, type: :model do
   let!(:business_time){create(:business_time, time_module: time_module)}
   subject { create(:reservation, restaurant: restaurant) }
 
-  describe 'Association' do
-    # it { should belong_to(:restaurant)}
-  end
-
   describe 'Validations' do
     context 'Presence' do
       [:name, :phone, :gender, :state, :adult_quantity, :child_quantity].each do |field|
         it { should validate_presence_of(field) }
       end
-      # it {should validate_presence_of(:arrival_time)}
     end
 
     context 'Numericality' do

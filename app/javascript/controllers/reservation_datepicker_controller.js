@@ -11,7 +11,10 @@ export default class extends Controller {
         "X-CSRF-Token": this.token,
       }
     }).then((resp) => resp.json())
-    .then(({maxDate, disable, defaultDate}) => { 
+    .then(({maxDate, disable, defaultDate, fullyOccupiedTime}) => {
+      // let the table type can get the first business day 
+      this.dispatchChoiceDate(defaultDate)
+
       this.fetchBusinessTimes(defaultDate)
       flatpickr("#reservation-datepicker", {
         dateFormat: "Y-m-d",
@@ -26,23 +29,29 @@ export default class extends Controller {
   }
 
   getBusinessTime(e){
-    const day = e.currentTarget.value
-   this.fetchBusinessTimes(day)
+    const date = e.currentTarget.value
+    // setting the time button and make the table type get the new choice date
+    this.fetchBusinessTimes(date)
+    this.dispatchChoiceDate(date)
   }
 
   dispatchTime(business_times){
     this.dispatch('businessTime', {detail: {business_times: business_times}})
   }
 
-  fetchBusinessTimes(day){
-    fetch(`/restaurants/${this.id}/get_business_times`,{
+  dispatchChoiceDate(date){
+    this.dispatch('choiceDate', {detail: {choiceDate: date}})
+  }
+
+  fetchBusinessTimes(date){
+    fetch(`/restaurants/${this.id}/get_business_times`, {
       method: 'POST',
       headers: {
         "X-CSRF-Token": this.token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify ({
-        day: day
+        day: date
       })
     }).then((resp) => resp.json())
     .then(({business_times}) => {

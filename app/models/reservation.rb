@@ -1,4 +1,6 @@
 class Reservation < ApplicationRecord
+  include TableType
+
   belongs_to :restaurant
 
   validates :name, presence: true
@@ -12,6 +14,8 @@ class Reservation < ApplicationRecord
   validate :verify_arrival_time_in_business_day, :verify_arrival_time_in_business_time
 
   enum :gender, {male: 1, female: 2, other: 3}, default: :male
+
+  scope :on_or_after_now, -> { where('arrival_time >= ?', Time.current)}
 
   private
 

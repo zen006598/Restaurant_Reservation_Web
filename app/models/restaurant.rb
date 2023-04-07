@@ -30,7 +30,8 @@ class Restaurant < ApplicationRecord
   end
 
   def maximum_capacity
-    @maximum_capacity ||= seats.maximum(:capacity)
+    return 0 if seats.blank?
+    @maximum_capacity = seats.maximum(:capacity)
   end
 
 end
