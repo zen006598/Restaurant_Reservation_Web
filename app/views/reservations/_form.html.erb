@@ -38,29 +38,25 @@
   </div>
 
   <div>
-    <div class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert' data-state = <%= @alert %>>
+    <div class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert' data-maximum-capacity = <%= @maximum_capacity %>>
       All available times are fully booked.
     </div>
     <div data-reservation-form-target='timeField'>
       <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300 whitespace-nowrap' data-reservation-form-target='midnightTitle'>Midnight - Early morning</h3>
-      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='midnight'>
-      </div>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='midnight'></div>
 
       <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300' data-reservation-form-target='morningTitle'>Morning</h3>
-      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='morning'>
-      </div>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='morning'></div>
       
       <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300' data-reservation-form-target='noonTitle'>Noon</h3>
-      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='noon'>
-      </div>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='noon'></div>
       
       <h3 class=' after:content-[""] flex items-center after:border-t after:border-slate-300 after:w-full after:ml-2 text-slate-300' data-reservation-form-target='eveningTitle'>Evening</h3>
-      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='evening'>
-      </div>
+      <div class='flex flex-wrap gap-4 py-4 ' data-reservation-form-target='evening'></div>
     </div>
   </div>
   
   <div class='fixed bottom-0 left-0 z-50 flex w-full bg-white border-t h-14 rigth-0 '>
-    <%= f.submit class: 'w-full max-w-screen-lg py-1 mx-4 my-auto text-lg font-bold text-center major-button lg:m-auto' %>
+    <%= f.submit class: 'w-full max-w-screen-lg py-1 mx-4 my-auto text-lg font-bold text-center disabled-button lg:m-auto ', disabled: true, data: {reservation_form_target: 'submit'} %>
   </div>
 <% end %>

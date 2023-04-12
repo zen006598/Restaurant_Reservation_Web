@@ -15,6 +15,9 @@ class RestaurantsController < ApplicationController
 
     @reservation = Reservation.new
 
+    key = Seat.maximum_capacity_sha1(@restaurant.id)
+    @maximum_capacity = $redis.hmget(key, :maximum_capacity).first.to_i
+
     respond_to do |format|
       format.json { render json: { maxDate: max_date, disable: disable_dates, defaultDate: @default_date} }
       format.html { render :show }
