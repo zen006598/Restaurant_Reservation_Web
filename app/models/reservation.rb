@@ -20,8 +20,17 @@ class Reservation < ApplicationRecord
   scope :except_canceled, -> {where.not(state: 'canceled')}
   scope :which_table_type, -> (table_type) {where('table_type = ?', table_type)}
   scope :when_arrival_time, -> (arrival_time) {where('arrival_time = ?', arrival_time)}
+  scope :exculde_arrival_times, -> (arrival_time) {where.not(arrival_time: arrival_time.map(&:to_time))}
+  scope :search_arrival_date, ->(date) { where('DATE(arrival_time) = ?', date) }
+  scope :people_sum, ->(people_sum) {where('adult_quantity + child_quantity = ?', people_sum)}
+  scope :more_than_people_sum, ->(people_sum) {where('adult_quantity + child_quantity >= ?', people_sum)}
 
   after_save :get_unavailable_time
+
+  def self.unavaliable_time_sha1(id, arrival_time, table_type)
+    sha_id = Digest::SHA1.hexdigest(id.to_s.concat(arrival_time.strftime('%Y%m%d'), table_type.to_s))
+    @@key = "unavailable_time:#{sha_id}"
+  end
 
   private
 
@@ -44,13 +53,14 @@ class Reservation < ApplicationRecord
     reservations_number = reservations.size
 
     if table_type_maximun <= reservations_number
-      sha_id = Digest::SHA1.hexdigest(restaurant_id.to_s)
-      key = "unavailable_time:#{sha_id}:#{arrival_time.strftime('%Y%m%d')}"
-      expire_time = (arrival_time.to_date.to_time + 1.days).to_i - Time.current.to_i
-      # Grouping the unavailable_time in the same day
-      # When the date for the unavailable time has passed, it will expire.
-      $redis.expire(key, expire_time, nx: true)
-      $redis.sadd(key, arrival_time)
+      set_unavailable_time(restaurant_id, arrival_time, table_type)
     end
+  end
+
+  def set_unavailable_time(restaurant_id, arrival_time, table_type)
+    Reservation.unavaliable_time_sha1(restaurant_id, arrival_time, table_type)
+    expire_time = (arrival_time.to_date.to_time + 1.days).to_i - Time.current.to_i
+    $redis.expire(@@key, expire_time, nx: true)
+    $redis.sadd(@@key, arrival_time)
   end
 end

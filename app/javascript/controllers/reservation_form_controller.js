@@ -1,22 +1,62 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ 'noon', 'evening', 'midnight', 'morning', 'noonTitle', 'eveningTitle', 'midnightTitle', 'morningTitle', 'alert', 'timeField']
+  static targets = [ 'noon', 'evening', 'midnight', 'morning', 'noonTitle', 'eveningTitle', 'midnightTitle', 'morningTitle', 'alert', 'timeField', 'datepicker', 'tableType', 'kid', 'adult']
 
   connect(){
     this.alert = !!this.alertTarget.dataset.state
+    this.id = window.location.href.split('/').reverse()[0]
+    this.token = document.querySelector("meta[name='csrf-token']").content
+    this.reservationDate = this.datepickerTarget.dataset.defaultDate
+    this.tableType = this.tableTypeTarget.value
+    this.peopleSum = +this.kidTarget.value + +this.adultTarget.value
+    this.fetchBusinessTimes()
   }
 
-  setTime(e){
-    this.reset()
+  sumQuantity() {
+    this.peopleSum = +this.kidTarget.value + +this.adultTarget.value
+    this.fetchBusinessTimes()
+  }
 
-    let business_times = e.detail.business_times
-    this.setTimeButton(business_times)
-   
-    this.toggleVisibility(this.midnightTarget, this.midnightTitleTarget) 
-    this.toggleVisibility(this.morningTarget, this.morningTitleTarget) 
-    this.toggleVisibility(this.noonTarget, this.noonTitleTarget) 
-    this.toggleVisibility(this.eveningTarget, this.eveningTitleTarget) 
+  inputTableType(e){
+    this.tableType = e.currentTarget.value
+    this.fetchBusinessTimes()
+  }
+
+  inputReservationDate(e){
+    this.reservationDate = e.currentTarget.value
+    this.fetchBusinessTimes()
+  }
+
+  fetchBusinessTimes(){
+    fetch(`/restaurants/${this.id}/get_business_times`, {
+      method: 'POST',
+      headers: {
+        "X-CSRF-Token": this.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify ({
+        reservationDate: this.reservationDate,
+        tableType: this.tableType,
+        peopleSum: this.peopleSum
+      })
+    }).then((resp) => resp.json())
+    .then(({businessTimes}) => {
+      this.setTime(businessTimes)
+    })
+    .catch((e) => console.log(e, 'error'))
+  }
+
+  setTime(businessTimes){
+    if(JSON.stringify(this.businessTimes) != JSON.stringify(businessTimes)){
+      this.businessTimes = businessTimes
+      this.reset()
+      this.setTimeButton()
+      this.toggleVisibility(this.midnightTarget, this.midnightTitleTarget) 
+      this.toggleVisibility(this.morningTarget, this.morningTitleTarget) 
+      this.toggleVisibility(this.noonTarget, this.noonTitleTarget) 
+      this.toggleVisibility(this.eveningTarget, this.eveningTitleTarget)
+    }
   }
 
   toggleVisibility(target, titleTarget) {
@@ -31,7 +71,7 @@ export default class extends Controller {
   }
 
   setAlert(e){
-    const state = e.detail.state
+    const state = e
     this.alert = state
     this.alertTarget.dataset.state = state
 
@@ -47,15 +87,8 @@ export default class extends Controller {
     this.timeFieldTarget.classList.toggle('hidden', !state)
   }
 
-  disableTimeButton(e){
-    let unavailableTimes = e.detail.unavailableTime
-
-    unavailableTimes = unavailableTimes.map(e => new Date(e * 1000).toString().replace(/\s/g, "_").substring(0, 21))
-    console.log(unavailableTimes);
-  }
-
-  setTimeButton(business_times){
-    business_times.forEach(e => {
+  setTimeButton(){
+    this.businessTimes.forEach(e => {
       const business_day = new Date(e * 1000).toDateString().replace(/\s/g, "_")
       const business_time = new Date(e * 1000).toLocaleTimeString('zh-TW', { hour12: false }).substring(0, 5)
 

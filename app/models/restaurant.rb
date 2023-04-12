@@ -28,11 +28,5 @@ class Restaurant < ApplicationRecord
       OffDay.where(day: day.strip).first_or_create!
     end
   end
-
-  def maximum_capacity
-    return 0 if seats.blank?
-    @maximum_capacity = seats.maximum(:capacity)
-  end
-
 end
 

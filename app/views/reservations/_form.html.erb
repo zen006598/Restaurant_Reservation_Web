@@ -4,11 +4,11 @@
       <h3 class='mb-2 font-bold'>Party Size</h3>
       <div class='flex items-center gap-2' data-controller='people-quantity' data-restaurant="<%= @restaurant.id %>">
         <div class='flex items-center'>
-          <%= f.number_field :adult_quantity, min: 1, required: true, class: 'border-none bg-bgGray rounded-lg w-full', data: {action: 'change->people-quantity#fetchQuantity', people_quantity_target: 'adult'} %>
+          <%= f.number_field :adult_quantity, min: 1, required: true, class: 'border-none bg-bgGray rounded-lg w-full', data: {action: 'change->reservation-form#sumQuantity', reservation_form_target: 'adult'} %>
           <p>Adult(s)</p>
         </div>
         <div class='flex items-center'>
-          <%= f.number_field :child_quantity, min: 0, class: 'border-none bg-bgGray rounded-lg w-full', data: {action: 'change->people-quantity#fetchQuantity', people_quantity_target: 'kid'} %>
+          <%= f.number_field :child_quantity, min: 0, class: 'border-none bg-bgGray rounded-lg w-full', data: {action: 'change->reservation-form#sumQuantity', reservation_form_target: 'kid'} %>
           <p>Kid(s)</p>
         </div>
       </div>
@@ -19,26 +19,26 @@
         <h3 class='mb-2 font-bold'>Dining date</h3>
         <input type="text" id='reservation-datepicker'
                 data-controller="reservation-datepicker"
-                data-action = 'input->reservation-datepicker#getBusinessTime'
+                data-action = 'input->reservation-form#inputReservationDate'
+                data-reservation-form-target='datepicker'
                 data-restaurant = <%= @restaurant.id %>
-                class= 'w-full border-none rounded-lg bg-bgGray'>
+                class= 'w-full border-none rounded-lg bg-bgGray'
+                data-default-date=<%= @default_date%>>
       </div>
       
       <div class='w-full'>
         <h3 class='mb-2 font-bold'>Type of table</h3>
         <%= f.select :table_type, Reservation.table_types.keys, {},
                       class: 'w-full border-none rounded-lg bg-bgGray', 
-                      data: {controller: 'table-type-selecter', 
-                              action: 'change->table-type-selecter#setTable 
-                                      reservation-datepicker:choiceDate@window->table-type-selecter#getChoiceDate'} %>
+                      data: {action: 'change->reservation-form#inputTableType',
+                            reservation_form_target: 'tableType'} %>
       </div>
 
     </div>
   </div>
 
-  <div data-action='reservation-datepicker:businessTime@window->reservation-form#setTime 
-                    table-type-selecter:unavailableTime@window->reservation-form#disableTimeButton'>
-    <div data-action='people-quantity:notice@window->reservation-form#setAlert' class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert' data-state = <%= @alert %>>
+  <div>
+    <div class='hidden p-4 text-center underline border border-red-500 rounded-lg' data-reservation-form-target='alert' data-state = <%= @alert %>>
       All available times are fully booked.
     </div>
     <div data-reservation-form-target='timeField'>
