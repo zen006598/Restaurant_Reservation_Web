@@ -16,4 +16,18 @@ RSpec.describe Seat, type: :model do
   describe 'Enum' do
     it { should define_enum_for(:state).with_values(empty: 0, occupy: 1) }
   end
+
+  describe 'after_save' do
+    let!(:restaurant) { create(:restaurant) }
+    let!(:seat_module) { create(:seat_module, restaurant: restaurant) }
+    let!(:seat) { create(:seat, restaurant: restaurant, seat_module: seat_module) }
+
+    it "sets the maximum capacity in Redis" do
+      key = Seat.maximum_capacity_sha1(seat.restaurant_id)
+      redis_maximum_capacity = $redis.hget(key, :maximum_capacity).to_i
+      redis_ttl = $redis.ttl(key)
+      expect(redis_maximum_capacity).to eq(seat.capacity)
+      expect(redis_ttl).to eq(30.days)
+    end
+  end
 end

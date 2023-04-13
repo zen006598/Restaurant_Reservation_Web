@@ -19,10 +19,6 @@ class Seat < ApplicationRecord
   scope :more_than_capacity, -> (capacity){ where('capacity >= ?', capacity) }
 
   after_save :maximum_capacity
-  
-  def self.table_type_sum(table_type)
-    table_count(table_type)
-  end
 
   def self.maximum_capacity_sha1(restaurant_id)
     sha1 = Digest::SHA1.hexdigest("seats#{restaurant_id.to_s}")

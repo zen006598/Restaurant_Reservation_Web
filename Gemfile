@@ -47,4 +47,5 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'database_cleaner-active_record'
+  gem "mock_redis", "~> 0.36.0"
 end

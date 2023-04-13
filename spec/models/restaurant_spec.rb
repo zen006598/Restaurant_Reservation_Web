@@ -36,24 +36,13 @@ RSpec.describe Restaurant, type: :model do
       off_day_list = "#{Faker::Date.between(from: Date.today, to: Date.today + 1.years)}"
       expect { restaurant.off_day_list=(off_day_list) }.to change { restaurant.off_days.count }.by(1)
     end
-
-    context '#maximum_capacity' do
-      let!(:restaurant) { create(:restaurant) }
-      let!(:seat_module){create(:seat_module, restaurant: restaurant)}
-      let!(:seat1) { create(:seat, capacity: 20, restaurant: restaurant, seat_module: seat_module) }
-      let!(:seat2) { create(:seat, capacity: 10, restaurant: restaurant, seat_module: seat_module) }
-
-      it "returns the maximum capacity of the seats" do
-        expect(restaurant.maximum_capacity).to eq(20)
-      end
-    end
   end
 
   describe "Constants" do
     it "Has a constant for days of the week" do
       expect(described_class::DAYOFWEEK).to eq({ Monday: 1, Tuesday: 2, Wednesday: 3,
-                                                     Thursday: 4, Friday: 5, Saturday: 6,
-                                                     Sunday: 0 }.freeze)
+                                                Thursday: 4, Friday: 5, Saturday: 6,
+                                                Sunday: 0 }.freeze)
     end
   end
 end

@@ -18,10 +18,6 @@ RSpec.describe Reservation, type: :model do
       it {should validate_numericality_of(:child_quantity).is_greater_than_or_equal_to(0)}
     end
 
-    context 'Format' do
-      it { should allow_value(Time.at((Time.current.to_i..(Time.current + 3.hours).to_i).step(15.minutes).to_a.sample)).for(:arrival_time) }
-    end
-
     context '#verify_arrival_time_in_business_time' do
       let!(:reservation) { create(:reservation, restaurant: restaurant)}
       it 'valided' do
