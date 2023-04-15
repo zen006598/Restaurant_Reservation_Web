@@ -7,15 +7,12 @@ class RestaurantsController < ApplicationController
 
   def show
     # return flatpickr setting
-    reservation_dates = ReservationDate.new(@restaurant.off_days.after_today, @restaurant.time_modules, 
-                                            @restaurant.period_of_reservation)
-    disable_dates = reservation_dates.disable_dates
-    @default_date = reservation_dates.first_day
+    disable_dates = @restaurant.disable_dates
+    @default_date = @restaurant.enable_dates.first
     max_date = Date.today + @restaurant.period_of_reservation.days
-
     @reservation = Reservation.new
 
-    key = Seat.maximum_capacity_sha1(@restaurant.id)
+    key = Seat.sha1(@restaurant.id)
     @maximum_capacity = $redis.hmget(key, :maximum_capacity).first.to_i
 
     respond_to do |format|
@@ -45,12 +42,12 @@ class RestaurantsController < ApplicationController
     unavailable_times = reservations.select{|arrival_time, reservation_quantity| reservation_quantity >= avaliable_quantity}.keys.concat(unavailable_times).map(&:to_i)
 
     time_module = @restaurant.time_modules.in_which_time_module(day_of_week)
-    interval_time = @restaurant.interval_time
-    business_times = BusinessTimeCounting.new(time_module, interval_time, day).reservable_time - unavailable_times
+
+    business_times = time_module.available_reservable_time(day) - unavailable_times
     # business_times: [1680778800, 1680780600, 1680782400]
     render json:{businessTimes: business_times}
   end
-
+  
   private
 
   def find_restaurant

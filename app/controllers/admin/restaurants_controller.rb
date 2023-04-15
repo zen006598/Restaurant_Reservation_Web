@@ -47,15 +47,15 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
 
     # return off_day flatpickr
     @off_days = @restaurant.off_days
-    disable_day_of_week = ReservationDate.new(@off_days, @time_modules).disable_day_of_week
+    disable_day_of_week = Restaurant::DAYOFWEEK.values - @restaurant.enable_day_of_week
 
     #  return time_modules new method be chioced day of week
-    be_chioced_day_of_week = @time_modules.pluck(:day_of_week_list).flatten
+    enable_day_of_week = @restaurant.enable_day_of_week
 
     respond_to do |format|
       format.json { render json: { _offDays: @off_days,
                                   disableDayOfWeek: disable_day_of_week,
-                                  beChiocedDayOfWeek: be_chioced_day_of_week} }
+                                  enableDayOfWeek: enable_day_of_week} }
       format.html { render :setting }
     end
   end

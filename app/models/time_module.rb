@@ -21,6 +21,18 @@ class TimeModule < ApplicationRecord
     self.in_which_time_modules(day_of_week).first
   end
 
+  def available_reservable_time(day = Time.current)
+    day = day.strftime('%Y-%m-%d')
+
+    reservable_times = business_times.map do |business_time|
+      start = "#{day} #{business_time.start.strftime('%R')}".in_time_zone.to_i
+      _end = "#{day} #{business_time._end.strftime('%R')}".in_time_zone.to_i
+      (start.._end).step(restaurant.interval_time.minutes).to_a
+    end
+
+    reservable_times.flatten
+  end
+
   private
 
   def compact_params

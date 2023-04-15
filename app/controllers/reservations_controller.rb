@@ -14,12 +14,19 @@ class ReservationsController < ApplicationController
   end
 
   def new
-    @reservation = Reservation.new
+    restaurant_key()
+    unless cookies[@restaurant_key].nil?
+      if cookies[@restaurant_key].split('&').map(&:to_time).include?(@arrival_time.to_time)
+        redirect_to restaurant_path(@restaurant)
+      end
+    end
+    @reservation = Reservation.newm
   end
   
   def create
     @reservation = @restaurant.reservations.new(reservation_params)
     if @reservation.save
+      set_duplicate_reservation_cookies()
       ReservationJob.perform_later(@reservation) if @reservation.email.present?
       redirect_to @reservation
     else
@@ -47,5 +54,19 @@ class ReservationsController < ApplicationController
 
   def find_reservation
     @reservation = Reservation.find(params[:id])
+  end
+
+  def set_duplicate_reservation_cookies
+    restaurant_key()
+    if cookies[@restaurant_key].nil?
+      cookies[@restaurant_key] = {value: "#{@reservation.arrival_time}", expires: 3.days.from_now}
+    else
+      value = ([cookies[@restaurant_key].split('&').flatten] << "#{@reservation.arrival_time.to_s}").flatten
+      cookies[@restaurant_key]  = {value: value, expires: 3.days.from_now}
+    end
+  end
+
+  def restaurant_key
+    @restaurant_key = Digest::SHA1.hexdigest("#{@restaurant.id.to_s}")
   end
 end

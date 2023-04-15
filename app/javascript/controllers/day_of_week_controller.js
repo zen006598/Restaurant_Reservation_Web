@@ -9,10 +9,10 @@ export default class extends Controller {
     this.fetch_date()
   }
 
-  disable_off_day(disable_day_of_week){
+  disable_off_day(enableDayOfWeek){
 
     this.buttonTargets.filter(day => {
-      if(disable_day_of_week.includes(+day.firstElementChild.value)){
+      if(enableDayOfWeek.includes(+day.firstElementChild.value)){
         day.firstElementChild.disabled = true
         day.lastElementChild.classList.add('disabled-button')
         day.lastElementChild.disabled = true
@@ -31,8 +31,8 @@ export default class extends Controller {
         "X-CSRF-Token": this.token,
       }
     }).then(resp => resp.json())
-    .then(({beChiocedDayOfWeek}) => {
-      this.disable_off_day(beChiocedDayOfWeek)
+    .then(({enableDayOfWeek}) => {
+      this.disable_off_day(enableDayOfWeek)
     })
     .catch((e) => {
       console.log(e, 'error');

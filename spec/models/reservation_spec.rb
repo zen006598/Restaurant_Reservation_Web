@@ -35,6 +35,12 @@ RSpec.describe Reservation, type: :model do
   describe 'Enum' do
     it { should define_enum_for(:gender).with_values(male: 1, female: 2, other: 3) }
   end
+
+  describe 'Callbacks' do
+    context 'After save' do
+      it 'sets unavailable times when reservations exceed table count' do
+
+      end
+    end
+  end
 end
-
-
