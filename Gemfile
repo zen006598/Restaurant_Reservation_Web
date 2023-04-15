@@ -24,6 +24,7 @@ gem 'cancancan'
 gem 'font-awesome-sass', '~> 6.3.0'
 gem 'simple_calendar', '~> 2.4'
 gem 'validates_timeliness', '~> 7.0.0.beta1'
+gem "aasm", "~> 5.5"
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]

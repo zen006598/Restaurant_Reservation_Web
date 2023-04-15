@@ -1,7 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :find_restaurant, only: %i[new create]
   before_action :find_reservation_info, only: %i[new]
-  before_action :find_reservation, only: %i[show edit update]
+  before_action :find_reservation, only: %i[show edit update reservate cancel complete]
   
   def show
     @restaurant = @reservation.restaurant
@@ -20,7 +20,7 @@ class ReservationsController < ApplicationController
         redirect_to restaurant_path(@restaurant)
       end
     end
-    @reservation = Reservation.newm
+    @reservation = Reservation.new
   end
   
   def create
@@ -32,6 +32,28 @@ class ReservationsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def reservate
+    @reservation.reservate! if @reservation.may_reservate?
+  end
+
+  def cancel
+    if @reservation.may_cancel?
+      @reservation.cancel! 
+      respond_to do |format|
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace(@reservation, 
+                                                    partial: "reservations/cancel", 
+                                                    locals: {reservation: @reservation, 
+                                                            restaurant: @reservation.restaurant})
+        }
+      end
+    end
+  end
+
+  def complete
+    @reservation.complete! if @reser.may_complete?
   end
 
   private

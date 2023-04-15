@@ -1,5 +1,6 @@
 class Reservation < ApplicationRecord
   include TableType
+  include AASM
   # assoccation
   belongs_to :restaurant
   # validation
@@ -28,6 +29,23 @@ class Reservation < ApplicationRecord
   def self.unavaliable_time_sha1(id, arrival_time, table_type)
     sha_id = Digest::SHA1.hexdigest(id.to_s.concat(arrival_time.strftime('%Y%m%d'), table_type.to_s))
     @@key = "unavailable_time:#{sha_id}"
+  end
+  # aasm
+  aasm column: 'state', no_direct_assignment: true  do
+    state :reservated, initial: true
+    state :pending, :complete, :canceled
+
+    event :reservate do
+      transitions from: :pending, to: :reservated
+    end
+
+    event :complete do
+      transitions from: :reservated, to: :complete
+    end
+
+    event :cancel do
+      transitions from: [:reservated, :pending], to: :canceled
+    end
   end
 
   private

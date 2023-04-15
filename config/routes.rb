@@ -38,6 +38,12 @@ Rails.application.routes.draw do
       post :get_business_times
       post :get_available_seat
     end
-    resources :reservations, shallow: true, only: %i[create new show update edit]
+    resources :reservations, shallow: true, only: %i[create new show update edit] do
+      member do
+        post :reservate
+        post :cancel
+        post :complete
+      end
+    end
   end
 end

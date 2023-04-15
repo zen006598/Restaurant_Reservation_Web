@@ -1,0 +1,46 @@
+<%= turbo_frame_tag dom_id(reservation) do %>
+  <div class='flex h-screen max-w-lg m-auto bg-bgGray'>
+    <div class='w-10/12 p-4 m-auto text-center bg-white rounded'>
+      <div class='py-4 border-b'>
+        <div>
+          <h1><%= restaurant.name %></h1>
+          <h2><%= restaurant.branch %></h2>
+        </div>
+        <h3 class='text-slate-400'><%= restaurant.address %></h3>
+        <h3 class='text-major'><%= restaurant.tel %></h3>
+      </div>
+      
+      <div class='p-4'>
+        <h2 class='text-xl font-normal'>
+          Hello, <%= reservation.name %>
+        </h2>
+        <div class='flex justify-center'>
+          <i class="mr-4 text-3xl text-red-600 fa-solid fa-circle-xmark"></i>
+          <p class='mb-4 text-md'>The reservation is canceled:</p>
+        </div>
+
+        <div class='p-4 mb-4 border rounded'>
+          <div class='text-2xl'>
+            <%= reservation.arrival_time.strftime('%Y-%m-%d') %>
+          </div>
+          <div class='text-4xl text-major'>
+            <%= reservation.arrival_time.strftime('%H:%M') %>
+          </div>
+          <div>
+            <%= reservation.adult_quantity %>Adult(s)
+            <%= reservation.child_quantity %>Kid(s)
+          </div>
+          <div>
+            <%= reservation.table_type %>
+          </div>
+        </div>
+        
+        <% if reservation.comment.present? %>
+          <div class='p-4 mb-4 border rounded'>
+            <%= reservation.comment %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
