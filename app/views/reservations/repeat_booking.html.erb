@@ -1,0 +1,6 @@
+<div class='flex h-screen max-w-lg m-auto bg-bgGray'>
+  <div class='w-10/12 p-4 m-auto text-center bg-white rounded'>
+    <h1 class='text-lg text-red-600'>You have double booked the same time, please cancel the original booking.</h1>
+    <%= link_to 'back', restaurant_path(params[:restaurant_id]), class: 'major-button text-lg w-full block mt-4' %>
+  </div>
+</div>

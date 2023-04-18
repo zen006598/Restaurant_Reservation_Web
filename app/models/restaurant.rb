@@ -5,7 +5,7 @@ class Restaurant < ApplicationRecord
   validates :address, presence: true
   validates :dining_time, numericality: { greater_than_or_equal_to: 0 }
   validates :interval_time, numericality: { greater_than_or_equal_to: 0 }
-  validates :period_of_reservation, numericality: { greater_than_or_equal_to: 0 }
+  validates :period_of_reservation, numericality: { greater_than: 0 }
   validates :deposit, numericality: { greater_than_or_equal_to: 0 }
   validates :tel, presence: true,
                   uniqueness: true,
@@ -22,6 +22,14 @@ class Restaurant < ApplicationRecord
   has_many :seats
   has_many :reservations
   has_rich_text :content
+
+  def reservable_last_day
+    Date.today + period_of_reservation.days
+  end
+
+  def sha1_key
+    Digest::SHA1.hexdigest("#{id.to_s}")
+  end
 
   def off_day_list=(days)
     off_days << days.split(',').map do |day|

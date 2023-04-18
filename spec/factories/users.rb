@@ -4,18 +4,7 @@ FactoryBot.define do
     password {'foobar123'}
     password_confirmation {'foobar123'}
     confirmed_at {Time.current}
+    name {Faker::Name.name}
     role {'owner'}
-  end
-
-  trait :manager do
-    email {Faker::Internet.email}
-    role {'manager'}
-    owner_id {1}
-  end
-
-  trait :staff do
-    email {Faker::Internet.email}
-    role {'staff'}
-    owner_id {1}
   end
 end

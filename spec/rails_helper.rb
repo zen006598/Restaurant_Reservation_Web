@@ -7,7 +7,10 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'rspec/rails'
 require 'capybara'
 require 'support/database_cleaner'
+require 'support/capybara'
+require 'support/devise'
 require 'mock_redis'
+include Warden::Test::Helpers
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -33,7 +36,16 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
 RSpec.configure do |config|
+  config.use_transactional_fixtures = false
+
+  config.include Warden::Test::Helpers
+
+  config.after :each do
+    Warden.test_reset!
+  end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

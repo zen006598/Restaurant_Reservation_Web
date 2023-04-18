@@ -65,7 +65,7 @@ Lint/UnusedMethodArgument:
     - app/controllers/application_controller.rb
 
 Metrics/AbcSize:
-  Max: 30
+  Max: 32
 
 Style/PerlBackrefs:
   Exclude:

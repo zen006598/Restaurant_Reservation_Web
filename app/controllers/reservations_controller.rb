@@ -14,24 +14,29 @@ class ReservationsController < ApplicationController
   end
 
   def new
-    restaurant_key()
-    unless cookies[@restaurant_key].nil?
-      if cookies[@restaurant_key].split('&').map(&:to_time).include?(@arrival_time.to_time)
-        redirect_to restaurant_path(@restaurant)
-      end
-    end
     @reservation = Reservation.new
   end
   
   def create
     @reservation = @restaurant.reservations.new(reservation_params)
+    @restaurant_key = @restaurant.sha1_key
+
+    if cookies[@restaurant_key]&.split('&')&.map(&:to_time)&.include?(@reservation.arrival_time.to_time)
+      return redirect_to repeat_booking_restaurant_reservations_path(@restaurant)
+    end
+
+    if cookies[@restaurant_key].nil?
+      value = "#{@reservation.arrival_time}"
+    else
+      value = ([cookies[@restaurant_key].split('&')] << "#{@reservation.arrival_time.to_s}").flatten
+    end
+    
     if @reservation.save
-      set_duplicate_reservation_cookies()
+      set_cookies(@restaurant_key, value)
       ReservationJob.perform_later(@reservation) if @reservation.email.present?
       redirect_to @reservation
-    else
-      render :new
     end
+
   end
 
   def reservate
@@ -40,15 +45,19 @@ class ReservationsController < ApplicationController
 
   def cancel
     if @reservation.may_cancel?
-      @reservation.cancel! 
-      respond_to do |format|
-        format.turbo_stream {
-          render turbo_stream: turbo_stream.replace(@reservation, 
-                                                    partial: "reservations/cancel", 
-                                                    locals: {reservation: @reservation, 
-                                                            restaurant: @reservation.restaurant})
-        }
+      @reservation.cancel!
+      # reset cookies
+      restaurant_cookies = @reservation.restaurant.sha1_key
+      value = cookies[restaurant_cookies].split('&').map(&:to_time).reject do |time|
+        time == @reservation.arrival_time
       end
+      set_cookies(restaurant_key, value)
+
+      respond_to {|format| format.turbo_stream {
+        render turbo_stream: turbo_stream.replace(@reservation, 
+                                                  partial: "reservations/cancel", 
+                                                  locals: {reservation: @reservation,
+                                                          restaurant: @reservation.restaurant})}}
     end
   end
 
@@ -78,17 +87,7 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.find(params[:id])
   end
 
-  def set_duplicate_reservation_cookies
-    restaurant_key()
-    if cookies[@restaurant_key].nil?
-      cookies[@restaurant_key] = {value: "#{@reservation.arrival_time}", expires: 3.days.from_now}
-    else
-      value = ([cookies[@restaurant_key].split('&').flatten] << "#{@reservation.arrival_time.to_s}").flatten
-      cookies[@restaurant_key]  = {value: value, expires: 3.days.from_now}
-    end
-  end
-
-  def restaurant_key
-    @restaurant_key = Digest::SHA1.hexdigest("#{@restaurant.id.to_s}")
+  def set_cookies(key, value, expire = 3.days.from_now)
+    cookies[key] = {value: value, expires: expire}
   end
 end

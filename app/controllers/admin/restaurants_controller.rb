@@ -9,7 +9,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   layout 'application_backstage', only: %i[show setting]
 
   def index
-    @restaurants = current_user.restaurants.all
+    @restaurants = current_user.restaurants
   end
 
   def show; end
@@ -21,9 +21,10 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
   def create
     @restaurant = current_user.restaurants.build(restaurant_params)
     if current_user.save
-      redirect_to admin_restaurants_path(@restaurant), notice: "#{@restaurant.name} is successfully created"
+      redirect_to setting_admin_restaurant_path(@restaurant), notice: "#{@restaurant.name} is successfully created"
     else
-      render :new, alert: 'error'
+      @restaurant.errors.full_messages.each { |message| flash.now.alert = "#{message}"}
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +35,8 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     if @restaurant.update(restaurant_params)
       redirect_to admin_restaurants_path(@restaurant), notice: "#{@restaurant.name} is successfully edited"
     else
-      render :new, alert: 'error'
+      @restaurant.errors.full_messages.each { |message| flash.now.alert = "#{message}"}
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -55,7 +57,7 @@ class Admin::RestaurantsController < Admin::ApplicationBackstageController
     respond_to do |format|
       format.json { render json: { _offDays: @off_days,
                                   disableDayOfWeek: disable_day_of_week,
-                                  enableDayOfWeek: enable_day_of_week} }
+                                  enableDay_of_week: enable_day_of_week} }
       format.html { render :setting }
     end
   end

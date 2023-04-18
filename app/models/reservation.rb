@@ -44,7 +44,7 @@ class Reservation < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: [:reservated, :pending], to: :canceled
+      transitions from: %i[reservated pending], to: :canceled
     end
   end
 
@@ -66,9 +66,7 @@ class Reservation < ApplicationRecord
     reservations_number = get_reservations_quantity(restaurant_id, table_type, arrival_time)
     table_quantity = get_table_quantity(restaurant_id, self.table_type)
 
-    if reservations_number >= table_quantity
-      return errors.add(:arrival_time, 'The selected time is full.')
-    end
+    return errors.add(:arrival_time, 'The selected time is full.') if reservations_number >= table_quantity
   end
 
   # callback
@@ -105,3 +103,4 @@ class Reservation < ApplicationRecord
     $redis.hget(key, table_type).to_i
   end
 end
+

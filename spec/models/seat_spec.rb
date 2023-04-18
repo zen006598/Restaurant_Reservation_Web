@@ -23,7 +23,7 @@ RSpec.describe Seat, type: :model do
     let!(:seat) { create(:seat, restaurant: restaurant, seat_module: seat_module) }
 
     it "sets the maximum capacity in Redis" do
-      key = Seat.maximum_capacity_sha1(seat.restaurant_id)
+      key = Seat.sha1(seat.restaurant_id)
       redis_maximum_capacity = $redis.hget(key, :maximum_capacity).to_i
       redis_ttl = $redis.ttl(key)
       expect(redis_maximum_capacity).to eq(seat.capacity)

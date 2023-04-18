@@ -11,7 +11,9 @@ RSpec.describe ReservationJob, type: :job do
     let!(:restaurant) { create(:restaurant, :skip_validate) }
     let!(:time_module){create(:time_module, day_of_week_list: (0..6).to_a, restaurant: restaurant)}
     let!(:business_time){create(:business_time, time_module: time_module)}
+    let!(:seat){create_list(:seat, 10, restaurant: restaurant)}
     let!(:reservation) { create(:reservation, restaurant: restaurant) }
+
     subject(:job) { described_class.perform_later(reservation) }
 
     it "queues the job" do

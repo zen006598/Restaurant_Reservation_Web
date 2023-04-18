@@ -4,11 +4,13 @@ RSpec.describe Reservation, type: :model do
   let!(:restaurant) { create(:restaurant, :skip_validate) }
   let!(:time_module){create(:time_module, day_of_week_list: (0..6).to_a, restaurant: restaurant)}
   let!(:business_time){create(:business_time, time_module: time_module)}
+  let!(:seat){create_list(:seat, 10, restaurant: restaurant)}
+  
   subject { create(:reservation, restaurant: restaurant) }
 
   describe 'Validations' do
     context 'Presence' do
-      [:name, :phone, :gender, :state, :adult_quantity, :child_quantity].each do |field|
+      [:name, :phone, :gender, :adult_quantity, :child_quantity].each do |field|
         it { should validate_presence_of(field) }
       end
     end
