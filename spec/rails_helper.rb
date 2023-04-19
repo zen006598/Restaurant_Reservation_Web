@@ -1,13 +1,11 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
-# Prevent database truncation if the environment is production
+
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
-require 'capybara'
 require 'support/database_cleaner'
-require 'support/capybara'
+require 'database_cleaner/active_record'
 require 'support/devise'
 require 'mock_redis'
 include Warden::Test::Helpers
@@ -38,8 +36,6 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 RSpec.configure do |config|
-  config.use_transactional_fixtures = false
-
   config.include Warden::Test::Helpers
 
   config.after :each do
@@ -54,9 +50,6 @@ RSpec.configure do |config|
     allow(Redis).to receive(:new).and_return(mock_redis)
   end
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
   config.use_transactional_fixtures = false
 
   # You can uncomment this line to turn off ActiveRecord support entirely.

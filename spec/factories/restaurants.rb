@@ -5,7 +5,7 @@ FactoryBot.define do
 
     address { "#{Faker::Address.street_name} #{Faker::Address.community}"}
     branch { Faker::Address.community }
-    period_of_reservation {rand(3..30)}
+    period_of_reservation {rand(7..30)}
     interval_time{15}
     dining_time {120}
 

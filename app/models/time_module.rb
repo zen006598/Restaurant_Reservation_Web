@@ -41,9 +41,7 @@ class TimeModule < ApplicationRecord
 
   def include_in_list?(list, attribute)
     if list.present? && attribute.present?
-      attribute.each do |day|
-        return true if list.include?(day)
-      end
+      attribute.each {|day| return true if list.include?(day)}
     end
     false
   end

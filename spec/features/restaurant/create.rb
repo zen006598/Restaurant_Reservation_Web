@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "the signin process", type: :feature do
+feature "Create restaurant", type: :feature do
   let!(:user) { create(:user) }
 
   before(:each) do

@@ -90,10 +90,10 @@ export default class extends Controller {
 
       const button = `
         <span class='mb-8 md:mb-4'>
-          <input type="radio" class='hidden peer' name='arrival_time' value=${business_day}_${business_time} id=${business_time}
+          <input type="radio" class='hidden peer time-button' name='arrival_time' value=${business_day}_${business_time} id=${business_time}
                   data-reservation-form-target='button'
                   data-action='input->reservation-form#setSubmit'>
-          <label for=${business_time} class='px-8 py-3 text-xl cursor-pointer peer-checked:bg-major peer-checked:text-white  border rounded hover:border-major'>${business_time}</label>
+          <label for=${business_time} class='time-button px-8 py-3 text-xl cursor-pointer peer-checked:bg-major peer-checked:text-white  border rounded hover:border-major'>${business_time}</label>
         </span>
       `
       switch (true) {

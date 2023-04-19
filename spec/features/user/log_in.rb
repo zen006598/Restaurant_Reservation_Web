@@ -3,8 +3,8 @@ require 'rails_helper'
 feature "the signin process", type: :feature do
   let!(:user) { create(:user) }
 
-  describe 'Log in' do
-    scenario 'success' do
+  describe 'Log in', js: true do
+    scenario 'success'do
       visit user_session_path
       fill_in('user_email', with: user.email)
       fill_in('user_password', with: 'foobar123')
