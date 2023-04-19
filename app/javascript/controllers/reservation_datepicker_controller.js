@@ -6,8 +6,6 @@ export default class extends Controller {
     this.token = document.querySelector("meta[name='csrf-token']").content
   }
   connect(){
-    console.log(this.id);
-    console.log(this.token);
     fetch(`/restaurants/${this.id}`,{
       method: 'GET',
       headers: {
