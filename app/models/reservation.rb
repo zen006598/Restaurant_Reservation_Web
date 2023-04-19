@@ -53,8 +53,10 @@ class Reservation < ApplicationRecord
   # custom validation
   def verify_arrival_time_in_business_time
     day_of_week = arrival_time.wday
-    time_module = restaurant.time_modules.in_which_time_module(day_of_week)
-    business_times = time_module.available_reservable_time(arrival_time)
+    p time_module = restaurant.time_modules.in_which_time_module(day_of_week)
+    p business_times = time_module.available_reservable_time(arrival_time)
+
+    p business_times.map{|time| Time.at(time)}
 
     if business_times.exclude?(arrival_time.to_i)
       return errors.add(:arrival_time, 'The arrival time must in the business time.')
