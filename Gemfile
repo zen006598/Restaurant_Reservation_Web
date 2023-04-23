@@ -50,3 +50,4 @@ group :test do
   gem 'database_cleaner-active_record'
   gem "mock_redis", "~> 0.36.0"
 end
+gem "twsms2", "~> 1.3"

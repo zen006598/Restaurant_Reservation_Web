@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3>Hello, <%= @reservation.name %></h3>
+    <p><%= @reservation.restaurant.name %> has received the deposit.</p>
+    <p>Thank's for reservated the <%= @reservation.restaurant.name %>.</p>
+    <p>The following is your reservation payment information:</p>
+    <p>
+      transaction state: <span style='color: grean'>successful</span>
+    </p>
+    <p>transaction id: <%= @transaction_id %></p>
+    <p>transaction card number: <%= @credit_card_number %></p>
+    <a href=<%= reservation_path(@reservation) %>>
+      Click to check the reservation.
+    </a>
+  </body>
+</html>

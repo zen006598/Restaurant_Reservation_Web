@@ -43,6 +43,9 @@ Rails.application.routes.draw do
         post :reservate
         post :cancel
         post :complete
+        get :line_pay
+        get :confirm_url
+        get :cancel_url
       end
 
       collection do

@@ -13,9 +13,12 @@
       <h2 class='text-xl font-normal'>
         Hello, <%= reservation.name %>
       </h2>
-      <p class='mb-4 text-md'>The following is your reservation information:</p> 
+      <p class='mb-4 text-md'>The following is your reservation information:</p>
 
       <div class='p-4 mb-4 border rounded'>
+        <div class='text-2xl'>
+          <%= reservation.state %>
+        </div>
         <div class='text-2xl'>
           <%= reservation.arrival_time.strftime('%Y-%m-%d') %>
         </div>
@@ -29,6 +32,9 @@
         <div>
           <%= reservation.table_type %>
         </div>
+        <div>
+          <%= reservation.capitation * reservation.people_sum if reservation.capitation > 0 %>
+        </div>
       </div>
       
       <% if reservation.comment.present? %>
@@ -38,7 +44,9 @@
       <% end %>
       
       <div class='flex flex-col gap-4'>
-        <%= button_to 'Add On Canlendar', root_path, class: 'major-button w-full py-2' %>
+        <% if  reservation.pending?%> 
+          <%= link_to 'Click to complete the deposit payment.', line_pay_reservation_path(reservation), data: {turbo: false}, class: 'major-button w-full py-2' %>
+        <% end %>
         <%= button_to 'Cancel Reservation', cancel_reservation_path(reservation), class: 'border border-slate-300 w-full py-2 rounded' %>
       </div>
     </div>

@@ -23,6 +23,14 @@ class Restaurant < ApplicationRecord
   has_many :reservations
   has_rich_text :content
 
+  def deposit?
+    self.deposit > 0
+  end
+
+  def over_headcount_requirement?(people_sum)
+    self.headcount_requirement <= people_sum
+  end
+
   def reservable_last_day
     Date.today + period_of_reservation.days
   end

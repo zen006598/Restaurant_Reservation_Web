@@ -24,6 +24,7 @@ class Reservation < ApplicationRecord
   scope :people_sum, ->(people_sum) {where('adult_quantity + child_quantity = ?', people_sum)}
   scope :more_than_people_sum, ->(people_sum) {where('adult_quantity + child_quantity >= ?', people_sum)}
   # callback
+  before_create :set_desposit
   after_save :get_unavailable_times
   # class method
   def self.unavaliable_time_sha1(id, arrival_time, table_type)
@@ -32,8 +33,8 @@ class Reservation < ApplicationRecord
   end
   # aasm
   aasm column: 'state', no_direct_assignment: true  do
-    state :reservated, initial: true
-    state :pending, :complete, :canceled
+    state :pending, initial: true
+    state :reservated, :complete, :canceled
 
     event :reservate do
       transitions from: :pending, to: :reservated
@@ -46,6 +47,14 @@ class Reservation < ApplicationRecord
     event :cancel do
       transitions from: %i[reservated pending], to: :canceled
     end
+  end
+
+  def people_sum
+    self.child_quantity + self.adult_quantity
+  end
+
+  def amount
+    self.people_sum * self.restaurant.deposit
   end
 
   private
@@ -101,6 +110,12 @@ class Reservation < ApplicationRecord
   def get_table_quantity(restaurant_id, table_type)
     key = Seat.sha1(restaurant_id)
     $redis.hget(key, table_type).to_i
+  end
+
+  def set_desposit
+    if restaurant.deposit? && restaurant.over_headcount_requirement?(self.people_sum)
+      self.capitation = restaurant.deposit
+    end
   end
 end
 

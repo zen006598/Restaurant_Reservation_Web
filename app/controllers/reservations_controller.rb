@@ -1,16 +1,11 @@
 class ReservationsController < ApplicationController
   before_action :find_restaurant, only: %i[new create]
   before_action :find_reservation_info, only: %i[new]
-  before_action :find_reservation, only: %i[show edit update reservate cancel complete]
+  before_action :find_reservation, only: %i[show reservate cancel complete line_pay]
+  skip_before_action :verify_authenticity_token, only: [:line_pay]
   
   def show
     @restaurant = @reservation.restaurant
-  end
-
-  def update
-  end
-
-  def edit
   end
 
   def new
@@ -30,17 +25,40 @@ class ReservationsController < ApplicationController
     else
       value = ([cookies[@restaurant_key].split('&')] << "#{@reservation.arrival_time.to_s}").flatten
     end
-    
+
     if @reservation.save
       set_cookies(@restaurant_key, value)
-      ReservationJob.perform_later(@reservation) if @reservation.email.present?
+      if @reservation.people_sum < @restaurant.headcount_requirement
+        @reservation.reservate!
+        SmsTwsms2Job.perform_later(@reservation)
+        ReservationJob.perform_later(@reservation) if @reservation.email.present?
+      else
+        ReservationPendingJob.perform_later(@reservation) if @reservation.email.present?
+      end
       redirect_to @reservation
+    else
+      render :new
     end
-
   end
 
-  def reservate
-    @reservation.reservate! if @reservation.may_reservate?
+  def line_pay
+    response = Payments::LinePay::AuthenticationApi.new(@reservation.id, @reservation.capitation, @reservation.people_sum).perform
+    redirect_to response, allow_other_host: true
+  end
+
+  def confirm_url
+    # request the confirm api
+    reservation = Reservation.find(params['orderId'])
+    response = Payments::LinePay::ConfirmApi.new(params['transactionId'], reservation.amount).perform
+    response = JSON.parse(response)
+
+    transaction_id = response['info']['transactionId']
+    credit_card_number = response['info']['payInfo'].first['maskedCreditCardNumber']
+
+    # After payment the reservation be reservated and send the email
+    reservation.reservate! if reservation.may_reservate?
+    PaymentSuccessfulJob.perform_later(reservation, transaction_id, credit_card_number) if reservation.email.present?
+    redirect_to reservation_path(reservation), notice: 'payment successful!'
   end
 
   def cancel

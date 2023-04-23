@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_07_083921) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_20_072514) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,13 +74,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_07_083921) do
     t.integer "gender"
     t.text "comment"
     t.datetime "arrival_time"
-    t.string "state", default: "reservated"
+    t.string "state", default: "pending"
     t.integer "adult_quantity", default: 1
     t.integer "child_quantity", default: 0
     t.bigint "restaurant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "table_type"
+    t.integer "capitation", default: 0
     t.index ["restaurant_id"], name: "index_reservations_on_restaurant_id"
   end
 
