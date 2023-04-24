@@ -44,10 +44,10 @@ module Payments
             packages: [{ 
               id: packages_id,
               amount: amount,
-              products: [ {
+              products: [{
                 name: 'WoDing',
                 quantity: @quantity,
-                price: @capitation } ] 
+                price: @capitation }] 
             }],
             redirectUrls: { 
               confirmUrl: "http://127.0.0.1:3000/reservations/#{@reservation_id}/confirm_url",

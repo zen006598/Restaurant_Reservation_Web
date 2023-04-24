@@ -14,35 +14,27 @@ class ReservationsController < ApplicationController
   
   def create
     @reservation = @restaurant.reservations.new(reservation_params)
-    @restaurant_key = @restaurant.sha1_key
-
-    if cookies[@restaurant_key]&.split('&')&.map(&:to_time)&.include?(@reservation.arrival_time.to_time)
-      return redirect_to repeat_booking_restaurant_reservations_path(@restaurant)
-    end
-
-    if cookies[@restaurant_key].nil?
-      value = "#{@reservation.arrival_time}"
-    else
-      value = ([cookies[@restaurant_key].split('&')] << "#{@reservation.arrival_time.to_s}").flatten
-    end
+    restaurant_key = @restaurant.sha1_key
+    determine_cookie(restaurant_key, @reservation, @restaurant)
 
     if @reservation.save
-      set_cookies(@restaurant_key, value)
+      set_cookies(restaurant_key, @value)
       if @reservation.people_sum < @restaurant.headcount_requirement
         @reservation.reservate!
-        SmsTwsms2Job.perform_later(@reservation)
         ReservationJob.perform_later(@reservation) if @reservation.email.present?
       else
         ReservationPendingJob.perform_later(@reservation) if @reservation.email.present?
       end
-      redirect_to @reservation
+      SmsTwsms2Job.perform_later(@reservation)
+      return redirect_to @reservation
     else
       render :new
     end
   end
 
   def line_pay
-    response = Payments::LinePay::AuthenticationApi.new(@reservation.id, @reservation.capitation, @reservation.people_sum).perform
+    response = Payments::LinePay::AuthenticationApi.new(@reservation.id, @reservation.capitation, 
+@reservation.people_sum).perform
     redirect_to response, allow_other_host: true
   end
 
@@ -57,7 +49,8 @@ class ReservationsController < ApplicationController
 
     # After payment the reservation be reservated and send the email
     reservation.reservate! if reservation.may_reservate?
-    PaymentSuccessfulJob.perform_later(reservation, transaction_id, credit_card_number) if reservation.email.present?
+    PaymentSuccessfulJob.perform_later(reservation, transaction_id, 
+credit_card_number) if reservation.email.present?
     redirect_to reservation_path(reservation), notice: 'payment successful!'
   end
 
@@ -107,5 +100,17 @@ class ReservationsController < ApplicationController
 
   def set_cookies(key, value, expire = 3.days.from_now)
     cookies[key] = {value: value, expires: expire}
+  end
+
+  def determine_cookie(restaurant_key, reservation, restaurant)
+    if cookies[restaurant_key]&.split('&')&.map(&:to_time)&.include?(reservation.arrival_time.to_time)
+      return redirect_to repeat_booking_restaurant_reservations_path(restaurant)
+    end
+
+    if cookies[restaurant_key].nil?
+      @value = "#{reservation.arrival_time}"
+    else
+      @value = ([cookies[restaurant_key].split('&')] << "#{reservation.arrival_time.to_s}").flatten
+    end
   end
 end
